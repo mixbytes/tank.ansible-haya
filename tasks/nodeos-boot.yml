@@ -1,0 +1,64 @@
+---
+
+
+- debug: var=work_dir
+
+- name: set config.ini
+  template:
+    src: configs/nodeos/config.ini.j2
+    dest: "{{ work_dir }}/config.ini"
+
+- name: set genesis.json
+  template:
+    src: configs/nodeos/genesis.json.j2
+    dest: "{{ work_dir }}/genesis.json"
+
+- name: set accounts.json
+  template:
+    src: configs/nodeos/accounts.json.j2
+    dest: "{{ work_dir }}/accounts.json"
+
+- debug:
+    var: "{{item}}"
+  with_items:
+    - node_id
+    - node_http_port
+    - node_p2p_port
+    - node_bnet_port
+
+    - name: Start boot-node container
+  docker_container:
+    name: cyberos-node-{{ node_id }}
+    image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
+    command: /opt/eosio/bin/nodeos --config-dir=/opt/eosio/bin/data-dir --genesis-json=/opt/eosio/bin/data-dir/genesis.json
+    hostname: cyberos-node-{{ node_id }}
+    ports:
+      - 127.0.0.1:{{ node_http_port }}:8888
+      - 127.0.0.1:{{ node_p2p_port }}:9876
+      - 127.0.0.1:{{ node_bnet_port }}:4321
+    volumes:
+      - "/data/cyberos-nodeos-state-{{ node_id }}-data:/root/.local"
+      - "/data/cyberos-nodeos-{{ node_id }}-data:/opt/eosio/bin/data-dir"
+    capabilities:
+      - IPC_LOCK
+    stop_timeout: 600
+    networks:
+      - name: cyberos-net
+
+- debug:
+    var: "{{item}}"
+  with_items:
+    - boot.pvt_key
+
+#- name: import producer key into wallet
+#  shell:
+#    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} wallet import --private-key {{ boot.pvt_key }}"
+#  register: out_cyberos_boot
+#  ignore_errors: true
+
+#- debug: var=out_cyberos_boot.stderr
+#- debug: var=out_cyberos_boot.stdout
+
+#- pause:
+#    seconds: 25
+

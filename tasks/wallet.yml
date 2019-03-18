@@ -1,0 +1,30 @@
+---
+- name: "Make directory structure"
+  file:
+    path: "{{ cyberos_work_dir }}"
+    state: directory
+
+- name: "Start keosd container"
+  docker_container:
+    name: cyberos-keosd
+    image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
+    command: /opt/eosio/bin/keosd --unlock-timeout=99999999 --wallet-dir /opt/eosio/bin/data-dir --http-server-address=0.0.0.0:{{ wallet.port }} --http-alias=keosd:{{ wallet.port }} --http-alias=localhost:{{ wallet.port }}
+    hostname: cyberos-keosd
+    ports:
+      - "{{ wallet.port }}:{{ wallet.port }}"
+    expose:
+      - "{{ wallet.port }}"
+    volumes:
+      - /data/cyberos-keosd-data:/opt/eosio/bin/data-dir
+    capabilities:
+      - IPC_LOCK
+    stop_timeout: 600
+    networks:
+      - name: cyberos-net
+
+- name: Create default wallet
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{wallet.port}} wallet create --to-console"
+  register: out_create_wallet
+  failed_when: "'Wallet already exists' not in out_create_wallet.stderr and out_create_wallet.rc != 0"
+  changed_when: "'Creating wallet' in out_create_wallet.stdout"

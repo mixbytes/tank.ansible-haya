@@ -1,0 +1,73 @@
+http-alias = nodeosd-{{ node_id }}:8888
+
+http-server-address = 0.0.0.0:8888
+
+bnet-endpoint = 0.0.0.0:4321
+
+{% if not node_id == "boot" %} bnet-connect = {{ bootnode_ip }}:{{ bootnode_bnet_port }} {% endif %}
+
+bnet-no-trx = false
+
+producer-name = {{ producer_name }}
+signature-provider = {{ producer_pub_key }}=KEY:{{ producer_pvt_key }}
+
+p2p-listen-endpoint = 0.0.0.0:9876
+p2p-server-address = 0.0.0.0:9876
+
+blocks-dir = "blocks"
+abi-serializer-max-time-ms = 15000
+chain-state-db-size-mb = 1024
+chain-state-db-guard-size-mb = 128
+reversible-blocks-db-size-mb = 340
+reversible-blocks-db-guard-size-mb = 2
+contracts-console = true
+read-mode = speculative
+
+validation-mode = full
+disable-ram-billing-notify-checks = false
+https-client-validate-peers = 1
+
+access-control-allow-origin = "*"
+access-control-allow-credentials = false
+
+max-body-size = 1048576
+
+verbose-http-errors = true
+
+http-validate-host = false
+max-login-requests = 1000000
+
+max-login-timeout = 60
+p2p-max-nodes-per-host = 20
+
+allowed-connection = any
+max-clients = 25
+connection-cleanup-period = 30
+max-cleanup-time-msec = 10
+network-version-match = 0
+sync-fetch-span = 100
+
+use-socket-read-watermark = 0
+
+peer-log-format = ["${_name}" ${_ip}:${_port}]
+bnet-peer-log-format = ["${_name}" ${_ip}:${_port}]
+
+enable-stale-production = {{ isproduction_enabled }}
+pause-on-startup = false
+max-transaction-time = 1000
+max-irreversible-block-age = -1
+
+keosd-provider-timeout = 5
+produce-time-offset-us = 0
+last-block-time-offset-us = 0
+incoming-defer-ratio = 1
+txn-reference-block-lag = 0
+
+plugin = eosio::chain_api_plugin
+plugin = eosio::http_plugin
+plugin = eosio::bnet_plugin
+plugin = eosio::history_plugin
+
+plugin = eosio::producer_plugin
+plugin = eosio::net_api_plugin
+plugin = eosio::txn_test_gen_plugin

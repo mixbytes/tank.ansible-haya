@@ -1,0 +1,10 @@
+---
+- name: Install docker python module
+  pip:
+    name: docker
+
+- name: Login to Docker registry
+  docker_login:
+    registry: registry.gitlab.com
+    username: yourlogin
+    password: yourpassword

@@ -1,0 +1,38 @@
+---
+# defaults file for ansible-cyberos
+cyberos_work_dir: /data
+pref_dir: /opt/prefdir
+
+boot:
+  name: eosio
+  pub_key: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+  pvt_key: 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+
+wallet:
+  port: 6666
+
+system_accounts:
+  - eosio.token
+
+system_contracts:
+  - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
+  - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+
+producer_accounts:
+  - { name: producer111a, pvt_key: 5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b, pub_key: EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz }
+  - { name: producer111b, pvt_key: 5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu, pub_key: EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC }
+  - { name: producer111c, pvt_key: 5JCStvbRgUZ6hjyfUiUaxt5iU3HP6zC1kwx3W7SweaEGvs4EPfQ, pub_key: EOS5n442Qz4yVc4LbdPCDnxNSseAiUCrNjRxAfPhUvM8tWS5svid6 }
+  - { name: producer111d, pvt_key: 5HwyQG6enrCrCZXYqrd2WsMmnreWAWUWGa9JjssodsYTSuaSA5F, pub_key: EOS6u4zPBn1EbhNtqmSFgUhoo1ZHb1je2qUskRgk4jUe2nUfpFXLP }
+  - { name: producer111f, pvt_key: 5K3TXkZAwyJkg7TjSfopd7sTr3RXFccghXHN1nJHTzap1ZKgLdK, pub_key: EOS76wwc1zjzRMPQnEL6rTDWLfhN2ByZd6GhDJoWBKWM6M7cUmyfS }
+
+work_dir: "{{ pref_dir }}/cyberos-node-boot"
+node_id: boot
+node_http_port: 8888
+node_p2p_port: 9876
+node_bnet_port: 4321
+isproduction_enabled: true
+tokens_amount: 10000000000
+###########
+producer_name: "{{ boot.name }}"
+producer_pub_key: "{{ boot.pub_key }}"
+producer_pvt_key: "{{ boot.pvt_key }}"
