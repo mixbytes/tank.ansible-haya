@@ -1,22 +1,31 @@
 ---
+- name: Set component name
+  set_fact:
+    bc_component_name: nodeos_boot
 
-
-- debug: var=work_dir
+- name: "Make directory structure"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_data }}"
+    - "{{ bc_path_config }}"
+    - "{{ bc_path_state }}"
 
 - name: set config.ini
   template:
     src: configs/nodeos/config.ini.j2
-    dest: "{{ work_dir }}/config.ini"
+    dest: "{{ bc_path_config }}/config.ini"
 
 - name: set genesis.json
   template:
     src: configs/nodeos/genesis.json.j2
-    dest: "{{ work_dir }}/genesis.json"
+    dest: "{{ bc_path_config }}/genesis.json"
 
 - name: set accounts.json
   template:
     src: configs/nodeos/accounts.json.j2
-    dest: "{{ work_dir }}/accounts.json"
+    dest: "{{ bc_path_config }}/accounts.json"
 
 - debug:
     var: "{{item}}"
@@ -26,19 +35,19 @@
     - node_p2p_port
     - node_bnet_port
 
-    - name: Start boot-node container
+- name: Start boot-node container
   docker_container:
-    name: cyberos-node-{{ node_id }}
+    name: "{{ bc_name }}-node-{{ node_id }}"
     image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
-    command: /opt/eosio/bin/nodeos --config-dir=/opt/eosio/bin/data-dir --genesis-json=/opt/eosio/bin/data-dir/genesis.json
+    command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: cyberos-node-{{ node_id }}
     ports:
       - 127.0.0.1:{{ node_http_port }}:8888
       - 127.0.0.1:{{ node_p2p_port }}:9876
       - 127.0.0.1:{{ node_bnet_port }}:4321
     volumes:
-      - "/data/cyberos-nodeos-state-{{ node_id }}-data:/root/.local"
-      - "/data/cyberos-nodeos-{{ node_id }}-data:/opt/eosio/bin/data-dir"
+      - "{{ bc_path_state }}/{{ node_id }}-data:/root/.local"
+      - "{{ bc_path_config }}:{{ bc_path_config }}"
     capabilities:
       - IPC_LOCK
     stop_timeout: 600
@@ -50,15 +59,71 @@
   with_items:
     - boot.pvt_key
 
-#- name: import producer key into wallet
-#  shell:
-#    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} wallet import --private-key {{ boot.pvt_key }}"
-#  register: out_cyberos_boot
-#  ignore_errors: true
+- name: import producer key into wallet
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} wallet import --private-key {{ boot.pvt_key }}"
+  register: import_producer_key
+  ignore_errors: true
+  failed_when: "('Nonexistent wallet' in import_producer_key.stderr or 'Key already exists' not in import_producer_key.stderr) and import_producer_key.rc != 0"
+  changed_when: "'imported private key for' in import_producer_key.stdout"
 
-#- debug: var=out_cyberos_boot.stderr
-#- debug: var=out_cyberos_boot.stdout
+- debug:
+    msg: "{{ import_producer_key.stderr_lines }}"
+- debug: var=import_producer_key.stdout_lines
 
-#- pause:
-#    seconds: 25
+- pause:
+    seconds: 25
+  when:
+    - import_producer_key is changed
 
+- name: create system accounts
+  loop: "{{ system_accounts }}"
+  register: create_system_accounts
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} create account -x 45 eosio {{ item }} {{ boot.pub_key }} {{ boot.pub_key }}"
+  failed_when: "('Account name already exists' not in create_system_accounts.stderr) and create_system_accounts.rc != 0"
+  #  changed_when: "'imported private key for' in create_system_accounts.stdout"
+
+- name: Show stderr from create system accounts task
+  debug:
+    msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
+  loop: "{{ create_system_accounts.results }}"
+
+- name: copy contracts
+  copy:
+    src: configs/contracts/
+    dest: "{{ bc_path_config }}/contracts"
+
+- name: set code system contracts
+  loop: "{{ system_contracts }}"
+  shell:
+    chdir: "{{ bc_path_config }}/contracts"
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} set code {{ item.name }} /host/$PWD/{{ item.wasm_path }}"
+
+- name: set abi system contracts
+  loop: "{{ system_contracts }}"
+  shell:
+    chdir: "{{ bc_path_config }}/contracts"
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} set abi {{ item.name }} /host/$PWD/{{ item.abi_path }}"
+
+- name: create token
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} push action eosio.token create \"['eosio', '{{ tokens_amount }} EOS']\" -p eosio.token"
+
+- name: allocate tokens
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} push action eosio.token issue '['eosio', '{{ tokens_amount }} EOS', 'memo']' -p eosio"
+
+- name: create producers account
+  loop: "{{ producer_accounts }}"
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} create account -x 45 eosio {{ item.name }} {{ item.pub_key }} {{ item.pub_key }}"
+
+- name: form producers list
+  set_fact:
+    my_prods: "{{ my_prods|default([{'producer_name': 'eosio', 'block_signing_key': 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'}]) + [{'producer_name': item.name, 'block_signing_key': item.pub_key}] }}"
+  with_items: "{{ producer_accounts | list }}"
+
+- name: set producers
+  shell:
+    cmd: "/opt/eosio/bin/cleos --wallet-url=http://localhost:{{ wallet.port }} --url=http://localhost:{{ node_http_port }} push action eosio setprods '[{{my_prods | to_json}}]' -p eosio"

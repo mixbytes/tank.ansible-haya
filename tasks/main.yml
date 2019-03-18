@@ -18,12 +18,19 @@
     dest: /opt/eosio/bin/cleos
     mode: 0755
 
-- name: Create general directory structure
+- name: Show nested variables
+  debug:
+    msg="{{ bc_path_data }}"
+
+- name: "Create general directory structure"
   file:
     path: "{{ item }}"
     state: directory
   with_items:
-    - "{{ pref_dir }}"
-    - "{{ work_dir }}"
+    - "{{ bc_path_general}}"
+
 - name: "Setup wallet containers"
   include_tasks: wallet.yml
+
+- name: "Setup nodeos-boot containers"
+  include_tasks: nodeos-boot.yml
