@@ -1,50 +1,60 @@
 ---
 # defaults file for ansible-cyberos
+bc_debug: false
 
 bc_name: cyberos
-bc_component_name: "default" # may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
-bc_path_general: "/opt/{{ bc_name }}"
-bc_path_data: "{{ bc_path_general }}/{{ bc_component_name }}/data/"
-bc_path_config: "{{ bc_path_general }}/{{ bc_component_name }}/config"
-bc_path_state: "{{ bc_path_general }}/{{ bc_component_name }}/state"
+bc_component_name: "wallet" # may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
 
-bc_cyberos:
-  wallet:
-    data_dir: /data/
+bc_path_general: "/opt"
+bc_path_data: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/data/"
+bc_path_config: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/config"
+bc_path_state: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/state"
 
-work_dir: /data
-pref_dir: /opt/prefdir
+bc_docker_registry:
+  login_enabled: false
+  url: "registry.gitlab.com"
+  username: "@devopsman"
+  password: "secret"
 
-boot:
+bc_cyberos_comp_state:
+  wallet: absent
+  boot: absent
+  prod: absent
+
+bc_cyberos_cli: "docker run --rm --network=host -v /:/host:ro registry.gitlab.com/cyberos/infrastructure/cyberos:latest /opt/eosio/bin/cleos "
+
+bc_cyberos_boot:
+  public_ip: "{{ ansible_default_ipv4.address }}"
+  public_port: "{{ bc_cyberos_node_bnet_port }}"
   name: eosio
   pub_key: EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
   pvt_key: 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
 
-wallet:
+bc_cyberos_wallet:
   port: 6666
 
-system_accounts:
+bc_cyberos_system_accounts:
   - eosio.token
 
-system_contracts:
+bc_cyberos_system_contracts:
   - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
   - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
 
-producer_accounts:
+bc_cyberos_producer_accounts:
   - { name: producer111a, pvt_key: 5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b, pub_key: EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz }
   - { name: producer111b, pvt_key: 5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu, pub_key: EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC }
   - { name: producer111c, pvt_key: 5JCStvbRgUZ6hjyfUiUaxt5iU3HP6zC1kwx3W7SweaEGvs4EPfQ, pub_key: EOS5n442Qz4yVc4LbdPCDnxNSseAiUCrNjRxAfPhUvM8tWS5svid6 }
   - { name: producer111d, pvt_key: 5HwyQG6enrCrCZXYqrd2WsMmnreWAWUWGa9JjssodsYTSuaSA5F, pub_key: EOS6u4zPBn1EbhNtqmSFgUhoo1ZHb1je2qUskRgk4jUe2nUfpFXLP }
   - { name: producer111f, pvt_key: 5K3TXkZAwyJkg7TjSfopd7sTr3RXFccghXHN1nJHTzap1ZKgLdK, pub_key: EOS76wwc1zjzRMPQnEL6rTDWLfhN2ByZd6GhDJoWBKWM6M7cUmyfS }
 
-work_dir: "{{ pref_dir }}/cyberos-node-boot"
-node_id: boot
-node_http_port: 8888
-node_p2p_port: 9876
-node_bnet_port: 4321
-isproduction_enabled: true
-tokens_amount: 10000000000
-###########
-producer_name: "{{ boot.name }}"
-producer_pub_key: "{{ boot.pub_key }}"
-producer_pvt_key: "{{ boot.pvt_key }}"
+bc_cyberos_node_id: boot
+bc_cyberos_node_http_port: 8888
+bc_cyberos_node_p2p_port: 9876
+bc_cyberos_node_bnet_port: 4321
+
+bc_cyberos_isproduction_enabled: true
+bc_cyberos_tokens_amount: 10000000000
+
+bc_cyberos_producer_name: "{{ bc_cyberos_boot.name }}"
+bc_cyberos_producer_pub_key: "{{ bc_cyberos_boot.pub_key }}"
+bc_cyberos_producer_pvt_key: "{{ bc_cyberos_boot.pvt_key }}"

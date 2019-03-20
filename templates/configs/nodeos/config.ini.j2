@@ -1,15 +1,15 @@
-http-alias = nodeosd-{{ node_id }}:8888
+http-alias = nodeosd-{{ bc_cyberos_node_id }}:8888
 
 http-server-address = 0.0.0.0:8888
 
 bnet-endpoint = 0.0.0.0:4321
 
-{% if not node_id == "boot" %} bnet-connect = {{ bootnode_ip }}:{{ bootnode_bnet_port }} {% endif %}
+{% if not bc_component_name == "boot" %} bnet-connect = {{ ansible_default_ipv4.address }}:{{ bc_cyberos_node_bnet_port }} {% endif %}
 
 bnet-no-trx = false
 
-producer-name = {{ producer_name }}
-signature-provider = {{ producer_pub_key }}=KEY:{{ producer_pvt_key }}
+producer-name = {{ bc_cyberos_producer_name }}
+signature-provider = {{ bc_cyberos_producer_pub_key }}=KEY:{{ bc_cyberos_producer_pvt_key }}
 
 p2p-listen-endpoint = 0.0.0.0:9876
 p2p-server-address = 0.0.0.0:9876
@@ -52,7 +52,7 @@ use-socket-read-watermark = 0
 peer-log-format = ["${_name}" ${_ip}:${_port}]
 bnet-peer-log-format = ["${_name}" ${_ip}:${_port}]
 
-enable-stale-production = {{ isproduction_enabled }}
+enable-stale-production = {{ bc_cyberos_isproduction_enabled }}
 pause-on-startup = false
 max-transaction-time = 1000
 max-irreversible-block-age = -1

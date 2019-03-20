@@ -1,0 +1,11 @@
+---
+- name: Install docker python module
+  pip:
+    name: docker
+
+- name: Login to Docker registry
+  when: bc_docker_registry.login_enabled == true
+  docker_login:
+    registry: "{{ bc_docker_registry.url }}"
+    username: "{{ bc_docker_registry.username }}"
+    password: "{{ bc_docker_registry.password }}"

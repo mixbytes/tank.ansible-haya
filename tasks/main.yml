@@ -2,35 +2,10 @@
 # tasks file for ansible-cyberos
 
 - name: Login to docker registry
-  include_tasks: docker-registry.yml
+  include_tasks: "docker/registry.yml"
 
 - name: "Setup docker network"
-  include_tasks: docker-network.yml
+  include_tasks: "docker/network.yml"
 
-- name: Screate directory for cleos
-  file:
-    path: /opt/eosio/bin
-    state: directory
-
-- name: "Setup cleos"
-  template:
-    src: scripts/bin/cleos
-    dest: /opt/eosio/bin/cleos
-    mode: 0755
-
-- name: Show nested variables
-  debug:
-    msg="{{ bc_path_data }}"
-
-- name: "Create general directory structure"
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - "{{ bc_path_general}}"
-
-- name: "Setup wallet containers"
-  include_tasks: wallet.yml
-
-- name: "Setup nodeos-boot containers"
-  include_tasks: nodeos-boot.yml
+- name: "Install blockchain components"
+  include_tasks: "blockchain/{{ bc_name }}/main.yml"

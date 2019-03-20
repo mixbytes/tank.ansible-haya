@@ -1,0 +1,40 @@
+---
+- name: "Make directory structure"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_data }}"
+    - "{{ bc_path_config }}"
+    - "{{ bc_path_state }}"
+
+- name: "Start {{ bc_name }} container"
+  docker_container:
+    name: "{{ bc_name }}-{{ bc_component_name }}"
+    image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
+    command: /opt/eosio/bin/keosd --unlock-timeout=99999999 --wallet-dir {{ bc_path_data }} --http-server-address=0.0.0.0:{{ bc_cyberos_wallet.port }} --http-alias=keosd:{{ bc_cyberos_wallet.port }} --http-alias=localhost:{{ bc_cyberos_wallet.port }}
+    hostname: cyberos-keosd
+    ports:
+      - "{{ bc_cyberos_wallet.port }}:{{ bc_cyberos_wallet.port }}"
+    expose:
+      - "{{ bc_cyberos_wallet.port }}"
+    volumes:
+      - "{{ bc_path_data }}:{{ bc_path_data }}"
+    capabilities:
+      - IPC_LOCK
+    stop_timeout: 600
+    networks:
+      - name: "{{ bc_name }}-net"
+
+- name: Create default wallet
+  shell:
+    cmd: "{{ bc_cyberos_cli }} --wallet-url=http://localhost:{{bc_cyberos_wallet.port}} wallet create --to-console"
+  register: create_wallet
+  failed_when: "'Wallet already exists' not in create_wallet.stderr and create_wallet.rc != 0"
+  changed_when: "'Creating wallet' in create_wallet.stdout"
+
+- debug:
+    msg: "{{ create_wallet.stderr_lines }}"
+
+- debug:
+    msg: "{{ create_wallet.stdout_lines }}"

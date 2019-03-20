@@ -1,0 +1,41 @@
+---
+
+- name: Create directory for cleos
+  file:
+    path: /opt/eosio/bin
+    state: directory
+
+- name: "Setup cleos"
+  template:
+    src: scripts/bin/cleos
+    dest: /opt/eosio/bin/cleos
+    mode: 0755
+
+- name: "Create general directory structure"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_general}}"
+    - "{{ bc_path_general}}/{{ bc_name }}"
+
+- name: "Set components to wallet"
+  set_fact:
+    bc_component_name: "wallet"
+
+- name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
+
+- name: "Set components to boot"
+  set_fact:
+    bc_component_name: "boot"
+
+- name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
+
+- name: "Set components to prod"
+  set_fact:
+    bc_component_name: "prod"
+
+- name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"

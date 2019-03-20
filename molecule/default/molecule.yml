@@ -16,6 +16,8 @@ platforms:
     box: ubuntu/bionic64
 provisioner:
   name: ansible
+  playbooks: 
+    converge: ../../playbook.yml
   config_options:
     defaults:
       callback_whitelist: profile_tasks
