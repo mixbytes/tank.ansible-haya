@@ -9,6 +9,10 @@
     - "{{ bc_path_state }}"
 
 - name: set config.ini
+  vars:
+    producer_name: "{{ bc_cyberos_boot.name }}"
+    producer_pub_key: "{{ bc_cyberos_boot.pub_key }}"
+    producer_pvt_key: "{{ bc_cyberos_boot.pvt_key }}"
   template:
     src: configs/nodeos/config.ini.j2
     dest: "{{ bc_path_config }}/config.ini"

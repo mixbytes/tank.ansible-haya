@@ -38,10 +38,15 @@
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Set components to prod"
+  tags:
+    - prod
   set_fact:
     bc_component_name: "prod"
+    bc_cyberos_node_id: "1"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  tags:
+    - prod
   when:
     - bc_cyberos_comp_state.prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"

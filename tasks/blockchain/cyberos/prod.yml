@@ -2,11 +2,22 @@
 - name: set producer account
   set_fact:
     producer_account: "{{ bc_cyberos_producer_accounts[bc_cyberos_node_id | int] }}"
+  tags:
+    - prod
+
+- debug:
+    msg: "{{ bc_cyberos_node_id | int }}"
+  tags:
+    - prod
 
 - debug:
     msg: "{{ producer_account }}"
+  tags:
+    - prod
 
 - name: "Make directory structure"
+  tags:
+    - prod
   file:
     path: "{{ item }}"
     state: directory
@@ -16,6 +27,8 @@
     - "{{ bc_path_state }}"
 
 - name: set config.ini
+  tags:
+    - prod
   vars:
     producer_name: "{{ producer_account.name }}"
     producer_pub_key: "{{ producer_account.pub_key }}"
@@ -25,11 +38,15 @@
     dest: "{{ bc_path_config }}/config.ini"
 
 - name: set genesis.json
+  tags:
+    - prod
   template:
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
 
 - name: set accounts.json
+  tags:
+    - prod
   template:
     src: configs/nodeos/accounts.json.j2
     dest: "{{ bc_path_config }}/accounts.json"
