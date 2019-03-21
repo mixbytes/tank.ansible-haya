@@ -24,6 +24,8 @@
     bc_component_name: "wallet"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  when:
+    - bc_cyberos_comp_state.wallet == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Set components to boot"
@@ -31,6 +33,8 @@
     bc_component_name: "boot"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  when:
+    - bc_cyberos_comp_state.boot == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Set components to prod"
@@ -38,4 +42,6 @@
     bc_component_name: "prod"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  when:
+    - bc_cyberos_comp_state.prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
