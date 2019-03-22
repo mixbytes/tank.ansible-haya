@@ -35,6 +35,10 @@
 
 - debug:
     msg: "{{ create_wallet.stderr_lines }}"
+  tags:
+    - debug
 
 - debug:
     msg: "{{ create_wallet.stdout_lines }}"
+  tags:
+    - debug

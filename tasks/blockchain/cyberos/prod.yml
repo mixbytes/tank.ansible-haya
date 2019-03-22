@@ -9,11 +9,13 @@
     msg: "{{ bc_cyberos_node_id | int }}"
   tags:
     - prod
+    - debug
 
 - debug:
     msg: "{{ producer_account }}"
   tags:
     - prod
+    - debug
 
 - name: "Make directory structure"
   tags:
@@ -75,3 +77,5 @@
 - name: List data about prod container
   debug:
     var="{{ bc_name }}_{{ bc_component_name }}"
+  tags:
+    - debug

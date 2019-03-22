@@ -42,7 +42,6 @@
     - prod
   set_fact:
     bc_component_name: "prod"
-    bc_cyberos_node_id: "1"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
   tags:

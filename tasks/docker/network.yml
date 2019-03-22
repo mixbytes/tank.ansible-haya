@@ -1,4 +1,4 @@
 ---
 - name: Create docker network on host
   docker_network:
-    name: cyberos-net
+    name: "{{ bc_name }}-net"

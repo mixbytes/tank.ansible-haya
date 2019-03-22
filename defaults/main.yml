@@ -47,7 +47,7 @@ bc_cyberos_producer_accounts:
   - { name: producer111d, pvt_key: 5HwyQG6enrCrCZXYqrd2WsMmnreWAWUWGa9JjssodsYTSuaSA5F, pub_key: EOS6u4zPBn1EbhNtqmSFgUhoo1ZHb1je2qUskRgk4jUe2nUfpFXLP }
   - { name: producer111f, pvt_key: 5K3TXkZAwyJkg7TjSfopd7sTr3RXFccghXHN1nJHTzap1ZKgLdK, pub_key: EOS76wwc1zjzRMPQnEL6rTDWLfhN2ByZd6GhDJoWBKWM6M7cUmyfS }
 
-bc_cyberos_node_id: boot
+bc_cyberos_node_id: "1"
 bc_cyberos_node_http_port: 8888
 bc_cyberos_node_p2p_port: 9876
 bc_cyberos_node_bnet_port: 4321
