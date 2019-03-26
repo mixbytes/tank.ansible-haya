@@ -8,12 +8,14 @@
 - debug:
     msg: "{{ bc_cyberos_node_id | int }}"
   tags:
+    - never
     - prod
     - debug
 
 - debug:
     msg: "{{ producer_account }}"
   tags:
+    - never
     - prod
     - debug
 
@@ -78,4 +80,5 @@
   debug:
     var="{{ bc_name }}_{{ bc_component_name }}"
   tags:
+    - never
     - debug

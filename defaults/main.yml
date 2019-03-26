@@ -1,9 +1,10 @@
 ---
 # defaults file for ansible-cyberos
 bc_debug: false
-
+bc_private_interface: enp0s8
 bc_name: cyberos
-bc_component_name: "wallet" # may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
+# may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
+bc_component_name: "wallet"
 
 bc_path_general: "/opt"
 bc_path_data: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/data/"
@@ -41,11 +42,21 @@ bc_cyberos_system_contracts:
   - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
 
 bc_cyberos_producer_accounts:
-  - { name: producer111a, pvt_key: 5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b, pub_key: EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz }
-  - { name: producer111b, pvt_key: 5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu, pub_key: EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC }
-  - { name: producer111c, pvt_key: 5JCStvbRgUZ6hjyfUiUaxt5iU3HP6zC1kwx3W7SweaEGvs4EPfQ, pub_key: EOS5n442Qz4yVc4LbdPCDnxNSseAiUCrNjRxAfPhUvM8tWS5svid6 }
-  - { name: producer111d, pvt_key: 5HwyQG6enrCrCZXYqrd2WsMmnreWAWUWGa9JjssodsYTSuaSA5F, pub_key: EOS6u4zPBn1EbhNtqmSFgUhoo1ZHb1je2qUskRgk4jUe2nUfpFXLP }
-  - { name: producer111f, pvt_key: 5K3TXkZAwyJkg7TjSfopd7sTr3RXFccghXHN1nJHTzap1ZKgLdK, pub_key: EOS76wwc1zjzRMPQnEL6rTDWLfhN2ByZd6GhDJoWBKWM6M7cUmyfS }
+  - { name: producer111a,
+      pvt_key: 5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b,
+      pub_key: EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz }
+  - { name: producer111b,
+      pvt_key: 5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu,
+      pub_key: EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC }
+  - { name: producer111c,
+      pvt_key: 5JCStvbRgUZ6hjyfUiUaxt5iU3HP6zC1kwx3W7SweaEGvs4EPfQ,
+      pub_key: EOS5n442Qz4yVc4LbdPCDnxNSseAiUCrNjRxAfPhUvM8tWS5svid6 }
+  - { name: producer111d,
+      pvt_key: 5HwyQG6enrCrCZXYqrd2WsMmnreWAWUWGa9JjssodsYTSuaSA5F,
+      pub_key: EOS6u4zPBn1EbhNtqmSFgUhoo1ZHb1je2qUskRgk4jUe2nUfpFXLP }
+  - { name: producer111f,
+      pvt_key: 5K3TXkZAwyJkg7TjSfopd7sTr3RXFccghXHN1nJHTzap1ZKgLdK,
+      pub_key: EOS76wwc1zjzRMPQnEL6rTDWLfhN2ByZd6GhDJoWBKWM6M7cUmyfS }
 
 bc_cyberos_node_id: "1"
 bc_cyberos_node_http_port: 8888

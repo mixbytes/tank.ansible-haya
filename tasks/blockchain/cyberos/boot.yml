@@ -34,6 +34,7 @@
     - bc_cyberos_node_p2p_port
     - bc_cyberos_node_bnet_port
   tags:
+    - never
     - debug
 
 - name: Start boot-node container
@@ -60,6 +61,7 @@
   with_items:
     - bc_cyberos_boot.pvt_key
   tags:
+    - never
     - debug
 
 - name: import producer key into wallet
@@ -73,9 +75,11 @@
 - debug:
     msg: "{{ import_producer_key.stderr_lines }}"
   tags:
+    - never
     - debug
 - debug: var=import_producer_key.stdout_lines
   tags:
+    - never
     - debug
 
 - pause:
@@ -96,6 +100,7 @@
     msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
   loop: "{{ create_system_accounts.results }}"
   tags:
+    - never
     - debug
 
 - name: copy contracts
@@ -117,6 +122,7 @@
     msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
   loop: "{{ set_code_system_contracts.results }}"
   tags:
+    - never
     - debug
 
 - name: set abi system contracts
@@ -133,6 +139,7 @@
     msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
   loop: "{{ set_abi_system_contracts.results }}"
   tags:
+    - never
     - debug
 
 - name: create token
@@ -146,6 +153,7 @@
   debug:
     msg: "DEBUG: \n stderr:{{ create_token.stderr }}\n stdout:{{ create_token.stdout }}"
   tags:
+    - never
     - debug
 
 - name: allocate tokens
@@ -159,6 +167,7 @@
   debug:
     msg: "DEBUG: \n stderr:{{ allocate_tokens.stderr }}\n stdout:{{ allocate_tokens.stdout }}"
   tags:
+    - never
     - debug
 
 - name: create producers account
@@ -174,6 +183,7 @@
     msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
   loop: "{{ create_producers_account.results }}"
   tags:
+    - never
     - debug
 
 - name: form producers list
@@ -192,4 +202,5 @@
   debug:
     msg: "DEBUG: \n stderr:{{ set_producers.stderr }}\n stdout:{{ set_producers.stdout }}"
   tags:
+    - never
     - debug

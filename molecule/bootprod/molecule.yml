@@ -12,8 +12,24 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: ubuntu1804-node1
+  - name: ubuntu1804-boot
     box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 1
+    provider_raw_config_args:
+      - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
+  - name: ubuntu1804-producer-1
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 1
+    provider_raw_config_args:
+      - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
 provisioner:
   name: ansible
   playbooks:
@@ -27,7 +43,7 @@ provisioner:
   lint:
     name: ansible-lint
 scenario:
-  name: default
+  name: bootprod
 verifier:
   name: testinfra
   lint:
