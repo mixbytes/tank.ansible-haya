@@ -1,7 +1,26 @@
 ---
-- name: Converge
-  hosts: all
+
+- name: Converge boot node
+  hosts: "*boot*"
   become: true
+  roles:
+    - role: ansible-cyberos
+      vars:
+        bc_cyberos_nodeid: "boot"
+        bc_docker_registry:
+          login_enabled: true
+          url: registry.gitlab.com
+          username: exampleuser
+          password: secret
+        bc_cyberos_comp_state:
+          wallet: present
+          boot: present
+
+- name: Converge producer node
+  hosts: "*producer*"
+  become: true
+  vars:
+    bc_cyberos_node_id: "{{ play_hosts.index(inventory_hostname) }} | int +1"
   roles:
     - role: ansible-cyberos
       vars:
@@ -11,6 +30,4 @@
           username: exampleuser
           password: secret
         bc_cyberos_comp_state:
-          wallet: present
-          boot: present
           prod: present
