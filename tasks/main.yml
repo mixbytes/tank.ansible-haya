@@ -1,5 +1,29 @@
 ---
 # tasks file for ansible-cyberos
+- name: "Add boot node to group bcboot"
+  tags:
+    - debug
+    - network
+  delegate_to: 127.0.0.1
+  run_once: true
+  add_host:
+    name: "{{ item }}"
+    groups: bcboot
+  loop: "{{ groups['all'] }}"
+  when: '"boot" in item'
+
+- name: "Add all nodes to group bcpeers"
+  tags:
+    - debug
+    - network
+  delegate_to: 127.0.0.1
+  run_once: true
+  add_host:
+    name: "{{ item }}"
+    groups: bcpeers
+  loop: "{{ groups['all'] }}"
+  when: '"prod" in item or "boot" in item'
+
 - name: "Collect facts about all targets"
   tags:
     - debug
@@ -10,26 +34,21 @@
   delegate_facts: True
   loop: "{{ groups['all'] }}"
 
-- name: "Add boot node to group bcboot"
-  tags:
-    - debug
-    - network
-  delegate_to: "{{ item }}"
-  run_once: true
-  add_host:
-    name: "{{ inventory_hostname }}"
-    groups: bcboot
-  loop: "{{ groups['all'] }}"
-  when:
-    - bc_cyberos_comp_state.boot == "present"
-
 - name: "Set boot ip address"
   run_once: true
   tags:
     - debug
     - network
   set_fact:
-    bc_list_of_boot: "{{ groups['bcboot'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+    bc_boot_ip: "{{ groups['bcboot'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+
+- name: "Set all peers ip addresses"
+  run_once: true
+  tags:
+    - debug
+    - network
+  set_fact:
+    bc_peers_ip: "{{ groups['bcpeers'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
 
 - name: Show debug variables
   tags:

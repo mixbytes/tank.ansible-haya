@@ -12,6 +12,15 @@
     - never
     - debug
     - network
-  loop: "{{ bc_list_of_peers }}"
+  loop: "{{ bc_peers_ip }}"
+  debug:
+    msg: "{{ item }}"
+
+- name: "List boot ip address for {{ inventory_hostname }}"
+  tags:
+    - never
+    - debug
+    - network
+  loop: "{{ bc_boot_ip }}"
   debug:
     msg: "{{ item }}"
