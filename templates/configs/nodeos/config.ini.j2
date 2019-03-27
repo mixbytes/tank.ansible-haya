@@ -4,7 +4,17 @@ http-server-address = 0.0.0.0:8888
 
 bnet-endpoint = 0.0.0.0:4321
 
-{% if not bc_component_name == "boot" %} bnet-connect = {{ ansible_default_ipv4.address }}:{{ bc_cyberos_node_bnet_port }} {% endif %}
+{% if bc_component_name == "boot" %}
+pause-on-startup = false
+{% else%}
+pause-on-startup = true
+{% endif %}
+
+{% for host in groups['bcpeers'] %}
+{% if hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] != hostvars[inventory_hostname]['ansible_'+bc_private_interface]['ipv4']['address'] %}
+bnet-connect = {{ hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] }}:4321
+{% endif %}
+{% endfor %}
 
 bnet-no-trx = false
 
@@ -53,7 +63,6 @@ peer-log-format = ["${_name}" ${_ip}:${_port}]
 bnet-peer-log-format = ["${_name}" ${_ip}:${_port}]
 
 enable-stale-production = {{ bc_cyberos_isproduction_enabled }}
-pause-on-startup = false
 max-transaction-time = 1000
 max-irreversible-block-age = -1
 

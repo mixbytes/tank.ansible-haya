@@ -12,7 +12,7 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: ubuntu1804-node1
+  - name: ubuntu1804-boot
     box: ubuntu/bionic64
 provisioner:
   name: ansible
