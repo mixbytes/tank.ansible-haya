@@ -1,0 +1,8 @@
+---
+- name: "Setup promstack at {{ inventory_hostname }}"
+  include_role:
+    name: ansible-promstack
+  vars:
+    install_prometheus: false
+    install_grafana: false
+    install_gateway: false

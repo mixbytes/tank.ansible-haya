@@ -21,7 +21,7 @@ platforms:
     cpus: 1
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
-  - name: ubuntu1804-producer-1
+  - name: ubuntu1804-producer
     box: ubuntu/bionic64
     interfaces:
       - auto_config: true

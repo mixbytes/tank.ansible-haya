@@ -37,6 +37,12 @@
     - bc_cyberos_comp_state.boot == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
+- name: "Setup metrics to {{ bc_component_name }}"
+  when:
+    - install_promstack == true
+    - bc_cyberos_comp_state.boot == "present"
+  include_tasks: "metrics/{{ bc_component_name }}.yml"
+
 - name: "Set components to prod"
   tags:
     - prod
@@ -49,3 +55,9 @@
   when:
     - bc_cyberos_comp_state.prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
+
+- name: "Setup metrics to {{ bc_component_name }}"
+  when:
+    - install_promstack == true
+    - bc_cyberos_comp_state.prod == "present"
+  include_tasks: "metrics/{{ bc_component_name }}.yml"

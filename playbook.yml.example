@@ -15,6 +15,7 @@
         bc_cyberos_comp_state:
           wallet: present
           boot: present
+        install_promstack: true
 
 - name: Converge producer node
   hosts: "*producer*"
@@ -31,3 +32,4 @@
           password: secret
         bc_cyberos_comp_state:
           prod: present
+        install_promstack: true
