@@ -41,23 +41,6 @@ bc_cyberos_system_contracts:
   - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
   - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
 
-bc_cyberos_producer_accounts:
-  - { name: producer111a,
-      pvt_key: 5KLGj1HGRWbk5xNmoKfrcrQHXvcVJBPdAckoiJgFftXSJjLPp7b,
-      pub_key: EOS8imf2TDq6FKtLZ8mvXPWcd6EF2rQwo8zKdLNzsbU9EiMSt9Lwz }
-  - { name: producer111b,
-      pvt_key: 5K6qk1KaCYYWX86UhAfUsbMwhGPUqrqHrZEQDjs9ekP5j6LgHUu,
-      pub_key: EOS7Ef4kuyTbXbtSPP5Bgethvo6pbitpuEz2RMWhXb8LXxEgcR7MC }
-  - { name: producer111c,
-      pvt_key: 5JCStvbRgUZ6hjyfUiUaxt5iU3HP6zC1kwx3W7SweaEGvs4EPfQ,
-      pub_key: EOS5n442Qz4yVc4LbdPCDnxNSseAiUCrNjRxAfPhUvM8tWS5svid6 }
-  - { name: producer111d,
-      pvt_key: 5HwyQG6enrCrCZXYqrd2WsMmnreWAWUWGa9JjssodsYTSuaSA5F,
-      pub_key: EOS6u4zPBn1EbhNtqmSFgUhoo1ZHb1je2qUskRgk4jUe2nUfpFXLP }
-  - { name: producer111f,
-      pvt_key: 5K3TXkZAwyJkg7TjSfopd7sTr3RXFccghXHN1nJHTzap1ZKgLdK,
-      pub_key: EOS76wwc1zjzRMPQnEL6rTDWLfhN2ByZd6GhDJoWBKWM6M7cUmyfS }
-
 bc_cyberos_node_id: "1"
 bc_cyberos_node_http_port: 8888
 bc_cyberos_node_p2p_port: 9876
@@ -69,3 +52,218 @@ bc_cyberos_tokens_amount: 10000000000
 bc_cyberos_producer_name: "{{ bc_cyberos_boot.name }}"
 bc_cyberos_producer_pub_key: "{{ bc_cyberos_boot.pub_key }}"
 bc_cyberos_producer_pvt_key: "{{ bc_cyberos_boot.pvt_key }}"
+bc_cyberos_producer_accounts:
+  - { name: producer.1, pvt_key: 5JpDsXfyJeNCT97ymj3XGCxD6U66FCQRokF37kF1sR9gP9y44pD
+, pub_key: EOS7ChvqY6PCMZD9gAQqQSsgEryeTDixX66zdbTytzD3VgFjj2vhN  }
+  - { name: producer.2, pvt_key: 5K4LcspHgGpwHGXyZtaaBPofhkkSMrRzYaXNa1gRQnafCrahGGX
+, pub_key: EOS8BFnevDViGesin1ZorbHMuFjdysEbdP1Yxyhv74S438WKK6auW  }
+  - { name: producer.3, pvt_key: 5Jp58aESJzRui7YTcxrPZMJ4CbwQsTZJzjzaLQWGUcbTZEfHmcR
+, pub_key: EOS5aTsAvF7ysvf1gam4ymZKrQjbWLa4ob8TDeUr1F9Bwe7qWYHEu  }
+  - { name: producer.4, pvt_key: 5Kg1kGeMb6sR5JtcsqeRSua1qMH8AQwNmN8EyWgyEf7SMKv1MKt
+, pub_key: EOS7Ste2sK9ZxMxkXZKtnNWtNZWYnCny1vWtgqswgyqNfNML8d7NM  }
+  - { name: producer.5, pvt_key: 5KeHE5HxcFHQhQi2ECQTMP1W7ipDqSBkWnx232uWUwFnXovSZcB
+, pub_key: EOS87zy2EuRKw6XQZB7GJshcJiTqdeJSv5oiC3BPkaNYhM5uP6KgR  }
+  - { name: producer.a, pvt_key: 5KViRYuRXinsGh5vPoNvuVACipRfxfN5RBKTpD6Yv7ZzSCuN3AB
+, pub_key: EOS5Z2E9sdej7jZXaqhfwFFxDADx8MQB5sip7kHqxGm14Mkcc5LWw  }
+  - { name: producer.b, pvt_key: 5JBooeAHxw8hLrdW449ezuFaAGqEkJUJRAkn9y4ukpEBkT8Lrh6
+, pub_key: EOS5nRCLqBs5B7RKGuAujZxicf7vCuSaisUWqWYeRfxA4mrNxSST9  }
+  - { name: producer.c, pvt_key: 5K43tdaeKk2JxbfjFpDyKUpvxZBiYY9A9xkaEvWA1dPTjWnNWTv
+, pub_key: EOS7oJSKn7j38yDo9yrKJCFK9Q68yt9N6hUwj39oNQc7DTnM8vNpQ  }
+  - { name: producer.d, pvt_key: 5HqUGBiS5aTcVWqJKpUX5QrwhmYWDZmCkGPKCw2fkbzv4FMdp7m
+, pub_key: EOS8HiMgMnBuPe4DFuYdsyR6AeawMf3GzJMcevoNyefoejto7W2S4  }
+  - { name: producer.1e, pvt_key: 5KZHZnceNFYdSnBHwm1mVEqy9QQFiwwPeHDuEgdqncn8W3ThpP6
+, pub_key: EOS8WcjF8qvSksyBt3C8azHwYgyRsiHviVHwZ3Hmpdj8UwRsscMKC  }
+  - { name: producer.11, pvt_key: 5HpfTFFCLZw1KE9t5gKY7JQcQq13Yc4PAdGC2E3C182GFUxLesG
+, pub_key: EOS7EUTWJGy2j5qTZgnXLDadNr6sEeM3GRE4vymzXYdSXy6L9CcsM  }
+  - { name: producer.12, pvt_key: 5JJYiyaN8ev5kQhS5D6d2EEaCcVcWUyAm3Gky1aMiALtj7LXe26
+, pub_key: EOS6XCTaSnzKTXv2dBBbQJtP4zuLqHcW1RdRjtYLLc2e9FfA9g4t2  }
+  - { name: producer.13, pvt_key: 5JfjHphQ35MFUrTAhQbp4tMFw9y94DYfymwmerP1AbnEk9J38S7
+, pub_key: EOS71Y1wYkBKaZmQD5nDCHugXgB3pjAUVrU1WRJJ57o38Xa3S3kQp  }
+  - { name: producer.14, pvt_key: 5JjLABBEVa5MWNx6sXiSHc73wwxy9F5kwA7paWKoRfK1U2Qgnya
+, pub_key: EOS7JJeU3pY1ZgkT1jum3V6tUcwiaZfcUqntCphcZSnyyGruWDYPa  }
+  - { name: producer.15, pvt_key: 5Ht4McdHDaBkZeTPevNGBtvKmygJRiDWxMhVSJxSeMaRJThcmdb
+, pub_key: EOS8SC48brjnDoqE9rfHAZDBRHSgEpoWs1ABygkg8wddY2N6WZEEs  }
+  - { name: producer.1a, pvt_key: 5K4cU8DueQrFS57TM1weXMscAyQWr8p4DGTVet68YJ2BSoPrepS
+, pub_key: EOS7pjAWcUVYz28pVYc61PKVYRcryfTuyxzPR4qhb45cBPFMt56o9  }
+  - { name: producer.1b, pvt_key: 5KTtuDDnCPVYemKHq6mck1vJEJR1H1YgpBRDyGSSRPpiatwsAZt
+, pub_key: EOS7pCaPzYkyzN3tMvxYziKb31KbhEFdtq9KNmxjEqJ4KRrKLFpjh  }
+  - { name: producer.1c, pvt_key: 5KAn35hC9W3YadpaowQQNvimyzwKRsWTF1oNuxq1UkqzCdSKVmE
+, pub_key: EOS64hjRjp9fYVjNxUNHyoXftuvtNC3CnPRP9CqTEHthMmriesPQz  }
+  - { name: producer.1d, pvt_key: 5JEwemWuYwrvgZBtoN2FSTYUwnuAzGeptETfyGKwD625b2rCAbT
+, pub_key: EOS7Qi8wrhWAfTT8rwyjA32ButGhpTyR2T26aXCLx5JJ8TrDszAQL  }
+  - { name: producer.2e, pvt_key: 5JeUgrgCaGz9WTZjYnFtpoGcQUVbQs9VDuSbAyR9VCjnqS92jVa
+, pub_key: EOS5dnmceGMhaRwMUwCKaGP66dqsiSrY9CqEy45jfqGJHeKyZZYKz  }
+  - { name: producer.21, pvt_key: 5K8Ng4PLYPqNcHLVN4NyScm7tUVbUMKgfPs7KsKfCD5An3GJqCf
+, pub_key: EOS7x84bcamT56nbrXMvXYLNM8m2i6KzkFuu9FVBxv8YtY9HurUQE  }
+  - { name: producer.22, pvt_key: 5Jj6p84LabZujxX9LVFutmD5PmnFoetLwQdGh4CBSrgFF5ibiti
+, pub_key: EOS829gc48Nw8Tn2wSYB2kcmdNqkapLdTk62kwtVFfmknAQmiUyUi  }
+  - { name: producer.23, pvt_key: 5J9hoJG6mMUCjYMWGp6WkDuLgH71kxYeAgnhKV69tecp4q32q4N
+, pub_key: EOS7hV6HY7rbyjSs4UkJYoSztXF16z8VSEJC3CjhanDXEcWat5BRi  }
+  - { name: producer.24, pvt_key: 5JYNeANxydtC9FF6pFY15tUrvxbpSnqUtEYLTTpW6aQX4onGtrJ
+, pub_key: EOS6jdteW8p361oDysZq8btMtubTQCZeUP9x16iH89GC3pXb7WJeH  }
+  - { name: producer.25, pvt_key: 5KdQfQQbhJmBegX7KdKSSqh291n8BQn9EFDfxTPHgMmugLsYb9w
+, pub_key: EOS8RKYBamszz56R7egGmPDtrpuQFMv5vRAvwotPwJspkmWpnSGxm  }
+  - { name: producer.2a, pvt_key: 5JUtQ31tJPjdKfeZTeyELi64b4FZ9e4Pyb71R3vTBiSAezahHbD
+, pub_key: EOS7MxyMBiM7jR8tk3sEhbNn82egk43QfgBQ24HiTCgLTeaH9mBMX  }
+  - { name: producer.2b, pvt_key: 5JqvW38k6VsgFDdjaVLwsM9ixfyoMxWzpUdzKbhqazm45HZzo6d
+, pub_key: EOS6LmrFr2SNkBzM9oBoRKGaBecWjduhDe56GPdri3g3KH2r1iDDy  }
+  - { name: producer.2c, pvt_key: 5KdKVGJvZAQGvqBcjNaviyt2LYFNudqwUn97gm6PfB1zgVTU2oy
+, pub_key: EOS6tXCGafEZ3UEkDmba2VVDunu4yFQ98CewRnnnVVArkTTdNGGJo  }
+  - { name: producer.2d, pvt_key: 5KU7BAHBKae6CJ5HLxTB77tnj2czpfns8hX6uaRG86aitkBADuy
+, pub_key: EOS8R7TJRv2F5gvoDSzvEwBGrXhjxz8d9zAf3E4KVUAMsAyTSy2pk  }
+  - { name: producer.3e, pvt_key: 5Jnwguon7hLsq3Utjcf6ZKXzSxEbrJRh5gKnuRvgnEYezdti3Mz
+, pub_key: EOS7RUsurWJzmx4CSbLobKqDejwafFTKCyim8PRfSUC5wZio5iUwF  }
+  - { name: producer.31, pvt_key: 5K5AqJJTSF3z5paAUwSUURWpRjepTLFH4RXd6LMyBk3jNDFwzeC
+, pub_key: EOS5ymJNpHpUKc7SkkpZ78ncgRhZ1UsLYmo7nPJhXuDKbrNPrcxm9  }
+  - { name: producer.32, pvt_key: 5JBCJNVTyCXwvTJarh1C2JxrcuAhgaJPg9p5aVHUQd5zmmwQ1uA
+, pub_key: EOS8dtWtrZEijErpgpphXuDaXwQuWBak44ep4XW33DC2XRUdKFDje  }
+  - { name: producer.33, pvt_key: 5KifN5fj5RFBbcD9ExsRcTZsmUBrTa4K3XJzKse3QhWn9gCA8Nq
+, pub_key: EOS52yZahRF22Z42cab38iRuNZ674V4oreUyzFmiUprUNvYsbnCaW  }
+  - { name: producer.34, pvt_key: 5KXwecWMrfxnUEvUBDK8X4b38wrCqVeXaMyzqkaTrnJGupQZFMc
+, pub_key: EOS65XE4Ws1JyhrB2GAKy9V3MMijuH8J9FJJZcK2nuyRW7ZYC6sbE  }
+  - { name: producer.35, pvt_key: 5K96RcdDnpRopX4517ESbFWb42qnTtVTwVccBm7FpnbWppcsYfk
+, pub_key: EOS8CVBJr69DvrboxMyGF69iuLQ1iLpSKghJxytnJKD1UT7XrGfB6  }
+  - { name: producer.3a, pvt_key: 5KHEWzgpE3S1L6MwWynHg58W3x81Fxh1364zT64HmHKgumK3KaU
+, pub_key: EOS69mgEueHGJqTJBSZK8vh1hnn26AxLm9qiTYWxxesr3EyqTJCPf  }
+  - { name: producer.3b, pvt_key: 5JpmdzLWKtEkNePQYfhCM8nGdnet43T2jKgubLRw7drLTXrR6mt
+, pub_key: EOS5y7zbnbKo5y4zpfnNiC9Ax8XtPpsqoazpHZMXc917PrazRhxZQ  }
+  - { name: producer.3c, pvt_key: 5KiM2VrqKhXErFDoZCd8GY7Xf9BySG6PGerUnF4CAqW4wief8co
+, pub_key: EOS62omfHfpqv29tuVUBqJcZKC95vuKCdS9AMLLmaPknTNBbxruk1  }
+  - { name: producer.3d, pvt_key: 5K4j1aRiUYjv36LzrxEMHfQqTvQBmQJDGGjTqYUXe4dFJkoFidj
+, pub_key: EOS7mLukSrVB1SnLRs7dKAJtzWbkoMRF54rYZgag8KWoVwZQ5u1Y9  }
+  - { name: producer.4e, pvt_key: 5KKMtnW3RHAWd4ELgLLVcpjezmzKPq2WckRAk3ychJtSRMcMK3D
+, pub_key: EOS6ckrmtwnHcgczYf9ZRrGNzVh7fwRbP8BUvJ7SfTsKp1tAZRmji  }
+  - { name: producer.41, pvt_key: 5JgSH3vmUhF2LyZrCnrt7QZtL71g3qVcQePXjqEMKaVxEL38Pzn
+, pub_key: EOS4xi3UDSxCUpCdxVhYQyeHG6DW8YFJqNbDYWT1fY4RbgAu5bvVi  }
+  - { name: producer.42, pvt_key: 5J7LWszAfRfZzLvNVi2ZswTmTAwFRxqYdi2qeAmYn8uXsYtkFYt
+, pub_key: EOS8R4AHwjYAyH3iBLUUPbBrrP78BxiCj2WTr2ftqpjP7rSt1a9w4  }
+  - { name: producer.43, pvt_key: 5Jk3dZmdkbnaervpQrdHK1EBVrsj2LjMZFtqe75Vk9db6gNadQQ
+, pub_key: EOS68yAjXTj7m6Ngrab8GUSxZCP6SuY9cMxJ65i7mR6Xi6CAQ7NRb  }
+  - { name: producer.44, pvt_key: 5KcitCeU3kVyi1WhvJrjSQVtg9fHtcFu8P6RsNFw2MymccemzcE
+, pub_key: EOS4veZpFXqeUCSUuN3zpbpHfjEFcihateFFEL8R1tbfRjWoULaRB  }
+  - { name: producer.45, pvt_key: 5KBwaKY7xyRttmoAYmiBpTUaLWR8SK2wuMQQ7vtKu1njDZwJ8E7
+, pub_key: EOS5NDvCJQazozSr5UdJL8TB2enzoEktmw56tCpbYGdskPf73ighi  }
+  - { name: producer.4a, pvt_key: 5JRU7Wx7nkpoTdbjU75NPnKPEUPntRkqBVmASzYe9ACbhvoA9Hd
+, pub_key: EOS6oQ1p7Mdhx6T37y6craufoC2fhhxH75SgKn63c21MeNPz2snHW  }
+  - { name: producer.4b, pvt_key: 5JTtN8vt5ETXZsAKVZAGD53DaEw9rKjBH7CNRg82pWgfYj8wu38
+, pub_key: EOS6wkpfzZqpNUAW41v98kSRZV7XqFxBfMXp7NHGAx4ypUYmzNuXT  }
+  - { name: producer.4c, pvt_key: 5Ke7Dsy3xkq6ozABXaRzVNp7JK4eyYVVkZK5XyERKDLvANBX2R8
+, pub_key: EOS8F4ZKGdUEYuyWKudtAgzDqdP59oFcZQDPQTeyxkENdorztx1bf  }
+  - { name: producer.4d, pvt_key: 5JXburG1TL1RgxABWZz2RgdvWM4D8ED8kH5AoXxGcYBtkDs6YZo
+, pub_key: EOS6CZiChhBaowx5Hmtuz2LkVWcewTiUzrygktNtFmHEWZVTy7g3B  }
+  - { name: producer.5e, pvt_key: 5KcRQpwZuMFSrxqVT6pwBZWk8LFrGAm3X43aDHgQjFPMa5u3bVS
+, pub_key: EOS5wis9rgK14PqGi73CC4qFSXjD26Chf4DqGeXeAgKSJetFtQ1Dq  }
+  - { name: producer.51, pvt_key: 5Kdw5Bx8TiCF3fKXpX5fx11t3gtECPqXQNxkLwvaRXCBgoa93Za
+, pub_key: EOS5W6C2DX19nxeEoifnFAFW7QGXAxzJ8E7DuSJ2JmuEomxUwnGtL  }
+  - { name: producer.52, pvt_key: 5JmvB7kew8uUuT1sqYjhRjEVuUgzhdFW7VUdTXEPVpq7cDw4D8d
+, pub_key: EOS7EsBHGK8kZt7JuHy7miU1gRD4TgGc3LKSagtAYoUCEMzLXpriH  }
+  - { name: producer.53, pvt_key: 5KeY2KoR5wQSfGQ1wr2bU4y8pkDBHqsc1LiHBAP9xJPP6VjwTj6
+, pub_key: EOS5QTkXveiMsYnaExpHvvJdGnmVZtNLmNZAmm1AcGgFBGnVLPugr  }
+  - { name: producer.54, pvt_key: 5KXa4oBAzvVLoYPGqfy69bSoMuzLoL5qpSevgmEuaLMSupK6oS3
+, pub_key: EOS8ZYRo3bMaLST52xdNkFWRuqMrubu64JU9ax8SBD7asUZ36paNx  }
+  - { name: producer.55, pvt_key: 5JBqyvXnqcFZuUUcw7zpMejgF8LCn8BD1EyC9PQJJEN5GRotENt
+, pub_key: EOS74bwzprCyevvhNwNw31hek4dCMPGbH1d2tjiT9wAFU5GWPrrRF  }
+  - { name: producer.5a, pvt_key: 5HuJEL5cMi7urkoF2aPf6Sdr336c9WtcQWH8vinnRQD4a6i8yZX
+, pub_key: EOS7AWL2XYp8rjFPWfEjwrUd4GR4LZnMpwsrFFovEhzv6zgT46e9u  }
+  - { name: producer.5b, pvt_key: 5KXXAYu98xVxNCoMMkdzzfBfrYACw2n6XqisFHXphkzsLS5SuL8
+, pub_key: EOS6UAtzvbSTSNdoMzXA9bnLnQraut96vT5zRcMGHvCX8BJUuPEQr  }
+  - { name: producer.5c, pvt_key: 5J2GTwmfc4H3RCpiPhSDYEJfs8EEMbodEaybF5fnXV55k7XmTuq
+, pub_key: EOS8XEfEL4Lhe77PZV89otEinyyu25E2Caz34rWyvMpJYqHv3KctG  }
+  - { name: producer.5d, pvt_key: 5JEyPwwXuoBgu3wsNtiHVQ12hbfPVXPA37T5uo66q2BemKhWnSK
+, pub_key: EOS7komqpXnqGn13WByrSUD2vJDwhj5rw76tvc1GD3B6Ah7skJWUP  }
+  - { name: producer.ae, pvt_key: 5KetWqPB5SG2gnmMM2GP5RSuv5qCpXtBez5C76MAGQRZb8PJVPQ
+, pub_key: EOS8JzHWep9MLhQKouUCCcXpPnJ5jh2RMNyix8U326XixTEQhr7dr  }
+  - { name: producer.a1, pvt_key: 5KJB7RBHPBF5JEGQjhfzNsTkm9CKsV1WByQtWBLaA1Gx7TaJFAj
+, pub_key: EOS8CNnz5fMCKZz6CuHj7wruoauMraXXgeQm84qGd43KBFk5WbuzN  }
+  - { name: producer.a2, pvt_key: 5K1gxH9PHLi5NQnoU29aGjHZ3ZfsXyNEwNmew638V4tq9m7Gz5S
+, pub_key: EOS7Moe2cnmcmTVJJ4SpZfiLEhvcV4mAJuN55BM3SAfFXv4W6HkTq  }
+  - { name: producer.a3, pvt_key: 5JnQsquY6JEG3DkS9qootSmDS5gxemgWCodSGiMTZ4hoVHYTTT3
+, pub_key: EOS6KwesWx555T8xjjEwX1qy6xj53UgF3CvY3f3qgYK3bbPc1uHyK  }
+  - { name: producer.a4, pvt_key: 5KMymWBkQmdCaitAmRP6dfkfjgyFjsChzVMvTfUsNJWwv95XXc9
+, pub_key: EOS5pN6TbPNJagmtq3NqE7MF5SDE6Bwyy5hh7q4h2govg9WEmJoen  }
+  - { name: producer.a5, pvt_key: 5KZXo4xQixWGF47au6LeyToohdXuRAnuBt2guFFKvrmc8ZwYtPt
+, pub_key: EOS8JQCoBSXfoqhCC6odAiGsyVHJLenJ8PfDvqni4jRTsYujerE9C  }
+  - { name: producer.aa, pvt_key: 5Hv4arSHwBMsoNggAhb3S3qtUTrCgHsPGQVvH9fZs5Y3GFLu3FE
+, pub_key: EOS7MZCB6kwaM69qMytUDHbpu8q7HPDxn3SGvQzeoGqDeA2ph8cun  }
+  - { name: producer.ab, pvt_key: 5K5DTSrPVDELLkEJsBU7LzXTgaP8kgyvKht8ZrXb8Po97c1zh3R
+, pub_key: EOS5vG9DpPvFAcaitdKFFnqmj9xZtuFKkV56oX14ndcyqgyKj72Vn  }
+  - { name: producer.ac, pvt_key: 5JBtcmTQ7usPXHnAtLeSDuyY4bGY1GygUGoStY8jtUTQnR3Ubf5
+, pub_key: EOS6DaqxPp4DSXS5N67ptKLGGR2znmPqNdgMK33X2Qu1ZTQ13E2Vs  }
+  - { name: producer.ad, pvt_key: 5J3PhyFeBaGBvG7U52ZKxead2Qs4jdfQJaLJLobdMdxK4bWC8hQ
+, pub_key: EOS6t5iuJtGK58UWARwBsvwyNPMUB9PFNVKKyaVWtqdVLvAZw1rjD  }
+  - { name: producer.be, pvt_key: 5Kj6Q52mUdctFR6e3KHviB3dcfCey5kuZ1yhyQvQaRowvE9FnpN
+, pub_key: EOS7g5PvFNke1je7dgFosWBLzKqt1EHMe7nPpEvofjZtVHQQyTwPe  }
+  - { name: producer.b1, pvt_key: 5KkcX8V1T3CVYGLR8bXF6D3ez88DLMJgrZTH57aZQCDeY9pfTou
+, pub_key: EOS71UypQVqpzYkKzpDD8B14jTR3cmR6nQiEumkZPd1g8w8xWPybY  }
+  - { name: producer.b2, pvt_key: 5HwDbjgMKxdjHx1ssa5djwXdWw5o2uzxKyyoYC2bEdMXY22JXpD
+, pub_key: EOS5qkEnB6dbeZRukLDekgGwWTRPMA2HGXSfkj98WmEfV43AkxVox  }
+  - { name: producer.b3, pvt_key: 5J3vsR9jxyGvzeBLqUDnZseAYqSR7TZaqK3KCYSMrsj3YwRFbNe
+, pub_key: EOS5f6DwLGvWh3Rce3Rq2tLMK4WNMN1K9AufTXAyTppSA7NUC6HjQ  }
+  - { name: producer.b4, pvt_key: 5KWPTT7fmhqhdLaF8p8RTnRtebbUPhxxvpgF2WVMrN3JSbu5beg
+, pub_key: EOS6SLexqVya1j29tUcPTEXbrFiChWRVH4B38yMhL4gn5iirhMEc2  }
+  - { name: producer.b5, pvt_key: 5JkQXGZsxEKW75pgWY7ayL1vtWA93HACmTQEWfj8XrLBcjQDuVD
+, pub_key: EOS8eSPGYtjvcdKZg1ki9GqsekXD9Ra1o8JEntEiy2dr1npjN9XiG  }
+  - { name: producer.ba, pvt_key: 5JXe15G16dFKMfbMSL8xBaRHfG71nRU3WjPh59M7yLgdoxiK7Mr
+, pub_key: EOS7bfFwTD5hJ5VTMoa21sNx4guSevGkULyWGGziQHGho3x3W5GmJ  }
+  - { name: producer.bb, pvt_key: 5KZbftb432hbt8ortKDVBBobqZmVzdepViF5cAspZpwkMDxrexS
+, pub_key: EOS6iaqsLj4LgBwpFbmqVRGUpWa5E6FsdKyofniohkjRgysvWbYez  }
+  - { name: producer.bc, pvt_key: 5KMTYUU9GAwhpCSgu3NdPiH3RguB18rpNYjgTknR2bgviwdeY85
+, pub_key: EOS7U1cgDcETeruFSn9buEsigm6aPsGCFRYgKumStWHjMziDZ2dhF  }
+  - { name: producer.bd, pvt_key: 5JUFoSxKyv1jmyQ2qEnLMCiRq1Ndm3TgLXsruUbGiDXRQqkSiYL
+, pub_key: EOS5YhnVZbCWhL79moJaZsruZmoJk46rzoedL3JkCsDYYLPpBYnAn  }
+  - { name: producer.ce, pvt_key: 5J2kEqbuGErXVsWufDaaWtFtePwA7BBzFtdmQikLZ68W6etyavk
+, pub_key: EOS5mzdc676jeiJneich2WafXqjPeVPuVcV43EsstB4te6SYJJvbR  }
+  - { name: producer.c1, pvt_key: 5J7jhfvkCdXbNDrRgGjmagsA4wa4JQ3nfeEGjMQqAVKwzzTDCQq
+, pub_key: EOS5qRxQ2Xv9i6e7Ttjac9wt6tq3S63hde1LkVUkpAYUEFEnz4PET  }
+  - { name: producer.c2, pvt_key: 5Jx61TmLzARvtFanv584gYpCrmHrk9zvpHEUSKHvQeAp7cq6gPA
+, pub_key: EOS5KdvJhjpocUp2VxwCieksZbkbov3xQeFDmJYBtQA9kFTL9oLUw  }
+  - { name: producer.c3, pvt_key: 5JcYUZCJ7ZcpxCoRDA2iDMuhr1z561qRjdFHgQZHZsxvrN2BqZD
+, pub_key: EOS8hUHVozJohPU1iyECy2m7FH62WwqVcaP3wavie3Kgrh45oDHDj  }
+  - { name: producer.c4, pvt_key: 5KjidT9QJAVf9LfyACMqRa7fz6X9EmNxL8sjoyHwdaTyxtGo7CK
+, pub_key: EOS6cwaKvE4CgQUdUpVzBGmPkwfAtGx2PjTLb61JSh31Ahz2DbaJR  }
+  - { name: producer.c5, pvt_key: 5JZkcJfYCkFV92vGCP3YJyXBT9foURtPSo3biLEPnZd1hgmckhz
+, pub_key: EOS7Whxg1JGud8EcKZeEXjSL1WyDjgrUZ9AjnvoCU5UB24JNn8aUd  }
+  - { name: producer.ca, pvt_key: 5JQna1nLDcgoLRCG2iCj9ivowAW2uhFKqAJvKbYFAtmYaKSXgSk
+, pub_key: EOS5oZQTvLMuJoxFehyHC8tAwq5mL2EaZ4PYasaAm97VdBRa7nqCJ  }
+  - { name: producer.cb, pvt_key: 5JdZQq4MRC2ewDR8gmboohKJbD87mCEBNBLW59zwNJNmrzEGiEk
+, pub_key: EOS6uyGBPd1asbGS1JhnfZYV9QDS8aEfZUBUZ4eBN7JMvrPh8FHN3  }
+  - { name: producer.cc, pvt_key: 5Jo81xA2xwRVEz2Y6XJebov28DUFEAJUWegMCFQc4ppmzMBdKT1
+, pub_key: EOS5xokkYNEiH53fWmHdR6nvRQSFi3xnfi5QV1tYKzJaXtdfvcPJT  }
+  - { name: producer.cd, pvt_key: 5JUfsnt58qdRJNyt9LnQxvjRT1La8N9k7WR7fm3vf7KTq7o9XA2
+, pub_key: EOS5wncCjdGXYCc3n51AvPNByooEobdepF3HyTtwTXHa2PoTJWQW8  }
+  - { name: producer.de, pvt_key: 5HskmjH53GXqqow5MzB16wUyV6rskGeYTNbVhZXRy3LLpcbGCXb
+, pub_key: EOS5yrJi3foSQq2YsbDDngrNMVBeVfxiCSAHH5wkpFErFLxp55JEg  }
+  - { name: producer.d1, pvt_key: 5KEqTmmStujefJPkC29vxX14KNkMWL4pz33fh82Qe34S78CzmjE
+, pub_key: EOS5te6BNVgHuzhAWUUMoKEb8h3nMo27B5nv1wbab1S6CcT13N2G2  }
+  - { name: producer.d2, pvt_key: 5JcgwCtn8cJsyK9zMJaR1886s87VjQ1cihjngUS5hyjnLhmS91T
+, pub_key: EOS5sc4YCuEChpEXLHEQuiE5tnu6R53AYLqfkiAK8EXgk6D25x41o  }
+  - { name: producer.d3, pvt_key: 5JfQXj6fY8VziCgnv5vNXDfCZ4bWqMZe13vmGWzV5t6DW2tVggx
+, pub_key: EOS61gNKSEk7qC32ZYbKpqBRoJqxpr8vwXnUvNobGZ7epdPEMi9nr  }
+  - { name: producer.d4, pvt_key: 5KhrHabx6UpYQ9tnkiJVveDtaD8vL6rMaqpJcfEZ3ojNTEDZfzo
+, pub_key: EOS5vYHwtj1SUwvTcgXpePC7dVfdmpTKn1KGmzDnijCwTBJevEVdP  }
+  - { name: producer.d5, pvt_key: 5K6RZ1iMwArQT2JGg2dEWC7zKcYDYvUrhNawPtHjjp5g4RJAum2
+, pub_key: EOS7bQXoo1gw6vQjRufReM9EMr1G6Xtj7tqFXB4PBV4vXXzRLyEsx  }
+  - { name: producer.da, pvt_key: 5Kf9XNmVCkaNRGQgCARNPy7wY21tfnvw7MpUwLnfN8NoyQMjjVf
+, pub_key: EOS7iWUxSH5ph9MnqsXDBkEdXGqVkD5DjxanNDrJrXkZSEC1C5RFp  }
+  - { name: producer.db, pvt_key: 5Ker9UETreTVwc6Bp8geABnXU3FzBHzJbUxRnGJHHebddFrKdTU
+, pub_key: EOS6hpQmNm1G6vy8F7s7LxzAhg2BmPqRzBhVokWB5ixZEKuLmGZWv  }
+  - { name: producer.dc, pvt_key: 5K7Q8nPhwKhnWd4stNTAZFjTeSfgPy4WcG3F7wUk3LQknTokZAd
+, pub_key: EOS64G2mzq3qZw2UwiGhBRrxaWqP3QasmfRSxKNUmbWRjUAFwPrAF  }
+  - { name: producer.dd, pvt_key: 5JU5P7Sb58B4p7Xt5mP6zrVr2CcwXa6kiYCuprLphxnhH57SiYD
+, pub_key: EOS5R5BkJ2YH1zn6trZQsQNLeiMY4dfpyMgqvSXd2nxVnkZVzkm8L  }
+  - { name: producer.1ee, pvt_key: 5JHhXiTDbyg61r4PFwimkDmnyKM8gMEd24njNogqtnjHHa21ijE
+, pub_key: EOS6ntirdkAVKG1h7ayhciz4SbcMYUysKVhvsG1MAQ74CxYcwemUh  }
+  - { name: producer.1e1, pvt_key: 5JUXmpPHCY5azMAuGTD7DuAQVb7bzh8nF276VgDr3T8KDycLn3w
+, pub_key: EOS6Hi52BPwjtArAKVhsErzEhykRNaRNVQ8F5oXHu2P5K5qxC6Q3g  }
+  - { name: producer.1e2, pvt_key: 5HvLUA3Zc7BaAmDeZfR7yoyMH1N1DmhopnJaaaeWGsM2iYUbkFW
+, pub_key: EOS8GcxAuexLpPrcD4r8UFtQvvRBr18eJZKXDo6LTWZGmjVD67unt  }
+  - { name: producer.1e3, pvt_key: 5Kijygz91PUDJAMUFBRtyhxznVEiMyr35Z3wBtvtw7aP5g8u8iW
+, pub_key: EOS6MiqrYFpk5zjLkvHaQ22KEkUM4SEtDfUF9gfczTLLFhFNUPKGi  }
+  - { name: producer.1e4, pvt_key: 5JuPnToCnJ47XmiSFa9eVjoSX3VSV6wbcsSfmHWAaHUkwQq9pKY
+, pub_key: EOS5B5kguVXHcbS44vWYnCu6iuduM8JBTWdgNFBLFtTuRXLdxNQGG  }
+  - { name: producer.1e5, pvt_key: 5JC5aFkv9rxTpVedGJ8eCujeCQoXNcaxPjsU9PLrt2fSsoib1gV
+, pub_key: EOS8T1B8We73Z7aTTpgd5bKWDFWtQDNNrpe6DAoa56fDWzR3WfZoe  }
+  - { name: producer.1ea, pvt_key: 5JA29rpo3TfSStPaiWod6Uc1BUWkQT5sCLzq2FdpDTrJ6i2nKe7
+, pub_key: EOS8ktCD8EUZ3q3n9qwAvMywwnTj25c5nzg5VhcvBUrKrCjpZpbot  }
+  - { name: producer.1eb, pvt_key: 5JsWiZDMzvfVpBrxVdgaNprxdt6RaTotTevYCQhTC1fpJqs1Vs9
+, pub_key: EOS8i5eZ4AZULRQXxBgAfV6vqo6LQctx7DGe1YT3FkcBDYdFNdy2w  }

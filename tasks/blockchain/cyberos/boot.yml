@@ -177,6 +177,7 @@
     cmd: "{{ bc_cyberos_cli }} --wallet-url=http://localhost:{{ bc_cyberos_wallet.port }} --url=http://localhost:{{ bc_cyberos_node_http_port }} create account -x 45 eosio {{ item.name }} {{ item.pub_key }} {{ item.pub_key }}"
   failed_when: "('Account name already exists' not in create_producers_account.stderr) and create_producers_account.rc != 0"
   changed_when: "'executed transaction' in create_producers_account.stdout"
+  when: allocate_tokens | changed
 
 - name: Show stderr from create producers account task
   debug:
