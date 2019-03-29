@@ -40,12 +40,14 @@
 - name: "Set components to prod"
   tags:
     - prod
+    - resume
   set_fact:
     bc_component_name: "prod"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
   tags:
     - prod
+    - resume
   when:
     - bc_cyberos_comp_state.prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"

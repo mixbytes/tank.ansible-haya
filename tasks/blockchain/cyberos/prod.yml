@@ -64,8 +64,8 @@
     command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json --delete-all-blocks
     hostname: "{{bc_name}}-{{ bc_component_name }}"
     ports:
-      - "{{ bc_cyberos_node_http_port }}"
-      - "{{ bc_cyberos_node_p2p_port }}"
+      - 127.0.0.1:{{ bc_cyberos_node_http_port }}:8888
+      - 127.0.0.1:{{ bc_cyberos_node_p2p_port }}:9876
       - 0.0.0.0:{{ bc_cyberos_node_bnet_port }}:4321
     volumes:
       - "{{ bc_path_state }}:/root/.local"
@@ -82,3 +82,16 @@
   tags:
     - never
     - debug
+
+- name: "Resume producer"
+  uri:
+    url: "http://localhost:{{ bc_cyberos_node_http_port }}/v1/producer/resume"
+    method: POST
+    body_format: form-urlencoded
+    status_code: 201
+  register: producer_resume
+  retries: 3
+  delay: 5
+  until: producer_resume is success
+  tags:
+    - resume
