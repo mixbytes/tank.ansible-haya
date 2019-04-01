@@ -3,16 +3,6 @@
   include_role:
     name: ansible-promstack
   vars:
+    install_prometheus: false
+    install_grafana: false
     install_gateway: false
-    install_cadvisor: false
-    prometheus_targets: [{jobname: "node_exporter", host: "localhost", port: "{{ node_exporter_port}}"}]
-
-- name: "Add prometheus targets to {{ inventory_hostname }}"
-  loop: "{{ bc_peers_ip }}"
-  template:
-    src: "configs/prometheus/target.yml.j2"
-    dest: "/etc/prometheus/targets/{{ target_ip }}.yml"
-  when: "item not in bc_boot_ip"
-  vars:
-    - target_ip: "{{ item }}"
-    - target_ports: ["8080", "9100"]
