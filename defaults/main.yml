@@ -21,6 +21,7 @@ bc_cyberos_comp_state:
   wallet: absent
   boot: absent
   prod: absent
+  monitoring: absent
 
 bc_cyberos_cli: "docker run --rm --network=host -v /:/host:ro registry.gitlab.com/cyberos/infrastructure/cyberos:latest /opt/eosio/bin/cleos "
 
