@@ -7,7 +7,7 @@
   run_once: true
   setup:
   delegate_to: "{{ item }}"
-  delegate_facts: True
+  delegate_facts: true
   loop: "{{ groups['all'] }}"
 
 - name: "Add boot node to group bcboot"
