@@ -12,6 +12,7 @@
   version: master
   name: azavea.ansible-pip
 
-- src: https://github.com/cyber-os/ansible-promstack
+- src: git@github.com:cyber-os/ansible-promstack
+  scm: git
   version: master
   name: ansible-promstack
