@@ -7,6 +7,11 @@
   version: master
   name: geerlingguy.pip
 
+
+- src: https://github.com/azavea/ansible-pip
+  version: master
+  name: azavea.ansible-pip
+
 - src: https://github.com/cyber-os/ansible-promstack
   version: master
   name: ansible-promstack
