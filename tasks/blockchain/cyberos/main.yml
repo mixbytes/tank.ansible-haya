@@ -1,5 +1,4 @@
 ---
-
 - name: Create directory for cleos
   file:
     path: /opt/eosio/bin
@@ -76,3 +75,8 @@
     - bc_cyberos_comp_state.monitoring == "present"
     - bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
+
+- name: "Install bench"
+  include_tasks: "bench/setup.yml"
+  when:
+    - bc_cyberos_comp_state.bench == "present"

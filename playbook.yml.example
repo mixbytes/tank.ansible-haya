@@ -17,6 +17,7 @@
           boot: present
           prod: absent
           monitoring: absent
+          bench: absent
         install_promstack: true
 
 - name: Converge producer node
@@ -37,6 +38,7 @@
           wallet: absent
           boot: absent
           monitoring: absent
+          bench: absent
         install_promstack: true
 
   - name: Converge monitoring node
@@ -52,4 +54,5 @@
             wallet: absent
             boot: absent
             monitoring: present
+            bench: present
           install_promstack: true

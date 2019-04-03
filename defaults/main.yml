@@ -70,3 +70,52 @@ bc_cyberos_tokens_amount: 10000000000
 bc_cyberos_producer_name: "{{ bc_cyberos_boot.name }}"
 bc_cyberos_producer_pub_key: "{{ bc_cyberos_boot.pub_key }}"
 bc_cyberos_producer_pvt_key: "{{ bc_cyberos_boot.pvt_key }}"
+
+
+bench_config:
+  blockchain: EOS
+  rpcUrl: http://localhost:8888
+
+  log:
+    logLevel: 3
+    printErrorStack: true
+
+  tokensContract:
+    wasmFilePath: "./src/contracts/eosio.token/eosio.token.wasm"
+    abiFilePath: "./src/contracts/eosio.token/eosio.token.abi"
+
+  transactions:
+    tokenName: SYS
+    deployTokenContract: true
+    createTokens: true
+    issueTokens: true
+    createTokensAmount: '10000.0000'
+    issueTokensAmount: '10000.0000'
+    tokensInOneTransfer: '1.0000'
+    transfersAmount: 100
+    threadsAmount: 20
+    blocksBehind: 3
+    expireSeconds: 120
+
+  accountsGenerator:
+    possibleAccountNameChars: abcdefghijklmnopqrstuvwxyz12345
+    accountNameLength: 7
+    accountNamePrefix: bench
+
+  creatorAccount:
+    name: eosio
+    privateKey: 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+
+  toAccount:
+    create: true
+    name: ''
+
+  fromAccount:
+    create: true
+    name: ''
+    privateKey: ''
+
+  tokenAccount:
+    create: true
+    name: ''
+    privateKey: ''

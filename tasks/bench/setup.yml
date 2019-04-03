@@ -1,0 +1,17 @@
+---
+- name: "Create dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_config }}"
+    - "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}"
+
+- name: "Create config"
+  shell: echo "{{ bench_config | to_json }}" >> "{{ bc_path_config }}/bench.config.json"
+
+- name: "Install bench"
+  template:
+    src: scripts/bin/bench
+    dest: /usr/bin/bench
+    mode: 0755
