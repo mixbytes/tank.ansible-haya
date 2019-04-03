@@ -7,7 +7,7 @@
   run_once: true
   setup:
   delegate_to: "{{ item }}"
-  delegate_facts: True
+  delegate_facts: true
   loop: "{{ groups['all'] }}"
 
 - name: "Add boot node to group bcboot"
@@ -21,6 +21,7 @@
     groups: bcboot
   loop: "{{ groups['all'] }}"
   when: '"boot" in hostvars[item]["ansible_hostname"]'
+  changed_when: false
 
 - name: "List hosts in groups all"
   tags:
@@ -41,6 +42,7 @@
     groups: bcpeers
   loop: "{{ groups['all'] }}"
   when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"]'
+  changed_when: false
 
 - name: "Set boot ip address"
   run_once: true
@@ -74,3 +76,4 @@
   include_tasks: "blockchain/{{ bc_name }}/main.yml"
   tags:
     - prod
+    - resume
