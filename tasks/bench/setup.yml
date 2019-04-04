@@ -8,7 +8,9 @@
     - "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}"
 
 - name: "Create config"
-  shell: echo "{{ bench_config | to_json }}" >> "{{ bc_path_config }}/bench.config.json"
+  template:
+    src: "configs/bench/bench.config.json.j2"
+    dest: "{{ bc_path_config }}/bench.config.json"
 
 - name: "Install bench"
   template:
