@@ -90,7 +90,7 @@
     body_format: form-urlencoded
     status_code: 201
   register: producer_resume
-  retries: 3
+  retries: 5
   delay: 5
   until: producer_resume is success
   tags:

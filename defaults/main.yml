@@ -56,22 +56,22 @@ bc_cyberos_producer_pvt_key: "{{ bc_cyberos_boot.pvt_key }}"
 
 
 bench_config:
-  blockchain: EOS
-  rpcUrl: http://localhost:8888
+  blockchain: "EOS"
+  rpcUrl: "http://localhost:8888"
 
   log:
     logLevel: 3
-    printErrorStack: true
+    printErrorStack: "true"
 
   tokensContract:
     wasmFilePath: "./src/contracts/eosio.token/eosio.token.wasm"
     abiFilePath: "./src/contracts/eosio.token/eosio.token.abi"
 
   transactions:
-    tokenName: SYS
-    deployTokenContract: true
-    createTokens: true
-    issueTokens: true
+    tokenName: "SYS"
+    deployTokenContract: "true"
+    createTokens: "true"
+    issueTokens: "true"
     createTokensAmount: '10000.0000'
     issueTokensAmount: '10000.0000'
     tokensInOneTransfer: '1.0000'
@@ -81,27 +81,28 @@ bench_config:
     expireSeconds: 120
 
   accountsGenerator:
-    possibleAccountNameChars: abcdefghijklmnopqrstuvwxyz12345
+    possibleAccountNameChars: "abcdefghijklmnopqrstuvwxyz12345"
     accountNameLength: 7
-    accountNamePrefix: bench
+    accountNamePrefix: "bench"
 
   creatorAccount:
-    name: eosio
-    privateKey: 5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+    name: "eosio"
+    privateKey: "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
 
   toAccount:
-    create: true
+    create: "true"
     name: ''
 
   fromAccount:
-    create: true
+    create: "true"
     name: ''
     privateKey: ''
 
   tokenAccount:
-    create: true
+    create: "true"
     name: ''
     privateKey: ''
+
 bc_cyberos_producer_accounts:
   - { name: producer.1, pvt_key: 5JpDsXfyJeNCT97ymj3XGCxD6U66FCQRokF37kF1sR9gP9y44pD, pub_key: EOS7ChvqY6PCMZD9gAQqQSsgEryeTDixX66zdbTytzD3VgFjj2vhN }
   - { name: producer.2, pvt_key: 5K4LcspHgGpwHGXyZtaaBPofhkkSMrRzYaXNa1gRQnafCrahGGX, pub_key: EOS8BFnevDViGesin1ZorbHMuFjdysEbdP1Yxyhv74S438WKK6auW }
