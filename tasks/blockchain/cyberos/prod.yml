@@ -67,6 +67,7 @@
       - 127.0.0.1:{{ bc_cyberos_node_http_port }}:8888
       - 127.0.0.1:{{ bc_cyberos_node_p2p_port }}:9876
       - 0.0.0.0:{{ bc_cyberos_node_bnet_port }}:4321
+      - 0.0.0.0:{{ bc_cyberos_node_metrics_port }}:8889
     volumes:
       - "{{ bc_path_state }}:/root/.local"
       - "{{ bc_path_config }}:{{ bc_path_config }}"

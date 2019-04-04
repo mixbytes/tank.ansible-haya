@@ -29,6 +29,7 @@ bc_cyberos_node_id: "1"
 bc_cyberos_node_http_port: 8888
 bc_cyberos_node_p2p_port: 9876
 bc_cyberos_node_bnet_port: 4321
+bc_cyberos_node_metrics_port: 8889
 
 bc_cyberos_isproduction_enabled: true
 bc_cyberos_tokens_amount: 10000000000
