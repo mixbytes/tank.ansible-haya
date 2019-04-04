@@ -61,7 +61,7 @@
     recreate: true
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
-    command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json --delete-all-blocks
+    command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: "{{bc_name}}-{{ bc_component_name }}"
     ports:
       - 127.0.0.1:{{ bc_cyberos_node_http_port }}:8888

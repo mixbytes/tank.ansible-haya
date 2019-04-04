@@ -24,7 +24,7 @@
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
   when:
-    - bc_cyberos_comp_state.wallet == "present"
+    - bc_cyberos_comp_state_wallet == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Set components to boot"
@@ -33,13 +33,13 @@
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
   when:
-    - bc_cyberos_comp_state.boot == "present"
+    - bc_cyberos_comp_state_boot == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
     - install_promstack == true
-    - bc_cyberos_comp_state.boot == "present"
+    - bc_cyberos_comp_state_boot == "present"
     - not bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
 
@@ -55,13 +55,13 @@
     - prod
     - resume
   when:
-    - bc_cyberos_comp_state.prod == "present"
+    - bc_cyberos_comp_state_prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
     - install_promstack == true
-    - bc_cyberos_comp_state.prod == "present"
+    - bc_cyberos_comp_state_prod == "present"
     - not bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
 
@@ -74,11 +74,11 @@
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
     - install_promstack == true
-    - bc_cyberos_comp_state.monitoring == "present"
+    - bc_cyberos_comp_state_monitoring == "present"
     - bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
 
 - name: "Install bench"
-  include_tasks: "bench/setup.yml"
+  include_tasks: "bench/main.yml"
   when:
-    - bc_cyberos_comp_state.bench == "present"
+    - bc_cyberos_comp_state_bench == "present"

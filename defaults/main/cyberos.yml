@@ -1,27 +1,10 @@
----
-# defaults file for ansible-cyberos
-bc_debug: false
-bc_private_interface: enp0s8
-bc_name: cyberos
-# may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
-bc_component_name: "wallet"
+# cyberos.yml
 
-bc_path_general: "/opt"
-bc_path_data: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/data/"
-bc_path_config: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/config"
-bc_path_state: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/state"
-
-bc_docker_registry:
-  login_enabled: false
-  url: "registry.gitlab.com"
-  username: "@devopsman"
-  password: "secret"
-
-bc_cyberos_comp_state:
-  wallet: absent
-  boot: absent
-  prod: absent
-  monitoring: absent
+bc_cyberos_comp_state_wallet: absent
+bc_cyberos_comp_state_boot: absent
+bc_cyberos_comp_state_prod: absent
+bc_cyberos_comp_state_monitoring: absent
+bc_cyberos_comp_state_bench: absent
 
 bc_cyberos_cli: "docker run --rm --network=host -v /:/host:ro registry.gitlab.com/cyberos/infrastructure/cyberos:latest /opt/eosio/bin/cleos "
 
@@ -53,55 +36,6 @@ bc_cyberos_tokens_amount: 10000000000
 bc_cyberos_producer_name: "{{ bc_cyberos_boot.name }}"
 bc_cyberos_producer_pub_key: "{{ bc_cyberos_boot.pub_key }}"
 bc_cyberos_producer_pvt_key: "{{ bc_cyberos_boot.pvt_key }}"
-
-
-bench_config:
-  blockchain: "EOS"
-  rpcUrl: "http://localhost:8888"
-
-  log:
-    logLevel: 3
-    printErrorStack: "true"
-
-  tokensContract:
-    wasmFilePath: "./src/contracts/eosio.token/eosio.token.wasm"
-    abiFilePath: "./src/contracts/eosio.token/eosio.token.abi"
-
-  transactions:
-    tokenName: "SYS"
-    deployTokenContract: "true"
-    createTokens: "true"
-    issueTokens: "true"
-    createTokensAmount: '10000.0000'
-    issueTokensAmount: '10000.0000'
-    tokensInOneTransfer: '1.0000'
-    transfersAmount: 100
-    threadsAmount: 20
-    blocksBehind: 3
-    expireSeconds: 120
-
-  accountsGenerator:
-    possibleAccountNameChars: "abcdefghijklmnopqrstuvwxyz12345"
-    accountNameLength: 7
-    accountNamePrefix: "bench"
-
-  creatorAccount:
-    name: "eosio"
-    privateKey: "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3"
-
-  toAccount:
-    create: "true"
-    name: ''
-
-  fromAccount:
-    create: "true"
-    name: ''
-    privateKey: ''
-
-  tokenAccount:
-    create: "true"
-    name: ''
-    privateKey: ''
 
 bc_cyberos_producer_accounts:
   - { name: producer.1, pvt_key: 5JpDsXfyJeNCT97ymj3XGCxD6U66FCQRokF37kF1sR9gP9y44pD, pub_key: EOS7ChvqY6PCMZD9gAQqQSsgEryeTDixX66zdbTytzD3VgFjj2vhN }
@@ -211,3 +145,4 @@ bc_cyberos_producer_accounts:
   - { name: producer.1e5, pvt_key: 5JC5aFkv9rxTpVedGJ8eCujeCQoXNcaxPjsU9PLrt2fSsoib1gV, pub_key: EOS8T1B8We73Z7aTTpgd5bKWDFWtQDNNrpe6DAoa56fDWzR3WfZoe }
   - { name: producer.1ea, pvt_key: 5JA29rpo3TfSStPaiWod6Uc1BUWkQT5sCLzq2FdpDTrJ6i2nKe7, pub_key: EOS8ktCD8EUZ3q3n9qwAvMywwnTj25c5nzg5VhcvBUrKrCjpZpbot }
   - { name: producer.1eb, pvt_key: 5JsWiZDMzvfVpBrxVdgaNprxdt6RaTotTevYCQhTC1fpJqs1Vs9, pub_key: EOS8i5eZ4AZULRQXxBgAfV6vqo6LQctx7DGe1YT3FkcBDYdFNdy2w }
+

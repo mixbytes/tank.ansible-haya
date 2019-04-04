@@ -3,56 +3,41 @@
 - name: Converge boot node
   hosts: "*boot*"
   become: true
+  vars:
+    rpcUrl: "rpcUrl"
+    bc_docker_registry_login: true
+    bc_docker_registry_url: registry.gitlab.com
+    bc_docker_username: andrey@mixbytes.io
+    bc_docker_password: secret
+    bc_cyberos_comp_state_wallet: present
+    bc_cyberos_comp_state_boot: present
+    bc_cyberos_comp_state_bench: present
+    install_promstack: true
   roles:
     - role: ansible-cyberos
-      vars:
-        bc_cyberos_nodeid: "boot"
-        bc_docker_registry:
-          login_enabled: true
-          url: registry.gitlab.com
-          username: exampleuser
-          password: secret
-        bc_cyberos_comp_state:
-          wallet: present
-          boot: present
-          prod: absent
-          monitoring: absent
-          bench: absent
-        install_promstack: true
 
 - name: Converge producer node
   hosts: "*producer*"
   become: true
   vars:
-    bc_cyberos_node_id: "{{ play_hosts.index(inventory_hostname) }} | int +1"
+    rpcUrl: "rpcUrl"
+    bc_docker_registry_login: true
+    bc_docker_registry_url: registry.gitlab.com
+    bc_docker_username: andrey@mixbytes.io
+    bc_docker_password: secret
+    bc_cyberos_comp_state_prod: present
+    bc_cyberos_comp_state_bench: present
+    install_promstack: true
+    bc_cyberos_node_id: "{{ play_hosts.index(inventory_hostname) | int +1 }}"
   roles:
     - role: ansible-cyberos
-      vars:
-        bc_docker_registry:
-          login_enabled: true
-          url: registry.gitlab.com
-          username: exampleuser
-          password: secret
-        bc_cyberos_comp_state:
-          prod: present
-          wallet: absent
-          boot: absent
-          monitoring: absent
-          bench: absent
-        install_promstack: true
 
-  - name: Converge monitoring node
-    hosts: "*monitoring*"
-    become: true
-    roles:
-      - role: ansible-cyberos
-        vars:
-          bc_docker_registry:
-            login_enabled: false
-          bc_cyberos_comp_state:
-            prod: absent
-            wallet: absent
-            boot: absent
-            monitoring: present
-            bench: present
-          install_promstack: true
+- name: Converge monitoring node
+  hosts: "*monitoring*"
+  become: true
+  vars:
+    rpcUrl: "rpcUrl"
+    bc_cyberos_comp_state_monitoring: present
+    install_promstack: true
+  roles:
+    - role: ansible-cyberos
