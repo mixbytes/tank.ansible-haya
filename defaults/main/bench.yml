@@ -15,11 +15,11 @@ bench_config:
     deployTokenContract: "true"
     createTokens: "true"
     issueTokens: "true"
-    createTokensAmount: '10000.0000'
-    issueTokensAmount: '10000.0000'
+    createTokensAmount: '1000000000.0000'
+    issueTokensAmount: '1000000000.0000'
     tokensInOneTransfer: '1.0000'
     transfersAmount: 100
-    threadsAmount: 20
+    threadsAmount: 1
     blocksBehind: 3
     expireSeconds: 120
 

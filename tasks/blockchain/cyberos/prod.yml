@@ -63,19 +63,13 @@
     image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
     command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: "{{bc_name}}-{{ bc_component_name }}"
-    ports:
-      - 127.0.0.1:{{ bc_cyberos_node_http_port }}:8888
-      - 127.0.0.1:{{ bc_cyberos_node_p2p_port }}:9876
-      - 0.0.0.0:{{ bc_cyberos_node_bnet_port }}:4321
-      - 0.0.0.0:{{ bc_cyberos_node_metrics_port }}:8889
+    network_mode: host
     volumes:
       - "{{ bc_path_state }}:/root/.local"
       - "{{ bc_path_config }}:{{ bc_path_config }}"
     capabilities:
       - IPC_LOCK
     stop_timeout: 600
-    networks:
-      - name: cyberos-net
 
 - name: List data about prod container
   debug:

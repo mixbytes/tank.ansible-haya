@@ -1,13 +1,8 @@
 ---
-- name: Create directory for cleos
-  file:
-    path: /opt/eosio/bin
-    state: directory
-
 - name: "Setup cleos"
   template:
     src: scripts/bin/cleos
-    dest: /opt/eosio/bin/cleos
+    dest: /usr/bin/cleos
     mode: 0755
 
 - name: "Create general directory structure"

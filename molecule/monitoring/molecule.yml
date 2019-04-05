@@ -18,7 +18,8 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: dhcp
-    cpus: 1
+    cpus: 2
+    memory: 1024
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
   - name: ubuntu1804-producer
@@ -27,7 +28,8 @@ platforms:
       - auto_config: true
         network_name: private_network
         type: dhcp
-    cpus: 1
+    cpus: 2
+    memory: 1024
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
   - name: ubuntu1804-monitoring

@@ -1,4 +1,5 @@
 ---
+
 - name: "Make directory structure"
   file:
     path: "{{ item }}"
@@ -43,24 +44,18 @@
     image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
     command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: "{{ bc_name }}-{{ bc_component_name }}"
-    ports:
-      - 127.0.0.1:{{ bc_cyberos_node_http_port }}:8888
-      - 127.0.0.1:{{ bc_cyberos_node_p2p_port }}:9876
-      - 0.0.0.0:{{ bc_cyberos_node_bnet_port }}:4321
-      - 0.0.0.0:{{ bc_cyberos_node_metrics_port }}:8889
+    network_mode: host
     volumes:
       - "{{ bc_path_state }}:/root/.local"
       - "{{ bc_path_config }}:{{ bc_path_config }}"
     capabilities:
       - IPC_LOCK
     stop_timeout: 600
-    networks:
-      - name: cyberos-net
 
 - debug:
     var: "{{item}}"
   with_items:
-    - bc_cyberos_boot.pvt_key
+    - producer_account.pvt_key
   tags:
     - never
     - debug
@@ -181,6 +176,9 @@
   retries: 5
   delay: 3
   until: create_producers_account is success
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index
 
 - name: Show stderr from create producers account task
   debug:
@@ -194,6 +192,9 @@
   loop: "{{ bc_cyberos_producer_accounts | list }}"
   set_fact:
     my_prods: "{{ my_prods|default([{'producer_name': 'eosio', 'block_signing_key': 'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'}]) + [{'producer_name': item.name, 'block_signing_key': item.pub_key}] }}"
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index
 
 - name: set producers
   register: set_producers
