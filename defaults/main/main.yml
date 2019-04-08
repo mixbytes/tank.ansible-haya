@@ -1,0 +1,17 @@
+---
+# defaults file for ansible-cyberos
+bc_debug: false
+bc_private_interface: enp0s8
+bc_name: cyberos
+# may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
+bc_component_name: "wallet"
+
+bc_path_general: "/opt"
+bc_path_data: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/data/"
+bc_path_config: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/config"
+bc_path_state: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/state"
+
+bc_docker_registry_url: "registry.gitlab.com"
+bc_docker_registry_login: false 
+bc_docker_username: "@devopsman"
+bc_docker_password: "secret"

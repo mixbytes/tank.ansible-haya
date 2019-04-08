@@ -1,0 +1,48 @@
+{
+   "log": {
+      "logLevel": "{{ bench_config.log.logLevel }}",
+      "printErrorStack": "{{ bench_config.log.printErrorStack }}"
+   },
+   "transactions": {
+      "tokenName": "{{ bench_config.transactions.tokenName }}",
+      "threadsAmount": "{{ bench_config.transactions.threadsAmount }}",
+      "transfersAmount": "{{ bench_config.transactions.transfersAmount }}",
+      "createTokensAmount": "{{ bench_config.transactions.createTokensAmount }}",
+      "createTokens": "{{ bench_config.transactions.createTokens }}",
+      "issueTokens": "{{ bench_config.transactions.issueTokens }}",
+      "blocksBehind": "{{ bench_config.transactions.blocksBehind }}",
+      "issueTokensAmount": "{{ bench_config.transactions.issueTokensAmount }}",
+      "tokensInOneTransfer": "{{ bench_config.transactions.tokensInOneTransfer }}",
+      "expireSeconds": "{{ bench_config.transactions.expireSeconds }}",
+      "deployTokenContract": "{{ bench_config.transactions.deployTokenContract }}"
+   },
+   "rpcUrl": "{{ bench_config.rpcUrl }}",
+   "creatorAccount": {
+      "privateKey": "{{ bench_config.creatorAccount.privateKey }}",
+      "name": "{{ bench_config.creatorAccount.name }}"
+   },
+   "blockchain": "{{ bench_config.blockchain }}",
+   "fromAccount": {
+      "create": "{{ bench_config.fromAccount.create }}",
+      "privateKey": "{{ bench_config.fromAccount.privateKey }}",
+      "name": "{{ bench_config.fromAccount.name }}"
+   },
+   "toAccount": {
+      "create": "{{ bench_config.toAccount.create }}",
+      "name": "{{ bench_config.toAccount.name }}"
+   },
+   "accountsGenerator": {
+      "accountNameLength": "{{ bench_config.accountsGenerator.accountNameLength }}",
+      "possibleAccountNameChars": "{{ bench_config.accountsGenerator.possibleAccountNameChars }}",
+      "accountNamePrefix": "{{ bench_config.accountsGenerator.accountNamePrefix }}"
+   },
+   "tokenAccount": {
+      "create": "{{ bench_config.tokenAccount.create }}",
+      "privateKey": "{{ bench_config.tokenAccount.privateKey }}",
+      "name": "{{ bench_config.tokenAccount.name }}"
+   },
+   "tokensContract": {
+      "wasmFilePath": "{{ bench_config.tokensContract.wasmFilePath }}",
+      "abiFilePath": "{{ bench_config.tokensContract.abiFilePath }}"
+   }
+}

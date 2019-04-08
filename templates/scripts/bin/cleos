@@ -1,2 +1,2 @@
 #usr/bin/env bash
-docker run --rm --network=host -v /:/host:ro registry.gitlab.com/cyberos/infrastructure/cyberos:latest /opt/eosio/bin/cleos $@
+docker run --rm --network=host -v /:/host:ro registry.gitlab.com/cyberos/infrastructure/cyberos:latest /opt/eosio/bin/cleos "$@"

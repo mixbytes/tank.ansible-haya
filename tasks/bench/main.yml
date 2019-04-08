@@ -1,0 +1,19 @@
+---
+- name: "Create dirs"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_general }}/bench"
+    - "{{ bc_path_general }}/bench/config"
+
+- name: "Create config"
+  template:
+    src: "configs/bench/bench.config.json.j2"
+    dest: "{{ bc_path_general }}/bench/config/bench.config.json"
+
+- name: "Install bench"
+  template:
+    src: scripts/bin/bench.j2
+    dest: /usr/bin/bench
+    mode: 0755
