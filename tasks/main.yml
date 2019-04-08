@@ -1,6 +1,13 @@
 ---
 # tasks file for ansible-cyberos
 
+- name: "Install required packages"
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - ntp
+
 - name: Login to docker registry
   include_tasks: "init.yml"
 

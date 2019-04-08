@@ -14,5 +14,5 @@
     dest: "/etc/prometheus/targets/{{ target_ip }}.yml"
   vars:
     - target_ip: "{{ item }}"
-    - target_ports: ["8080", "9100"]
+    - target_ports: ["8080", "9100", "8889"]
   when: install_promstack == true
