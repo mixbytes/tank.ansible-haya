@@ -17,3 +17,7 @@
     src: scripts/bin/bench.j2
     dest: /usr/bin/bench
     mode: 0755
+
+- name: "Pull docker container"
+  docker_image:
+    name: registry.gitlab.com/cyberos/infrastructure/bench-tool:latest

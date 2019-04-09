@@ -26,7 +26,7 @@ check_cmd_in_path docker
 
 # Set up mounted volumes, environment, and run our containerized command
 exec docker run \
-  --interactive --tty --rm --network=host \
+  --interactive --rm --network=host \
   --volume "{{ bc_path_general }}/bench/config/bench.config.json"/:/tool/bench.config.json \
   --workdir /tool \
   "registry.gitlab.com/cyberos/infrastructure/bench-tool:latest" "$@"
