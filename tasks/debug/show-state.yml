@@ -24,3 +24,14 @@
   loop: "{{ bc_boot_ip }}"
   debug:
     msg: "{{ item }}"
+
+
+- name: "List monitoring ip address for {{ inventory_hostname }}"
+  tags:
+    - never
+    - debug
+    - network
+  loop: "{{ monitoring_peer_ip }}"
+  debug:
+    msg: "{{ item }}"
+

@@ -13,6 +13,7 @@
     src: "configs/prometheus/target.yml.j2"
     dest: "/etc/prometheus/targets/{{ target_ip }}.yml"
   vars:
-    - target_ip: "{{ item }}"
     - target_ports: ["8080", "9100", "8889"]
   when: install_promstack == true
+  loop_control:
+    loop_var: target_ip
