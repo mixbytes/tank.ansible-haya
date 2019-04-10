@@ -34,4 +34,3 @@
   loop: "{{ monitoring_peer_ip }}"
   debug:
     msg: "{{ item }}"
-
