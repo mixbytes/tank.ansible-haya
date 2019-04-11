@@ -1,0 +1,23 @@
+---
+- name: Create datasource to all nodes
+  grafana_datasource:
+    name: "{{ target_ip }}"
+    grafana_url: "http://localhost:3000"
+    grafana_user: "{{ admin_user}}"
+    grafana_password: "{{ admin_password }}"
+    org_id: "1"
+    ds_type: "prometheus"
+    url: "http://{{ target_ip }}:9090"
+  loop: "{{ bc_peers_ip }}"
+  loop_control:
+    loop_var: target_ip
+
+- name: Create datasource to monitoring node
+  grafana_datasource:
+    name: "monitoring"
+    grafana_url: "http://localhost:3000"
+    grafana_user: "{{ admin_user }}"
+    grafana_password: "{{ admin_password }}"
+    org_id: "1"
+    ds_type: "prometheus"
+    url: "http://localhost:9090"

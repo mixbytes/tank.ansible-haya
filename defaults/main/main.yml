@@ -12,6 +12,6 @@ bc_path_config: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/con
 bc_path_state: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/state"
 
 bc_docker_registry_url: "registry.gitlab.com"
-bc_docker_registry_login: false 
+bc_docker_registry_login: false
 bc_docker_username: "@devopsman"
 bc_docker_password: "secret"
