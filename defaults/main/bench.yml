@@ -1,3 +1,4 @@
+---
 bench_config:
   blockchain: "EOS"
   rpcUrl: "http://localhost:8888"
