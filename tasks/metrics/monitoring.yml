@@ -45,10 +45,6 @@
   set_fact:
     dashboard_slug: "{{ slugout.stdout }}"
 
-- debug:
-    msg: "{{ dashboard_slug }}"
-
-
 - name: Check dashboard exist by file
   stat:
       path: "/root/dashboard.json"
@@ -79,10 +75,6 @@
   register: dashboard
   when: slughttpresponse.status == 404
 
-- name: Show dashboard
-  debug:
-    msg: "{{ dashboard }}"
-
 - name: Import Grafana dashboard (if not imported)
   block:
     - name: "Create dashboard"
@@ -102,9 +94,6 @@
     - slughttpresponse.status == 404
     - dashboard_exist.stat.exists == false
     - imported == false
-
-- debug:
-    msg: "{{ dashboard_exist.stat.exists }} {{ imported }} {{ slughttpresponse.status }} {{ dashboard.changed }}"
 
 - name: "Reimport Grafana dashboard (if dashboard file changed)"
   block:
