@@ -59,7 +59,7 @@
   register: "{{ bc_name }}_{{ bc_component_name }}"
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
-    image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
+    image: registry.gitlab.com/cyberos/infrastructure/cyberos-dev:develop-latest
     command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: "{{bc_name}}-{{ bc_component_name }}"
     network_mode: host
