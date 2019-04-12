@@ -39,6 +39,7 @@
     - debug
 
 - name: Start boot-node container
+  register: _start_boot_node
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: registry.gitlab.com/cyberos/infrastructure/cyberos-dev:develop-latest
@@ -51,6 +52,11 @@
     capabilities:
       - IPC_LOCK
     stop_timeout: 600
+
+- pause:
+    seconds: 25
+  when:
+    - _start_boot_node is changed
 
 - debug:
     var: "{{item}}"
@@ -78,11 +84,6 @@
     - never
     - debug
 
-- pause:
-    seconds: 25
-  when:
-    - import_producer_key is changed
-
 - name: create system accounts
   loop: "{{ bc_cyberos_system_accounts }}"
   register: create_system_accounts
@@ -90,6 +91,7 @@
     cmd: "{{ bc_cyberos_cli }} --wallet-url=http://localhost:{{ bc_cyberos_wallet.port }} --url=http://localhost:{{ bc_cyberos_node_http_port }} create account -x 45 eosio {{ item }} {{ bc_cyberos_boot.pub_key }} {{ bc_cyberos_boot.pub_key }}"
   failed_when: "('Account name already exists' not in create_system_accounts.stderr) and create_system_accounts.rc != 0"
   changed_when: "'executed transaction' in create_system_accounts.stdout"
+
 
 - name: Show stderr from create system accounts task
   debug:
