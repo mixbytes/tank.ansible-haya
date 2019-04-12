@@ -52,6 +52,7 @@
     capabilities:
       - IPC_LOCK
     stop_timeout: 600
+    pull: yes
 
 - pause:
     seconds: 25
