@@ -87,6 +87,9 @@ telemetry-uri = /metrics
 telemetry-threads = 5
 
 plugin = eosio::telemetry_plugin
+
+{% if bc_cyberos_plugin_grandpa == "present" %}
 plugin = eosio::grandpa_plugin
 grandpa-private-key={{ producer_pvt_key }}
+{% endif %}
 

@@ -7,6 +7,9 @@ bc_cyberos_comp_state_prod: absent
 bc_cyberos_comp_state_monitoring: absent
 bc_cyberos_comp_state_bench: absent
 
+bc_cyberos_image: "registry.gitlab.com/cyberos/infrastructure/cyberos:latest"
+bc_cyberos_plugin_grandpa: "absent"
+
 bc_cyberos_cli: "docker run --rm --network=host -v /:/host:ro registry.gitlab.com/cyberos/infrastructure/cyberos:latest /opt/eosio/bin/cleos "
 
 bc_cyberos_boot:
