@@ -66,6 +66,7 @@
     volumes:
       - "{{ bc_path_state }}:/root/.local"
       - "{{ bc_path_config }}:{{ bc_path_config }}"
+      - "/tmp/cores:/tmp/cores"
     capabilities:
       - IPC_LOCK
     stop_timeout: 600

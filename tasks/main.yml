@@ -17,6 +17,9 @@
     - never
     - debug
 
+- name: Set host parameters for debugging services
+  include_tasks: "docker/debugging.yml"
+
 - name: Login to docker registry
   include_tasks: "docker/registry.yml"
 
