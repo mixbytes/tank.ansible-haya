@@ -11,13 +11,13 @@
 - name: "Start {{ bc_name }} container"
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
-    image: registry.gitlab.com/cyberos/infrastructure/cyberos:latest
-    command: /opt/eosio/bin/keosd --unlock-timeout=99999999 --wallet-dir {{ bc_path_data }} --http-server-address=0.0.0.0:{{ bc_cyberos_wallet.port }} --http-alias=keosd:{{ bc_cyberos_wallet.port }} --http-alias=localhost:{{ bc_cyberos_wallet.port }}
-    hostname: cyberos-keosd
+    image: mixbytes/haya
+    command: /opt/eosio/bin/keosd --unlock-timeout=99999999 --wallet-dir {{ bc_path_data }} --http-server-address=0.0.0.0:{{ bc_haya_wallet.port }} --http-alias=keosd:{{ bc_haya_wallet.port }} --http-alias=localhost:{{ bc_haya_wallet.port }}
+    hostname: haya-keosd
     ports:
-      - "{{ bc_cyberos_wallet.port }}:{{ bc_cyberos_wallet.port }}"
+      - "{{ bc_haya_wallet.port }}:{{ bc_haya_wallet.port }}"
     expose:
-      - "{{ bc_cyberos_wallet.port }}"
+      - "{{ bc_haya_wallet.port }}"
     volumes:
       - "{{ bc_path_data }}:{{ bc_path_data }}"
     capabilities:
@@ -28,7 +28,7 @@
 
 - name: Create default wallet
   shell:
-    cmd: "{{ bc_cyberos_cli }} --wallet-url=http://localhost:{{bc_cyberos_wallet.port}} wallet create --to-console"
+    cmd: "{{ bc_haya_cli }} --wallet-url=http://localhost:{{bc_haya_wallet.port}} wallet create --to-console"
   register: create_wallet
   failed_when: "'Wallet already exists' not in create_wallet.stderr and create_wallet.rc != 0"
   changed_when: "'Creating wallet' in create_wallet.stdout"

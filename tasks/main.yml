@@ -1,5 +1,5 @@
 ---
-# tasks file for ansible-cyberos
+# tasks file for ansible-haya
 
 - name: "Install required packages"
   apt:

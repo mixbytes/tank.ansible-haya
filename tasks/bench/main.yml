@@ -22,4 +22,4 @@
 
 - name: "Pull docker container"
   docker_image:
-    name: registry.gitlab.com/cyberos/infrastructure/bench-tool:latest
+    name: mixbytes/tank.bench-haya

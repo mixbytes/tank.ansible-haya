@@ -1,13 +1,13 @@
 ---
 - name: "Setup promstack at {{ inventory_hostname }}"
   include_role:
-    name: ansible-promstack
+    name: mixbytes.promstack
   vars:
     install_cadvisor: false
     install_gateway: false
     grafana_admin_user: "{{ admin_user }}"
     grafana_admin_password: "{{ admin_password }}"
-    prometheus_targets: [{jobname: "node_exporter", host: "localhost", port: "{{ node_exporter_port}}"}]
+    prometheus_targets: [{ jobname: "node_exporter", host: "localhost", port: "{{ node_exporter_port }}" }]
 
 - name: "Add prometheus targets to {{ inventory_hostname }}"
   loop: "{{ bc_peers_ip }}"
@@ -16,7 +16,7 @@
     dest: "/etc/prometheus/targets/{{ target_ip }}.yml"
   vars:
     - target_ports: ["8080", "9100", "8889"]
-  when: install_promstack == true
+  when: install_promstack == "true"
   loop_control:
     loop_var: target_ip
 
@@ -47,7 +47,7 @@
 
 - name: Check dashboard exist by file
   stat:
-      path: "/root/dashboard.json"
+    path: "/root/dashboard.json"
   register: dashboard_exist
 
 - name: Generate UID
@@ -70,7 +70,7 @@
 
 - name: Copy dashboard
   template:
-    src: "grafana/cyberos/dashboard.json.j2"
+    src: "grafana/haya/dashboard.json.j2"
     dest: "/root/dashboard.json"
   register: dashboard
   when: slughttpresponse.status == 404
@@ -92,8 +92,8 @@
         imported: true
   when:
     - slughttpresponse.status == 404
-    - dashboard_exist.stat.exists == false
-    - imported == false
+    - dashboard_exist.stat.exists
+    - imported
 
 - name: "Reimport Grafana dashboard (if dashboard file changed)"
   block:
@@ -116,7 +116,7 @@
         overwrite: true
         path: "/root/dashboard.json"
   when:
-    - dashboard.changed == true
+    - dashboard.changed
     - slughttpresponse.status == 404
-    - imported != true
-    - dashboard_exist.stat.exists != false
+    - is not imported
+    - is not dashboard_exist.stat.exists

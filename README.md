@@ -34,7 +34,7 @@ passed in as parameters) is always nice for users too:
 
     - hosts: servers
       roles:
-         - { role: ansible-cyberos, x: 42 }
+         - { role: ansible-haya, x: 42 }
 
 License
 -------
