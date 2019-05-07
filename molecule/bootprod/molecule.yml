@@ -35,7 +35,7 @@ platforms:
 provisioner:
   name: ansible
   playbooks:
-    converge: ../../playbook.yml
+    converge: playbook.yml
   config_options:
     defaults:
       callback_whitelist: profile_tasks

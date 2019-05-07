@@ -70,7 +70,7 @@
     capabilities:
       - IPC_LOCK
     stop_timeout: 600
-    pull: yes
+    pull: true
 
 - name: List data about prod container
   debug:

@@ -10,8 +10,8 @@
     path: "{{ item }}"
     state: directory
   with_items:
-    - "{{ bc_path_general}}"
-    - "{{ bc_path_general}}/{{ bc_name }}"
+    - "{{ bc_path_general }}"
+    - "{{ bc_path_general }}/{{ bc_name }}"
 
 - name: "Set components to wallet"
   set_fact:
@@ -33,7 +33,7 @@
 
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
-    - install_promstack == true
+    - install_promstack
     - bc_haya_comp_state_boot == "present"
     - not bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
@@ -55,7 +55,7 @@
 
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
-    - install_promstack == true
+    - install_promstack
     - bc_haya_comp_state_prod == "present"
     - not bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
@@ -68,7 +68,7 @@
 
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
-    - install_promstack == true
+    - install_promstack
     - bc_haya_comp_state_monitoring == "present"
     - bc_component_name == "monitoring"
   include_tasks: "metrics/{{ item }}.yml"
