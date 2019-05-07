@@ -29,4 +29,4 @@ exec docker run \
   --interactive --rm --network=host \
   --volume "{{ bc_path_general }}/bench/config/bench.config.json"/:/tool/bench.config.json \
   --workdir /tool \
-  "registry.gitlab.com/cyberos/infrastructure/bench-tool:latest" "$@"
+  "mixbytes/tank.bench-haya" "$@"

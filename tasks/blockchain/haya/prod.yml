@@ -1,12 +1,12 @@
 ---
 - name: set producer account
   set_fact:
-    producer_account: "{{ bc_cyberos_producer_accounts[bc_cyberos_node_id | int] }}"
+    producer_account: "{{ bc_haya_producer_accounts[bc_haya_node_id | int] }}"
   tags:
     - prod
 
 - debug:
-    msg: "{{ bc_cyberos_node_id | int }}"
+    msg: "{{ bc_haya_node_id | int }}"
   tags:
     - never
     - prod
@@ -59,7 +59,7 @@
   register: "{{ bc_name }}_{{ bc_component_name }}"
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
-    image: "{{ bc_cyberos_image }}"
+    image: "{{ bc_haya_image }}"
     command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: "{{bc_name}}-{{ bc_component_name }}"
     network_mode: host
@@ -81,7 +81,7 @@
 
 - name: "Resume producer"
   uri:
-    url: "http://localhost:{{ bc_cyberos_node_http_port }}/v1/producer/resume"
+    url: "http://localhost:{{ bc_haya_node_http_port }}/v1/producer/resume"
     method: POST
     body_format: form-urlencoded
     status_code: 201
