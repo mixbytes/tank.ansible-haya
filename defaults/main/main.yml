@@ -3,7 +3,7 @@
 bc_debug: false
 bc_private_interface: enp0s8
 bc_name: haya
-# may be: wallet, nodeos-boot, nodeos-prod, nodeos-nonprod
+# may be: wallet, boot, prod, nonprod
 bc_component_name: "wallet"
 
 bc_path_general: "/opt"

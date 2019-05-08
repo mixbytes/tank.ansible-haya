@@ -43,7 +43,7 @@
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
-    command: /opt/eosio/bin/nodeos --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
+    command: /opt/haya/bin/haya-node --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
     hostname: "{{ bc_name }}-{{ bc_component_name }}"
     network_mode: host
     volumes:
@@ -55,7 +55,8 @@
     stop_timeout: 600
     pull: true
 
-- pause:
+- name: "Waiting"
+  pause:
     seconds: 25
   when:
     - _start_boot_node is changed

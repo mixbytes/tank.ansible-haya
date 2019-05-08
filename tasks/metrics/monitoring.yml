@@ -38,7 +38,9 @@
   delay: 20
 
 - name: Form slug from Title
-  shell: echo "{{ Title }}" | sed -e "s/ /-/g" | tr '[:upper:]' '[:lower:]'
+  shell: |
+    set -o pipefail
+    echo "{{ Title }}" | sed -e "s/ /-/g" | tr '[:upper:]' '[:lower:]'
   register: slugout
 
 - name: Set slug
@@ -55,7 +57,9 @@
     UID: "{{ lookup('password', '/dev/null length=9 chars=ascii_letters') }}"
 
 - name: Get dashboard uid
-  shell: cat /root/dashboard.json | grep uid | sed -e s/uid//g | tr -d ', ":'
+  shell: |
+    set -o pipefail
+    cat /root/dashboard.json | grep uid | sed -e s/uid//g | tr -d ', ":'
   register: uid_from_file
 
 - name: Check dashboard exist by slug

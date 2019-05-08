@@ -1,6 +1,6 @@
 __pycache__
 .idea
-playbook.yml
+/playbook.yml
 notes
 *.out
 *.sublime-project

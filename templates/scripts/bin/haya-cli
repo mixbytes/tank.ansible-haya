@@ -1,0 +1,2 @@
+#usr/bin/env bash
+docker run --rm --network=host -v /:/host:ro {{ bc_haya_image }} /opt/haya/bin/haya-cli "$@"

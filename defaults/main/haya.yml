@@ -7,10 +7,10 @@ bc_haya_comp_state_prod: absent
 bc_haya_comp_state_monitoring: absent
 bc_haya_comp_state_bench: absent
 
-bc_haya_image: "mixbytes/haya"
+bc_haya_image: "mixbytes/haya:ci"
 bc_haya_plugin_randpa: "absent"
 
-bc_haya_cli: "docker run --rm --network=host -v /:/host:ro mixbytes/haya /opt/eosio/bin/cleos "
+bc_haya_cli: "docker run --rm --network=host -v /:/host:ro {{ bc_haya_image }} /opt/haya/bin/haya-cli "
 
 bc_haya_boot:
   public_ip: "{{ ansible_default_ipv4.address }}"

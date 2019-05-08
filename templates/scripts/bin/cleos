@@ -1,2 +1,0 @@
-#usr/bin/env bash
-docker run --rm --network=host -v /:/host:ro mixbytes/haya /opt/eosio/bin/cleos "$@"

@@ -1,0 +1,12 @@
+---
+
+- name: Converge boot node
+  hosts: "*boot*"
+  become: true
+  vars:
+    bc_haya_comp_state_wallet: present
+    bc_haya_comp_state_boot: present
+    bc_haya_comp_state_bench: present
+    install_promstack: true
+  roles:
+    - role: tank.ansible-haya

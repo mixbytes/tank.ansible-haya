@@ -1,0 +1,34 @@
+---
+
+- name: Converge boot node
+  hosts: "*boot*"
+  become: true
+  vars:
+    bc_haya_comp_state_wallet: present
+    bc_haya_comp_state_boot: present
+    bc_haya_comp_state_bench: absent
+    install_promstack: true
+  roles:
+    - role: tank.ansible-haya
+
+- name: Converge producer node
+  hosts: "*producer*"
+  become: true
+  vars:
+    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_bench: absent
+    install_promstack: true
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int +1 }}"
+  roles:
+    - role: tank.ansible-haya
+
+- name: Converge monitoring node
+  hosts: "*monitoring*"
+  become: true
+  vars:
+    bc_haya_comp_state_monitoring: present
+    install_promstack: true
+    admin_user: tank
+    admin_password: tank
+  roles:
+    - role: tank.ansible-haya
