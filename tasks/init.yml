@@ -49,6 +49,7 @@
     - network
   delegate_to: "{{ item }}"
   run_once: true
+  register: _create_group_monitoring
   add_host:
     name: "{{ item }}"
     groups: monitoring_peer
@@ -63,6 +64,8 @@
     - network
   set_fact:
     monitoring_peer_ip: "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+  when:
+    - _create_group_monitoring is changed
 
 - name: "Set boot ip address"
   run_once: true

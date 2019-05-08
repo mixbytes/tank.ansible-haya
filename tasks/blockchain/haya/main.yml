@@ -1,8 +1,8 @@
 ---
-- name: "Setup cleos"
+- name: "Setup cli"
   template:
-    src: scripts/bin/cleos
-    dest: /usr/bin/cleos
+    src: scripts/bin/haya-cli
+    dest: /usr/bin/haya-cli
     mode: 0755
 
 - name: "Create general directory structure"
@@ -75,8 +75,3 @@
   with_items:
     - "{{ bc_component_name }}"
     - "targets"
-
-- name: "Install bench"
-  include_tasks: "bench/main.yml"
-  when:
-    - bc_haya_comp_state_bench == "present"

@@ -14,6 +14,14 @@ lint:
 platforms:
   - name: ubuntu1804-boot
     box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
+    provider_raw_config_args:
+      - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
 provisioner:
   name: ansible
   playbooks:

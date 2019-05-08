@@ -1,0 +1,6 @@
+exclude_paths:
+  - .idea
+skip_list:
+  - '301'
+  - '305'
+quiet: true
