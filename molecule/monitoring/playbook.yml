@@ -6,8 +6,10 @@
   vars:
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
-    bc_haya_comp_state_bench: absent
+    bc_haya_comp_state_bench: present
     install_promstack: true
+    bc_haya_node_id: 0
+    bc_haya_plugin_randpa: present
   roles:
     - role: tank.ansible-haya
 
@@ -16,9 +18,10 @@
   become: true
   vars:
     bc_haya_comp_state_prod: present
-    bc_haya_comp_state_bench: absent
+    bc_haya_comp_state_bench: present
     install_promstack: true
-    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int +1 }}"
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
+    bc_haya_plugin_randpa: present
   roles:
     - role: tank.ansible-haya
 
