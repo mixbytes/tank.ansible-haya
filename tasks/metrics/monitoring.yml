@@ -41,6 +41,8 @@
   shell: |
     set -o pipefail
     echo "{{ Title }}" | sed -e "s/ /-/g" | tr '[:upper:]' '[:lower:]'
+  args:
+    executable: /bin/bash
   register: slugout
 
 - name: Set slug
@@ -60,6 +62,8 @@
   shell: |
     set -o pipefail
     cat /root/dashboard.json | grep uid | sed -e s/uid//g | tr -d ', ":'
+  args:
+    executable: /bin/bash
   register: uid_from_file
 
 - name: Check dashboard exist by slug
@@ -122,5 +126,5 @@
   when:
     - dashboard.changed
     - slughttpresponse.status == 404
-    - is not imported
-    - is not dashboard_exist.stat.exists
+    - not imported
+    - not dashboard_exist.stat.exists
