@@ -8,4 +8,8 @@ install:
 script:
   - molecule lint
 notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/?branch=master
+  webhooks:
+    urls:
+      - https://galaxy.ansible.com/api/v1/notifications/?branch=master
+    on_failure: never
+
