@@ -9,3 +9,17 @@
   docker_container:
     name: "{{ bc_name }}-prod"
     restart: true
+
+- name: resume producer
+  uri:
+    url: "http://localhost:{{ bc_haya_node_http_port }}/v1/producer/resume"
+    method: POST
+    body_format: form-urlencoded
+    status_code: 201
+  register: producer_resume
+  retries: 5
+  delay: 5
+  until: producer_resume is success
+  listen:
+    - "restart bootnode"
+    - "restart prodnode"
