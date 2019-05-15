@@ -35,7 +35,6 @@
   when:
     - install_promstack
     - bc_haya_comp_state_boot == "present"
-    - not bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
 
 - name: "Set components to prod"
@@ -57,7 +56,6 @@
   when:
     - install_promstack
     - bc_haya_comp_state_prod == "present"
-    - not bc_component_name == "monitoring"
   include_tasks: "metrics/{{ bc_component_name }}.yml"
 
 - name: "Set components to metrics"
@@ -70,7 +68,6 @@
   when:
     - install_promstack
     - bc_haya_comp_state_monitoring == "present"
-    - bc_component_name == "monitoring"
   include_tasks: "metrics/{{ item }}.yml"
   with_items:
     - "{{ bc_component_name }}"
