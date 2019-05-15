@@ -17,16 +17,29 @@
   template:
     src: configs/nodeos/config.ini.j2
     dest: "{{ bc_path_config }}/config.ini"
+  notify:
+    - restart bootnode
 
 - name: set genesis.json
   template:
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
+  notify:
+    - restart bootnode
 
 - name: set accounts.json
   template:
     src: configs/nodeos/accounts.json.j2
     dest: "{{ bc_path_config }}/accounts.json"
+  notify:
+    - restart bootnode
+
+- name: set logger.json
+  template:
+    src: configs/nodeos/logger.json.j2
+    dest: "{{ bc_path_config }}/logger.json"
+  notify:
+    - restart bootnode
 
 - debug:
     var: "{{ item }}"
@@ -43,7 +56,11 @@
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
-    command: /opt/haya/bin/haya-node --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
+    command: |
+      /opt/haya/bin/haya-node
+      --config-dir={{ bc_path_config }}
+      --genesis-json={{ bc_path_config }}/genesis.json
+      --logconf={{ bc_path_config }}/logger.json
     hostname: "{{ bc_name }}-{{ bc_component_name }}"
     network_mode: host
     volumes:

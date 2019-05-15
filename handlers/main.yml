@@ -1,2 +1,12 @@
 ---
 # handlers file for ansible-haya
+- name: restart bootnode
+  docker_container:
+    name: "{{ bc_name }}-boot"
+    restart: yes
+
+- name: restart prodnode
+  docker_container:
+    name: "{{ bc_name }}-prod"
+    restart: yes
+

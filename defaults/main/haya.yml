@@ -22,6 +22,10 @@ bc_haya_boot:
 bc_haya_wallet:
   port: 6666
 
+bc_haya_logger_level: "warn"
+bc_haya_logger_enabled: "true"
+bc_haya_logger_additivity: "false"
+
 bc_haya_system_accounts:
   - eosio.token
 
