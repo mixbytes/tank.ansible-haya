@@ -3,10 +3,9 @@
 - name: restart bootnode
   docker_container:
     name: "{{ bc_name }}-boot"
-    restart: yes
+    restart: true
 
 - name: restart prodnode
   docker_container:
     name: "{{ bc_name }}-prod"
-    restart: yes
-
+    restart: true
