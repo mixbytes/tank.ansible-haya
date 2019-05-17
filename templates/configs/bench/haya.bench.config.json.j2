@@ -1,0 +1,40 @@
+{
+  "rpcUrl": "{{ bench_config.rpc_Url }}",
+  "tokensContract": {
+    "wasmFilePath": "{{ bench_config.tokensContract.wasmFilePath }}",
+    "abiFilePath": "{{ bench_config.tokensContract.abiFilePath }}"
+  },
+  "blocksBehind": {{ bench_config.blocksBehind }},
+  "expireSeconds": {{ bench_config.expireSeconds }},
+  "transactions": {
+    "tokenName": "{{ bench_config.transactions.tokenName }}",
+    "deployTokenContract": {{ bench_config.transactions.deployTokenContract }},
+    "createTokens": {{ bench_config.transactions.createTokens }},
+    "issueTokens": {{ bench_config.transactions.issueTokens }},
+    "createTokensAmount": "{{ bench_config.transactions.createTokensAmount }}",
+    "issueTokensAmount": "{{ bench_config.transactions.issueTokensAmount }}",
+    "tokensInOneTransfer": "{{ bench_config.transactions.tokensInOneTransfer }}",
+    "keyPoints": {{ bench_config.transactions.keyPoints }},
+    "keyPointsAmount": {{ bench_config.transactions.keyPointsAmount }},
+    "threadsAmount": {{ bench_config.transactions.threadsAmount }},
+    "stopOnError": "{{ bench_config.transactions.stopOnError }}"
+  },
+  "creatorAccount": {
+    "name": "{{ bench_config.creatorAccount.name }}",
+    "privateKey": "{{ bench_config.creatorAccount.privateKey }}"
+  },
+  "toAccount": {
+    "create": {{ bench_config.toAccount.create }},
+    "name": "{{ bench_config.toAccount.name }}"
+  },
+  "fromAccount": {
+    "create": {{ bench_config.fromAccount.create }},
+    "name": "{{ bench_config.fromAccount.name }}",
+    "privateKey": "{{ bench_config.fromAccount.privateKey }}"
+  },
+  "tokenAccount": {
+    "create": {{ bench_config.tokenAccount.create }},
+    "name": "{{ bench_config.tokenAccount.name }}",
+    "privateKey": "{{ bench_config.tokenAccount.privateKey }}"
+  }
+}

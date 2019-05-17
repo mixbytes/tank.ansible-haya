@@ -56,6 +56,12 @@ provisioner:
       ssh_args: -o ControlPersist=6000s -o ControlMaster=auto -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
   lint:
     name: ansible-lint
+    options:
+      exclude:
+        - env
+        - .idea
+      x: ["301,305,306"]
+      force-color: True
 scenario:
   name: monitoring
 verifier:

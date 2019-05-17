@@ -13,6 +13,15 @@
     - "{{ bc_path_general }}"
     - "{{ bc_path_general }}/{{ bc_name }}"
 
+- name: "Set components to bench"
+  set_fact:
+    bc_component_name: "bench"
+
+- name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  when:
+    - bc_haya_comp_state_bench == "present"
+  include_tasks: "../../bench/main.yml"
+
 - name: "Set components to wallet"
   set_fact:
     bc_component_name: "wallet"

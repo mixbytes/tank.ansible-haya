@@ -4,9 +4,11 @@
 - name: "Install required packages"
   apt:
     name: "{{ packages }}"
+    cache_valid_time: 3600
   vars:
     packages:
       - ntp
+      - python3-pip
 
 - name: Login to docker registry
   include_tasks: "init.yml"

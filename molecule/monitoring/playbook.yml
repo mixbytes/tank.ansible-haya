@@ -1,4 +1,40 @@
 ---
+- name: Collect facts
+  hosts: all
+  become: true
+  gather_facts: no
+  tasks:
+    - name: Gathering Facts
+      setup:
+
+- name: Create groups
+  hosts: localhost
+  gather_facts: false
+  vars:
+    bc_private_interface: enp0s8
+  tasks:
+    - name: "Add boot node to group bcboot"
+      add_host:
+        name: "{{ item }}"
+        groups: bcboot
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"boot" in hostvars[item]["ansible_hostname"]'
+    - name: "Add all nodes to group bcpeers"
+      add_host:
+        name: "{{ item }}"
+        groups: bcpeers
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"]'
+    - name: "Add monitnoring nodes to group monitoring_peer"
+      register: _create_group_monitoring
+      add_host:
+        name: "{{ item }}"
+        groups: monitoring_peer
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"monitoring" in hostvars[item]["ansible_hostname"]'
 
 - name: Converge boot node
   hosts: "*boot*"

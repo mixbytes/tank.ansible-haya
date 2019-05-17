@@ -6,7 +6,7 @@ before_install:
 install:
   - pip install molecule
 script:
-  - molecule lint
+  - ansible-lint .
 notifications:
   webhooks:
     urls:

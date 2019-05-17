@@ -1,16 +1,25 @@
 ---
 bench_config:
-  blockchain: "EOS"
   rpcUrl: "http://localhost:8888"
 
   log:
     logLevel: 3
     printErrorStack: "true"
 
+  stopOn:
+    error: "print"
+    processedTransactions: 1000000
+
+  threadsAmount: 1
+  maxActivePromises: 20
+  configFile: "./haya.bench.config.json"
+
   tokensContract:
     wasmFilePath: "./src/contracts/eosio.token/eosio.token.wasm"
     abiFilePath: "./src/contracts/eosio.token/eosio.token.abi"
 
+  blocksBehind: 3
+  expireSeconds: 120
   transactions:
     tokenName: "SYS"
     deployTokenContract: "true"
@@ -19,15 +28,10 @@ bench_config:
     createTokensAmount: '1000000000.0000'
     issueTokensAmount: '1000000000.0000'
     tokensInOneTransfer: '1.0000'
-    transfersAmount: 100
+    keyPoints: 10
+    keyPointsAmount: 1000
     threadsAmount: 1
-    blocksBehind: 3
-    expireSeconds: 120
-
-  accountsGenerator:
-    possibleAccountNameChars: "abcdefghijklmnopqrstuvwxyz12345"
-    accountNameLength: 7
-    accountNamePrefix: "bench"
+    stopOnError: "print"
 
   creatorAccount:
     name: "eosio"
