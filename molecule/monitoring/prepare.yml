@@ -1,7 +1,0 @@
----
-- name: Prepare
-  hosts: all
-  become: true
-  gather_facts: true
-  roles:
-    - role: geerlingguy.docker

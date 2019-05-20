@@ -46,6 +46,7 @@
     install_promstack: true
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
+    bc_private_interface: eth1
   roles:
     - role: tank.ansible-haya
 
@@ -58,6 +59,7 @@
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
+    bc_private_interface: eth1
   roles:
     - role: tank.ansible-haya
 
@@ -69,5 +71,6 @@
     install_promstack: true
     admin_user: tank
     admin_password: tank
+    bc_private_interface: eth1
   roles:
     - role: tank.ansible-haya

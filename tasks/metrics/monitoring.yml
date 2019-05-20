@@ -72,7 +72,6 @@
 
 - name: Copy dashboard
   become: false
-  delegate_to: 127.0.0.1
   template:
     src: "grafana/haya/dashboard.json.j2"
     dest: "/tmp/dashboard.json"
@@ -83,15 +82,13 @@
   block:
     - name: "Create dashboard"
       become: false
-      delegate_to: 127.0.0.1
       grafana_dashboard:
         grafana_url: "http://localhost:3000"
         grafana_user: "{{ admin_user }}"
         grafana_password: "{{ admin_password }}"
         state: present
-        message: "Imported"
+        commit_message: Imported
         overwrite: yes
-        slug: '0000000012'
         path: "/tmp/dashboard.json"
 
     - name: "Set imported to true"

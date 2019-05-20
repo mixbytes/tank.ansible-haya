@@ -18,7 +18,10 @@ bnet-connect = {{ hostvars[host]['ansible_'+bc_private_interface]['ipv4']['addre
 
 bnet-no-trx = false
 
+{% if bc_haya_isproduction_enabled  == "true " %}
 producer-name = {{ producer_name }}
+{% endif %}
+
 signature-provider = {{ producer_pub_key }}=KEY:{{ producer_pvt_key }}
 
 p2p-listen-endpoint = 0.0.0.0:9876

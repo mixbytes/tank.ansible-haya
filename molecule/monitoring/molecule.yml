@@ -13,7 +13,7 @@ lint:
   name: yamllint
 platforms:
   - name: ubuntu1804-boot
-    box: ubuntu/bionic64
+    box: pogosoftware/ubuntu-18.04-docker
     interfaces:
       - auto_config: true
         network_name: private_network
@@ -23,7 +23,7 @@ platforms:
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
   - name: ubuntu1804-producer
-    box: ubuntu/bionic64
+    box: pogosoftware/ubuntu-18.04-docker
     interfaces:
       - auto_config: true
         network_name: private_network
@@ -33,7 +33,7 @@ platforms:
     provider_raw_config_args:
       - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
   - name: ubuntu1804-monitoring
-    box: ubuntu/bionic64
+    box: pogosoftware/ubuntu-18.04-docker
     instance_raw_config_args:
       - "vm.network 'forwarded_port', guest: 3000, host: 3000"
       - "vm.network 'forwarded_port', guest: 9090, host: 9090"
@@ -51,6 +51,8 @@ provisioner:
   config_options:
     defaults:
       callback_whitelist: profile_tasks
+      interpreter_python: auto
+      deprecation_warnings: False
     ssh_connection:
       pipelining: true
       ssh_args: -o ControlPersist=6000s -o ControlMaster=auto -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no

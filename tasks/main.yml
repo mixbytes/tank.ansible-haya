@@ -9,6 +9,7 @@
     packages:
       - ntp
       - python3-pip
+      - python-pip
 
 - name: Login to docker registry
   include_tasks: "init.yml"
