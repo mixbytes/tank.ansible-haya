@@ -8,11 +8,17 @@
     msg: "{{ groups['all'] }}"
 
 - name: "Set monitoring ip address"
+  tags:
+    - always
   set_fact:
     monitoring_peer_ip: "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
 - name: "Set boot ip address"
+  tags:
+    - always
   set_fact:
     bc_boot_ip: "{{ groups['bcboot'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
 - name: "Set all peers ip addresses"
+  tags:
+    - always
   set_fact:
     bc_peers_ip: "{{ groups['bcpeers'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"

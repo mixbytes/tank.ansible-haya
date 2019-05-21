@@ -10,6 +10,8 @@
     - "{{ bc_path_state }}"
 
 - name: set config.ini
+  tags:
+    - update
   vars:
     producer_name: "{{ bc_haya_boot.name }}"
     producer_pub_key: "{{ bc_haya_boot.pub_key }}"
@@ -21,6 +23,8 @@
     - restart bootnode
 
 - name: set genesis.json
+  tags:
+    - update
   template:
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
@@ -28,6 +32,8 @@
     - restart bootnode
 
 - name: set accounts.json
+  tags:
+    - update
   template:
     src: configs/nodeos/accounts.json.j2
     dest: "{{ bc_path_config }}/accounts.json"
@@ -35,6 +41,8 @@
     - restart bootnode
 
 - name: set logger.json
+  tags:
+    - update
   template:
     src: configs/nodeos/logger.json.j2
     dest: "{{ bc_path_config }}/logger.json"

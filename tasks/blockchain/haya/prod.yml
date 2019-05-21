@@ -3,7 +3,7 @@
   set_fact:
     producer_account: "{{ bc_haya_producer_accounts[bc_haya_node_id | int] }}"
   tags:
-    - prod
+    - update
 
 - debug:
     msg: "{{ bc_haya_node_id | int }}"
@@ -32,7 +32,7 @@
 
 - name: set config.ini
   tags:
-    - prod
+    - update
   vars:
     producer_name: "{{ producer_account.name }}"
     producer_pub_key: "{{ producer_account.pub_key }}"
@@ -45,7 +45,7 @@
 
 - name: set genesis.json
   tags:
-    - prod
+    - update
   template:
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
@@ -54,7 +54,7 @@
 
 - name: set accounts.json
   tags:
-    - prod
+    - update
   template:
     src: configs/nodeos/accounts.json.j2
     dest: "{{ bc_path_config }}/accounts.json"
@@ -63,7 +63,7 @@
 
 - name: set logger.json
   tags:
-    - prod
+    - update
   template:
     src: configs/nodeos/logger.json.j2
     dest: "{{ bc_path_config }}/logger.json"
@@ -109,4 +109,4 @@
   delay: 5
   until: producer_resume is success
   tags:
-    - resume
+    - never

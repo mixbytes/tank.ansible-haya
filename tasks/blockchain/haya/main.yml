@@ -32,10 +32,14 @@
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Set components to boot"
+  tags:
+    - always
   set_fact:
     bc_component_name: "boot"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  tags:
+    - always
   when:
     - bc_haya_comp_state_boot == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
@@ -48,15 +52,13 @@
 
 - name: "Set components to prod"
   tags:
-    - prod
-    - resume
+    - always
   set_fact:
     bc_component_name: "prod"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
   tags:
-    - prod
-    - resume
+    - always
   when:
     - bc_haya_comp_state_prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"

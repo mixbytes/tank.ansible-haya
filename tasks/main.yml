@@ -9,10 +9,11 @@
     packages:
       - ntp
       - python3-pip
-      - python-pip
 
 - name: Login to docker registry
   include_tasks: "init.yml"
+  tags:
+    - always
 
 - name: Show debug variables
   include_tasks: "debug/show-state.yml"
@@ -32,5 +33,4 @@
 - name: "Install blockchain components"
   include_tasks: "blockchain/{{ bc_name }}/main.yml"
   tags:
-    - prod
-    - resume
+    - always
