@@ -97,6 +97,7 @@
   when:
     - slughttpresponse.status != 412
     - not imported
+    - not dashboard_exist.stat.exists
 
 - name: "Reimport Grafana dashboard (if dashboard file changed)"
   block:
