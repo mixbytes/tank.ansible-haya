@@ -9,6 +9,8 @@
     - "{{ bc_path_state }}"
 
 - name: "Start {{ bc_name }} container"
+  tags:
+    - update
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"

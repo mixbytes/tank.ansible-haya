@@ -71,6 +71,8 @@
     - restart prodnode
 
 - name: "Start {{ bc_name }}-{{ bc_component_name }} container"
+  tags:
+    - update
   register: "{{ bc_name }}_{{ bc_component_name }}"
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"

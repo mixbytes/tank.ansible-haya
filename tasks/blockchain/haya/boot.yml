@@ -60,6 +60,8 @@
     - debug
 
 - name: Start boot-node container
+  tags:
+    - update
   register: _start_boot_node
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"

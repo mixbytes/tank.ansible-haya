@@ -23,10 +23,14 @@
   include_tasks: "../../bench/main.yml"
 
 - name: "Set components to wallet"
+  tags:
+    - always
   set_fact:
     bc_component_name: "wallet"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  tags:
+    - always
   when:
     - bc_haya_comp_state_wallet == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
