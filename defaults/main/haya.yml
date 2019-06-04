@@ -22,7 +22,7 @@ bc_haya_boot:
 bc_haya_wallet:
   port: 6666
 
-bc_haya_logger_level: "debug"
+bc_haya_logger_level: "info"
 bc_haya_logger_enabled: "true"
 bc_haya_logger_additivity: "false"
 
@@ -40,7 +40,7 @@ bc_haya_node_bnet_port: 4321
 bc_haya_node_metrics_port: 8889
 
 bc_haya_isproduction_enabled: "true"
-bc_haya_tokens_amount: 10000000000
+bc_haya_tokens_amount: "1000000000.0000"
 
 bc_haya_producer_name: "{{ bc_haya_boot.name }}"
 bc_haya_producer_pub_key: "{{ bc_haya_boot.pub_key }}"

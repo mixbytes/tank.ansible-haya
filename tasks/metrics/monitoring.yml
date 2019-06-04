@@ -10,7 +10,7 @@
     prometheus_targets: [{ jobname: "node_exporter", host: "localhost", port: "{{ node_exporter_port }}" }]
 
 - name: "Add prometheus targets to {{ inventory_hostname }}"
-  loop: "{{ bc_peers_ip }}"
+  loop: "{{ bc_all_ip }}"
   template:
     src: "configs/prometheus/target.yml.j2"
     dest: "/etc/prometheus/targets/{{ target_ip }}.yml"
@@ -48,7 +48,7 @@
 
 - name: Check dashboard exist by file
   stat:
-    path: "/root/dashboard.json"
+    path: "/tmp/dashboard.json"
   register: dashboard_exist
 
 - name: Generate UID
@@ -57,7 +57,7 @@
 
 - name: Get dashboard uid
   shell: |
-    cat /root/dashboard.json | grep uid | sed -e s/uid//g | tr -d ', ":'
+    cat /tmp/dashboard.json | grep uid | sed -e s/uid//g | tr -d ', ":'
   register: uid_from_file
 
 - name: Check dashboard exist by slug
@@ -82,6 +82,7 @@
   block:
     - name: "Create dashboard"
       become: false
+      register: create_dashboard
       grafana_dashboard:
         grafana_url: "http://localhost:3000"
         grafana_user: "{{ admin_user }}"
@@ -90,6 +91,7 @@
         commit_message: Imported
         overwrite: yes
         path: "/tmp/dashboard.json"
+      failed_when: "'already exists' not in create_dashboard.stderr"
 
     - name: "Set imported to true"
       set_fact:

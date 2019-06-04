@@ -13,6 +13,7 @@ pause-on-startup = true
 {% for host in groups['bcpeers'] %}
 {% if hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] != hostvars[inventory_hostname]['ansible_'+bc_private_interface]['ipv4']['address'] %}
 bnet-connect = {{ hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] }}:4321
+p2p-peer-address = {{ hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] }}:9876
 {% endif %}
 {% endfor %}
 
@@ -20,6 +21,10 @@ bnet-no-trx = false
 
 {% if bc_haya_isproduction_enabled == "true" %}
 producer-name = {{ producer_name }}
+{% endif %}
+
+{% if bc_haya_isproduction_enabled == "false" %}
+plugin = eosio::history_api_plugin
 {% endif %}
 
 signature-provider = {{ producer_pub_key }}=KEY:{{ producer_pvt_key }}
@@ -40,7 +45,7 @@ validation-mode = full
 disable-ram-billing-notify-checks = false
 https-client-validate-peers = 1
 
-access-control-allow-origin = "*"
+access-control-allow-origin = *
 access-control-allow-credentials = false
 
 max-body-size = 1048576
@@ -83,7 +88,6 @@ plugin = eosio::history_plugin
 plugin = eosio::producer_plugin
 plugin = eosio::producer_api_plugin
 plugin = eosio::net_api_plugin
-plugin = eosio::txn_test_gen_plugin
 
 telemetry-endpoint = 8889
 telemetry-uri = /metrics

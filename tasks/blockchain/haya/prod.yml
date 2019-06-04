@@ -52,15 +52,6 @@
   notify:
     - restart prodnode
 
-- name: set accounts.json
-  tags:
-    - update
-  template:
-    src: configs/nodeos/accounts.json.j2
-    dest: "{{ bc_path_config }}/accounts.json"
-  notify:
-    - restart prodnode
-
 - name: set logger.json
   tags:
     - update
@@ -73,7 +64,7 @@
 - name: "Start {{ bc_name }}-{{ bc_component_name }} container"
   tags:
     - update
-  register: "{{ bc_name }}_{{ bc_component_name }}"
+  register: start_prod_container
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
@@ -92,13 +83,8 @@
       - IPC_LOCK
     stop_timeout: 600
     pull: true
-
-- name: List data about prod container
-  debug:
-    var="{{ bc_name }}_{{ bc_component_name }}"
-  tags:
-    - never
-    - debug
+    log_options:
+      max-size: "1g"
 
 - name: "Resume producer"
   uri:
