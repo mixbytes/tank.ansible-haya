@@ -83,8 +83,11 @@
       - IPC_LOCK
     stop_timeout: 600
     pull: true
+    log_driver: "{{ bc_docker_log_driver | default(omit) }}"
     log_options:
-      max-size: "1g"
+      max-size: "{{ '1g' if bc_docker_log_driver == 'json-file' else omit }}"
+      fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
+      fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
 
 - name: "Resume producer"
   uri:
