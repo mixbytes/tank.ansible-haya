@@ -82,7 +82,6 @@
   block:
     - name: "Create dashboard"
       become: false
-      register: create_dashboard
       grafana_dashboard:
         grafana_url: "http://localhost:3000"
         grafana_user: "{{ admin_user }}"
@@ -91,7 +90,6 @@
         commit_message: Imported
         overwrite: yes
         path: "/tmp/dashboard.json"
-      failed_when: "'already exists' not in create_dashboard.stderr"
 
     - name: "Set imported to true"
       set_fact:
