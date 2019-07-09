@@ -82,6 +82,21 @@
   hosts: "*boot*"
   become: true
   vars:
+    bc_haya_system_accounts:
+      - eosio.bpay
+      - eosio.msig
+      - eosio.names
+      - eosio.ram
+      - eosio.ramfee
+      - eosio.saving
+      - eosio.stake
+      - eosio.token
+      - eosio.vpay
+      - eosio.rex
+    bc_haya_system_contracts:
+      - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+      - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
+      - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
     bc_haya_image: "mixbytes/haya:v0.1.1-BET"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
