@@ -82,6 +82,7 @@
   hosts: "*boot*"
   become: true
   vars:
+    bc_haya_image: "mixbytes/haya:v0.1.1-BET"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
@@ -108,6 +109,7 @@
   hosts: "*producer*"
   become: true
   vars:
+    bc_haya_image: "mixbytes/haya:v0.1.1-BET"
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true

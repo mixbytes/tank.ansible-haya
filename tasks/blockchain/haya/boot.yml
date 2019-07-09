@@ -84,7 +84,7 @@
   shell: |
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
-    wallet import --private-key {{ bc_haya_boot.pvt_key }}
+    wallet import --private-key {{ bc_haya_boot.pvt_key }} && \
     touch {{ bc_path_state }}/importbootkey
   args:
     creates: "{{ bc_path_state }}/importbootkey"
@@ -106,7 +106,7 @@
   shell: |
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
-    wallet import --private-key {{ item.pvt_key }}
+    wallet import --private-key {{ item.pvt_key }} && \
     touch {{ bc_path_state }}/importprodkeys-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/importprodkeys-{{ item.name }}"
@@ -123,7 +123,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    create account -x 45 eosio {{ item }} {{ bc_haya_boot.pub_key }} {{ bc_haya_boot.pub_key }}
+    create account -x 45 eosio {{ item }} {{ bc_haya_boot.pub_key }} {{ bc_haya_boot.pub_key }} && \
     touch {{ bc_path_state }}/createsysacc-{{ item }}
   args:
     creates: "{{ bc_path_state }}/createsysacc-{{ item }}"
@@ -150,7 +150,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    set abi {{ item.name }} /host/{{ bc_path_contracts }}/{{ item.abi_path }}
+    set abi {{ item.name }} /host/{{ bc_path_contracts }}/{{ item.abi_path }} && \
     touch {{ bc_path_state }}/setabisyscontracts-{{ item.name }}
   args:
     chdir: "{{ bc_path_contracts }}"
@@ -171,7 +171,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    set code {{ item.name }} /host/{{ bc_path_contracts }}/{{ item.wasm_path }}
+    set code {{ item.name }} /host/{{ bc_path_contracts }}/{{ item.wasm_path }} && \
     touch {{ bc_path_state }}/setcodesyscontracts-{{ item.name }}
   args:
     chdir: "{{ bc_path_contracts }}"
@@ -191,8 +191,8 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    push action eosio.token create '[\"eosio\", \"{{ bc_haya_tokens_amount }} \
-    BET\"]' -p eosio.token
+    push action eosio.token create '["eosio", "{{ bc_haya_tokens_amount }} \
+    BET"]' -p eosio.token && \
     touch {{ bc_path_state }}/createtoken
   args:
     creates: "{{ bc_path_state }}/createtoken"
@@ -210,8 +210,8 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    push action eosio.token issue '[\"eosio\", \"{{ bc_haya_tokens_amount }}
-    BET\", \"memo\"]' -p eosio
+    push action eosio.token issue '["eosio", "{{ bc_haya_tokens_amount }} \
+    BET", "memo"]' -p eosio && \
     touch {{ bc_path_state }}/allocatetokens
   args:
     creates: "{{ bc_path_state }}/allocatetokens"
@@ -229,7 +229,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    push action eosio init '[0,\"4,BET\"]' -p eosio
+    push action eosio init '[0,"4,BET"]' -p eosio && \
     touch {{ bc_path_state }}/initsyscontracts-eosio
   args:
     creates: "{{ bc_path_state }}/initsyscontracts-eosio"
@@ -252,8 +252,8 @@
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
     system newaccount -x 45 eosio --transfer {{ item.name }} \
-    {{ item.pub_key }} --stake-net \"2500000000.0000 BET\" \
-    --stake-cpu \"2500000000.0000 BET\" --buy-ram-kbytes 8192
+    {{ item.pub_key }} --stake-net "2500000000.0000 BET" \
+    --stake-cpu "2500000000.0000 BET" --buy-ram-kbytes 8192 && \
     touch {{ bc_path_state }}/createprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/createprodacc-{{ item.name }}"
@@ -279,7 +279,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    system regproducer {{ item.name }} {{ item.pub_key }} -p {{ item.name }}
+    system regproducer {{ item.name }} {{ item.pub_key }} -p {{ item.name }} && \
     touch {{ bc_path_state }}/regprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/regprodacc-{{ item.name }}"
@@ -294,7 +294,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    system voteproducer prods {{ item.name }} {{ item.name }}
+    system voteproducer prods {{ item.name }} {{ item.name }} && \
     touch {{ bc_path_state }}/voteprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/voteprodacc-{{ item.name }}"
