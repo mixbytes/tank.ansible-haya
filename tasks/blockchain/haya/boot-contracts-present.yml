@@ -158,7 +158,7 @@
 - name: copy contracts
   copy:
     src: configs/contracts/
-    dest: "{{ bc_path_config }}/contracts"
+    dest: "{{ bc_path_contracts }}"
 
 - name: set abi system contracts
   loop: "{{ bc_haya_system_contracts }}"
