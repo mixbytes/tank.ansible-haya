@@ -26,12 +26,7 @@ bc_haya_logger_level: "info"
 bc_haya_logger_enabled: "true"
 bc_haya_logger_additivity: "false"
 
-bc_haya_system_accounts:
-  - eosio.token
-
-bc_haya_system_contracts:
-  - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
-  - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+bc_haya_contracts: "absent"
 
 bc_haya_node_id: "1"
 bc_haya_node_http_port: 8888

@@ -1,0 +1,249 @@
+---
+- name: "Set facts"
+  set_fact:
+    bc_haya_system_accounts:
+      - eosio.token
+    bc_haya_system_contracts:
+      - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
+      - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+
+- name: "Make directory structure"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_data }}"
+    - "{{ bc_path_config }}"
+    - "{{ bc_path_state }}"
+
+- name: set config.ini
+  vars:
+    producer_name: "{{ bc_haya_boot.name }}"
+    producer_pub_key: "{{ bc_haya_boot.pub_key }}"
+    producer_pvt_key: "{{ bc_haya_boot.pvt_key }}"
+  template:
+    src: configs/nodeos/config.ini.j2
+    dest: "{{ bc_path_config }}/config.ini"
+
+- name: set genesis.json
+  template:
+    src: configs/nodeos/genesis.json.j2
+    dest: "{{ bc_path_config }}/genesis.json"
+
+- name: set accounts.json
+  template:
+    src: configs/nodeos/accounts.json.j2
+    dest: "{{ bc_path_config }}/accounts.json"
+
+- debug:
+    var: "{{ item }}"
+  with_items:
+    - bc_haya_node_http_port
+    - bc_haya_node_p2p_port
+    - bc_haya_node_bnet_port
+  tags:
+    - never
+    - debug
+
+- name: Start boot-node container
+  register: _start_boot_node
+  docker_container:
+    name: "{{ bc_name }}-{{ bc_component_name }}"
+    image: "{{ bc_haya_image }}"
+    command: /opt/haya/bin/haya-node --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
+    hostname: "{{ bc_name }}-{{ bc_component_name }}"
+    network_mode: host
+    volumes:
+      - "{{ bc_path_state }}:/root/.local"
+      - "{{ bc_path_config }}:{{ bc_path_config }}"
+      - "/tmp/cores:/tmp/cores"
+    capabilities:
+      - IPC_LOCK
+    stop_timeout: 600
+    pull: true
+
+- name: "Waiting"
+  pause:
+    seconds: 25
+  when:
+    - _start_boot_node is changed
+
+- debug:
+    var: "{{ item }}"
+  with_items:
+    - producer_account.pvt_key
+  tags:
+    - never
+    - debug
+
+- name: import producer key into wallet
+  shell:
+    cmd: "{{ bc_haya_cli }} --wallet-url=http://localhost:{{ bc_haya_wallet.port }} wallet import --private-key {{ bc_haya_boot.pvt_key }}"
+  register: import_producer_key
+  ignore_errors: true
+  failed_when: "('Nonexistent wallet' in import_producer_key.stderr or 'Key already exists' not in import_producer_key.stderr) and import_producer_key.rc != 0"
+  changed_when: "'imported private key for' in import_producer_key.stdout"
+
+- debug:
+    msg: "{{ import_producer_key.stderr_lines }}"
+  tags:
+    - never
+    - debug
+- debug: var=import_producer_key.stdout_lines
+  tags:
+    - never
+    - debug
+
+- name: create system accounts
+  loop: "{{ bc_haya_system_accounts }}"
+  register: create_system_accounts
+  shell:
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }} create account -x 45 eosio {{ item }} {{ bc_haya_boot.pub_key }} {{ bc_haya_boot.pub_key }}"
+  failed_when: "('Account name already exists' not in create_system_accounts.stderr) and create_system_accounts.rc != 0"
+  changed_when: "'executed transaction' in create_system_accounts.stdout"
+
+
+- name: Show stderr from create system accounts task
+  debug:
+    msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
+  loop: "{{ create_system_accounts.results }}"
+  tags:
+    - never
+    - debug
+
+- name: copy contracts
+  copy:
+    src: configs/contracts/
+    dest: "{{ bc_path_config }}/contracts"
+
+- name: set code system contracts
+  loop: "{{ bc_haya_system_contracts }}"
+  register: set_code_system_contracts
+  shell:
+    chdir: "{{ bc_path_config }}/contracts"
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }}
+    set code {{ item.name }} /host/$PWD/{{ item.wasm_path }}"
+  failed_when: "('already exists' not in set_code_system_contracts.stderr) and set_code_system_contracts.rc != 0"
+  changed_when: "'Setting Code' in set_code_system_contracts.stdout"
+
+- name: Show stderr from set code system contracts task
+  debug:
+    msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
+  loop: "{{ set_code_system_contracts.results }}"
+  tags:
+    - never
+    - debug
+
+- name: set abi system contracts
+  loop: "{{ bc_haya_system_contracts }}"
+  register: set_abi_system_contracts
+  shell:
+    chdir: "{{ bc_path_config }}/contracts"
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }}
+    set abi {{ item.name }} /host/$PWD/{{ item.abi_path }}"
+  failed_when: "('already exists' not in set_abi_system_contracts.stderr) and set_abi_system_contracts.rc != 0"
+  changed_when: "'Setting ABI' in set_abi_system_contracts.stdout"
+
+- name: Show stderr from set abi system contracts task
+  debug:
+    msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
+  loop: "{{ set_abi_system_contracts.results }}"
+  tags:
+    - never
+    - debug
+
+- name: create token
+  register: create_token
+  shell:
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }}
+    push action eosio.token create '[\"eosio\", \"{{ bc_haya_tokens_amount }}
+    EOS\"]' -p eosio.token"
+  failed_when: "('already exists' not in create_token.stderr) and create_token.rc != 0"
+  changed_when: "'executed transaction' in create_token.stdout"
+
+- name: Show stderr from create token task
+  debug:
+    msg: "DEBUG: \n stderr:{{ create_token.stderr }}\n stdout:{{ create_token.stdout }}"
+  tags:
+    - never
+    - debug
+
+- name: allocate tokens
+  register: allocate_tokens
+  shell:
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }}
+    push action eosio.token issue '[\"eosio\", \"{{ bc_haya_tokens_amount }}
+    EOS\", \"memo\"]' -p eosio"
+  failed_when: "('quantity exceeds available supply' not in allocate_tokens.stderr) and allocate_tokens.rc != 0"
+  changed_when: "'executed transaction' in allocate_tokens.stdout"
+
+- name: Show stderr from allocate tokens task
+  debug:
+    msg: "DEBUG: \n stderr:{{ allocate_tokens.stderr }}\n stdout:{{ allocate_tokens.stdout }}"
+  tags:
+    - never
+    - debug
+
+- name: create producers account
+  loop: "{{ bc_haya_producer_accounts }}"
+  register: create_producers_account
+  shell:
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }}
+    create account -x 45 eosio {{ item.name }} {{ item.pub_key }}
+    {{ item.pub_key }}"
+  failed_when: "('Account name already exists' not in create_producers_account.stderr) and create_producers_account.rc != 0"
+  changed_when: "'executed transaction' in create_producers_account.stdout"
+  retries: 5
+  delay: 3
+  until: create_producers_account is success
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index
+
+- name: Show stderr from create producers account task
+  debug:
+    msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
+  loop: "{{ create_producers_account.results }}"
+  tags:
+    - never
+    - debug
+
+- name: form producers list
+  loop: "{{ bc_haya_producer_accounts | list }}"
+  set_fact:
+    my_prods: "{{ my_prods|default([{'producer_name': 'eosio',
+    'block_signing_key':
+      'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'}])
+      + [{'producer_name': item.name, 'block_signing_key': item.pub_key}] }}"
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index
+
+- name: set producers
+  register: set_producers
+  shell:
+    cmd: "{{ bc_haya_cli }}
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
+    --url=http://localhost:{{ bc_haya_node_http_port }}
+    push action eosio setprods '[{{ my_prods | to_json }}]' -p eosio"
+  failed_when: "('Account name already exists' not in set_producers.stderr) and set_producers.rc != 0"
+  changed_when: "'executed transaction' in set_producers.stdout"
+
+- name: Show stderr from create system accounts task
+  debug:
+    msg: "DEBUG: \n stderr:{{ set_producers.stderr }}\n stdout:{{ set_producers.stdout }}"
+  tags:
+    - never
+    - debug

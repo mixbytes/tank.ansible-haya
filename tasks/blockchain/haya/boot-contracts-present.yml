@@ -1,4 +1,21 @@
 ---
+- name: "Set facts"
+  set_fact:
+    bc_haya_system_accounts:
+      - eosio.bpay
+      - eosio.msig
+      - eosio.names
+      - eosio.ram
+      - eosio.ramfee
+      - eosio.saving
+      - eosio.stake
+      - eosio.token
+      - eosio.vpay
+      - eosio.rex
+    bc_haya_system_contracts:
+      - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+      - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
+      - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
 
 - name: "Make directory structure"
   file:
@@ -140,8 +157,8 @@
 
 - name: copy contracts
   copy:
-    src: contracts/
-    dest: "{{ bc_path_contracts }}"
+    src: configs/contracts/
+    dest: "{{ bc_path_config }}/contracts"
 
 - name: set abi system contracts
   loop: "{{ bc_haya_system_contracts }}"
@@ -252,8 +269,8 @@
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
     system newaccount -x 45 eosio --transfer {{ item.name }} \
-    {{ item.pub_key }} --stake-net "2500000000.0000 BET" \
-    --stake-cpu "2500000000.0000 BET" --buy-ram-kbytes 8192 && \
+    {{ item.pub_key }} --stake-net "25000000.0000 BET" \
+    --stake-cpu "25000000.0000 BET" --buy-ram-kbytes 8192 && \
     touch {{ bc_path_state }}/createprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/createprodacc-{{ item.name }}"
