@@ -74,6 +74,7 @@
       --genesis-json={{ bc_path_config }}/genesis.json
       --logconf={{ bc_path_config }}/logger.json
     hostname: "{{ bc_name }}-{{ bc_component_name }}"
+    stop_timeout: 120
     network_mode: host
     volumes:
       - "{{ bc_path_state }}:/root/.local"
