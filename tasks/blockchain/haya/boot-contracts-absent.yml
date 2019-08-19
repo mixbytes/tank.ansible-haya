@@ -30,6 +30,13 @@
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
 
+- name: set logger.json
+  tags:
+    - update
+  template:
+    src: configs/nodeos/logger.json.j2
+    dest: "{{ bc_path_config }}/logger.json"
+
 - name: set accounts.json
   template:
     src: configs/nodeos/accounts.json.j2
@@ -50,7 +57,11 @@
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
-    command: /opt/haya/bin/haya-node --config-dir={{ bc_path_config }} --genesis-json={{ bc_path_config }}/genesis.json
+    command: |
+      /opt/haya/bin/haya-node
+      --config-dir={{ bc_path_config }}
+      --genesis-json={{ bc_path_config }}/genesis.json
+      --logconf={{ bc_path_config }}/logger.json
     hostname: "{{ bc_name }}-{{ bc_component_name }}"
     network_mode: host
     volumes:
