@@ -1,6 +1,7 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Dec 13 12:22:07 2018",
-    "version": "eosio::abi/1.0",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
+    "version": "eosio::abi/1.1",
+    "types": [],
     "structs": [
         {
             "name": "abi_hash",
@@ -371,6 +372,10 @@
                     "type": "asset"
                 },
                 {
+                    "name": "stake_vote_quantity",
+                    "type": "asset"
+                },
+                {
                     "name": "transfer",
                     "type": "bool"
                 }
@@ -394,6 +399,10 @@
                 },
                 {
                     "name": "cpu_weight",
+                    "type": "asset"
+                },
+                {
+                    "name": "vote_weight",
                     "type": "asset"
                 }
             ]
@@ -629,6 +638,34 @@
             ]
         },
         {
+            "name": "mvfrsavings",
+            "base": "",
+            "fields": [
+                {
+                    "name": "owner",
+                    "type": "name"
+                },
+                {
+                    "name": "rex",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
+            "name": "mvtosavings",
+            "base": "",
+            "fields": [
+                {
+                    "name": "owner",
+                    "type": "name"
+                },
+                {
+                    "name": "rex",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
             "name": "name_bid",
             "base": "",
             "fields": [
@@ -851,6 +888,10 @@
                 {
                     "name": "cpu_amount",
                     "type": "asset"
+                },
+                {
+                    "name": "vote_amount",
+                    "type": "asset"
                 }
             ]
         },
@@ -939,6 +980,10 @@
             "base": "",
             "fields": [
                 {
+                    "name": "version",
+                    "type": "uint8"
+                },
+                {
                     "name": "owner",
                     "type": "name"
                 },
@@ -965,6 +1010,10 @@
             "base": "",
             "fields": [
                 {
+                    "name": "version",
+                    "type": "uint8"
+                },
+                {
                     "name": "owner",
                     "type": "name"
                 },
@@ -978,6 +1027,10 @@
             "name": "rex_loan",
             "base": "",
             "fields": [
+                {
+                    "name": "version",
+                    "type": "uint8"
+                },
                 {
                     "name": "from",
                     "type": "name"
@@ -1013,6 +1066,10 @@
             "base": "",
             "fields": [
                 {
+                    "name": "version",
+                    "type": "uint8"
+                },
+                {
                     "name": "owner",
                     "type": "name"
                 },
@@ -1042,6 +1099,10 @@
             "name": "rex_pool",
             "base": "",
             "fields": [
+                {
+                    "name": "version",
+                    "type": "uint8"
+                },
                 {
                     "name": "total_lent",
                     "type": "asset"
@@ -1139,6 +1200,48 @@
             ]
         },
         {
+            "name": "setacctcpu",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "cpu_weight",
+                    "type": "int64?"
+                }
+            ]
+        },
+        {
+            "name": "setacctnet",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "net_weight",
+                    "type": "int64?"
+                }
+            ]
+        },
+        {
+            "name": "setacctram",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "ram_bytes",
+                    "type": "int64?"
+                }
+            ]
+        },
+        {
             "name": "setalimits",
             "base": "",
             "fields": [
@@ -1227,6 +1330,16 @@
             ]
         },
         {
+            "name": "setrex",
+            "base": "",
+            "fields": [
+                {
+                    "name": "balance",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
             "name": "undelegatebw",
             "base": "",
             "fields": [
@@ -1244,6 +1357,10 @@
                 },
                 {
                     "name": "unstake_cpu_quantity",
+                    "type": "asset"
+                },
+                {
+                    "name": "unstake_vote_quantity",
                     "type": "asset"
                 }
             ]
@@ -1357,6 +1474,10 @@
                     "type": "asset"
                 },
                 {
+                    "name": "vote_weight",
+                    "type": "asset"
+                },
+                {
                     "name": "ram_bytes",
                     "type": "int64"
                 }
@@ -1413,7 +1534,7 @@
                     "type": "bool"
                 },
                 {
-                    "name": "reserved1",
+                    "name": "flags1",
                     "type": "uint32"
                 },
                 {
@@ -1455,7 +1576,6 @@
             ]
         }
     ],
-    "types": [],
     "actions": [
         {
             "name": "bidname",
@@ -1553,6 +1673,16 @@
             "ricardian_contract": ""
         },
         {
+            "name": "mvfrsavings",
+            "type": "mvfrsavings",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "mvtosavings",
+            "type": "mvtosavings",
+            "ricardian_contract": ""
+        },
+        {
             "name": "newaccount",
             "type": "newaccount",
             "ricardian_contract": ""
@@ -1618,6 +1748,21 @@
             "ricardian_contract": ""
         },
         {
+            "name": "setacctcpu",
+            "type": "setacctcpu",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "setacctnet",
+            "type": "setacctnet",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "setacctram",
+            "type": "setacctram",
+            "ricardian_contract": ""
+        },
+        {
             "name": "setalimits",
             "type": "setalimits",
             "ricardian_contract": ""
@@ -1645,6 +1790,11 @@
         {
             "name": "setramrate",
             "type": "setramrate",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "setrex",
+            "type": "setrex",
             "ricardian_contract": ""
         },
         {
@@ -1829,5 +1979,5 @@
         }
     ],
     "ricardian_clauses": [],
-    "abi_extensions": []
+    "variants": []
 }
