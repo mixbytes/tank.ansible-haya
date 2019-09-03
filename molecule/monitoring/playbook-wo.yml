@@ -51,44 +51,17 @@
       loop: "{{ groups['all'] }}"
       when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"] or "full" in hostvars[item]["ansible_hostname"]'
 
-- name: "OS settings"
-  hosts: all
-  become: true
-  tasks:
-    - name: "Configuring ulimit"
-      block:
-        - pam_limits:
-            domain: root
-            limit_type: soft
-            limit_item: nofile
-            value: 65536
-        - pam_limits:
-            domain: root
-            limit_type: hard
-            limit_item: nofile
-            value: 65536
-        - pam_limits:
-            domain: '*'
-            limit_type: soft
-            limit_item: nofile
-            value: 65536
-        - pam_limits:
-            domain: '*'
-            limit_type: hard
-            limit_item: nofile
-            value: 65536
-
 - name: Converge boot node
   hosts: "*boot*"
   become: true
   vars:
+    bc_haya_image: "mixbytes/haya:v0.1.1-BET"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
-    bc_private_interface: eth1
     fluentd_sources_conf:
       - "type": forward
         "params":
@@ -102,24 +75,19 @@
             "host": "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list |join(',') }}"
             "port": "24224"
   roles:
+    #    - role: cloudalchemy.fluentd
     - role: tank.ansible-haya
-      #    - role: cloudalchemy.fluentd
 
 - name: Converge producer node
   hosts: "*producer*"
   become: true
   vars:
-    bc_haya_plugin_mongodb: present
-    bc_haya_plugin_mongodb_host: "ubuntu1804-producer"
-    mongodb_net_bindip: 0.0.0.0
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
-    bc_private_interface: eth1
   roles:
-    - role: ansible-role-mongodb
     - role: tank.ansible-haya
 
 - name: Converge monitoring node
@@ -130,7 +98,6 @@
     install_promstack: true
     admin_user: tank
     admin_password: tank
-    bc_private_interface: eth1
     fluentd_sources_conf:
       - "type": forward
         "params":
@@ -148,4 +115,4 @@
             "timekey_wait": 10m
   roles:
     - role: tank.ansible-haya
-      #    - role: cloudalchemy.fluentd
+      # - role: cloudalchemy.fluentd

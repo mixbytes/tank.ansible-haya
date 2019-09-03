@@ -9,6 +9,8 @@ bc_haya_comp_state_bench: absent
 
 bc_haya_image: "mixbytes/haya"
 bc_haya_plugin_randpa: "present"
+bc_haya_plugin_mongodb: "absent"
+bc_haya_plugin_mongodb_host: "fullnode"
 bc_path_contracts: "{{ bc_path_general }}/{{ bc_name }}/contracts"
 bc_haya_cli: "docker run --rm --network=host -v /:/host:ro {{ bc_haya_image }} /opt/haya/bin/haya-cli "
 

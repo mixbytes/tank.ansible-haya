@@ -1,4 +1,7 @@
 ---
+- src: https://github.com/UnderGreen/ansible-role-mongodb
+  version: master
+  
 - src: https://github.com/geerlingguy/ansible-role-docker
   version: master
   name: geerlingguy.docker

@@ -100,3 +100,7 @@ plugin = eosio::randpa_plugin
 randpa-private-key={{ producer_pvt_key }}
 {% endif %}
 
+{% if bc_haya_plugin_mongodb == "present" %}
+plugin = eosio::mongo_db_plugin
+{% endif %}
+

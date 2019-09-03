@@ -65,6 +65,7 @@
   tags:
     - update
   register: start_prod_container
+  when: bc_haya_plugin_mongodb != "present"
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
@@ -74,7 +75,37 @@
       --genesis-json={{ bc_path_config }}/genesis.json
       --logconf={{ bc_path_config }}/logger.json
     hostname: "{{ bc_name }}-{{ bc_component_name }}"
-    stop_timeout: 120
+    network_mode: host
+    volumes:
+      - "{{ bc_path_state }}:/root/.local"
+      - "{{ bc_path_config }}:{{ bc_path_config }}"
+      - "/tmp/cores:/tmp/cores"
+    capabilities:
+      - IPC_LOCK
+    stop_timeout: 600
+    pull: true
+    log_driver: "{{ bc_docker_log_driver | default(omit) }}"
+    log_options:
+      max-size: "{{ '1g' if bc_docker_log_driver == 'json-file' else omit }}"
+      fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
+      fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
+
+- name: "Start {{ bc_name }}-{{ bc_component_name }} container w/ mongodb"
+  tags:
+    - update
+  register: start_prod_container
+  when: bc_haya_plugin_mongodb == "present" and ansible_hostname == bc_haya_plugin_mongodb_host
+  docker_container:
+    name: "{{ bc_name }}-{{ bc_component_name }}"
+    image: "{{ bc_haya_image }}"
+    command: |
+      /opt/haya/bin/haya-node
+      --mongodb-wipe
+      -m mongodb://127.0.0.1:27017/EOS
+      --config-dir={{ bc_path_config }}
+      --genesis-json={{ bc_path_config }}/genesis.json
+      --logconf={{ bc_path_config }}/logger.json
+    hostname: "{{ bc_name }}-{{ bc_component_name }}"
     network_mode: host
     volumes:
       - "{{ bc_path_state }}:/root/.local"

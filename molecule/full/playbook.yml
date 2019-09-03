@@ -82,44 +82,61 @@
   hosts: "*boot*"
   become: true
   vars:
+    bc_docker_log_driver: "fluentd"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
-    bc_private_interface: eth1
+    bc_private_interface: eth0
     fluentd_sources_conf:
       - "type": forward
         "params":
           "port": 24224
           "bind": 0.0.0.0
+          "tag": '"docker.#{Socket.gethostname}"'
     fluentd_outputs_conf:
       - "type": forward
-        "tag": "docker.*"
+        "tag": "docker.**"
         "params":
           "server":
             "host": "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list |join(',') }}"
             "port": "24224"
+          "buffer":
+            "flush_interval": "5s"
   roles:
+    - role: cloudalchemy.fluentd
     - role: tank.ansible-haya
-      #    - role: cloudalchemy.fluentd
 
 - name: Converge producer node
   hosts: "*producer*"
   become: true
   vars:
-    bc_haya_plugin_mongodb: present
-    bc_haya_plugin_mongodb_host: "ubuntu1804-producer"
-    mongodb_net_bindip: 0.0.0.0
+    bc_docker_log_driver: "fluentd"
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
-    bc_private_interface: eth1
+    bc_private_interface: eth0
+    fluentd_sources_conf:
+      - "type": forward
+        "params":
+          "port": 24224
+          "bind": 0.0.0.0
+          "tag": '"docker.#{Socket.gethostname}"'
+    fluentd_outputs_conf:
+      - "type": forward
+        "tag": "docker.**"
+        "params":
+          "server":
+            "host": "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list |join(',') }}"
+            "port": "24224"
+          "buffer":
+            "flush_interval": "5s"
   roles:
-    - role: ansible-role-mongodb
+    - role: cloudalchemy.fluentd
     - role: tank.ansible-haya
 
 - name: Converge monitoring node
@@ -130,22 +147,30 @@
     install_promstack: true
     admin_user: tank
     admin_password: tank
-    bc_private_interface: eth1
+    bc_private_interface: eth0
+    fluentd_outputs_dir: "/var/log/haya"
     fluentd_sources_conf:
       - "type": forward
         "params":
           "port": 24224
           "bind": 0.0.0.0
+      - "type": prometheus
+        "params":
+          "port": 24231
+          "bind": 0.0.0.0
+          "metrics_path": /metrics
     fluentd_outputs_conf:
       - "type": file
-        "tag": "docker.*"
+        "tag": "docker.**"
         "params":
-          "path": /tmp/myapp_log
-          "compress": gzip
+          "append": "true"
+          "path": "{{ fluentd_outputs_dir }}/${container_name}/${tag}"
+          "format":
+            "@type": "json"
           "buffer":
-            "timekey": 1d
-            "timekey_use_utc": true
-            "timekey_wait": 10m
+            "timekey": "1d"
+            "timekey_wait": "5m"
+            "flush_interval": "5s"
   roles:
+    - role: cloudalchemy.fluentd
     - role: tank.ansible-haya
-      #    - role: cloudalchemy.fluentd
