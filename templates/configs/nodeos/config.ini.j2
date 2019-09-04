@@ -2,8 +2,6 @@ http-alias = hayanode-{{ bc_haya_node_id }}:8888
 
 http-server-address = 0.0.0.0:8888
 
-bnet-endpoint = 0.0.0.0:4321
-
 {% if bc_component_name == "boot" %}
 pause-on-startup = false
 {% else%}
@@ -12,12 +10,9 @@ pause-on-startup = true
 
 {% for host in groups['bcpeers'] %}
 {% if hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] != hostvars[inventory_hostname]['ansible_'+bc_private_interface]['ipv4']['address'] %}
-bnet-connect = {{ hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] }}:4321
 p2p-peer-address = {{ hostvars[host]['ansible_'+bc_private_interface]['ipv4']['address'] }}:9876
 {% endif %}
 {% endfor %}
-
-bnet-no-trx = false
 
 {% if bc_haya_isproduction_enabled == "true" %}
 producer-name = {{ producer_name }}
@@ -68,7 +63,6 @@ sync-fetch-span = 100
 use-socket-read-watermark = 0
 
 peer-log-format = ["${_name}" ${_ip}:${_port}]
-bnet-peer-log-format = ["${_name}" ${_ip}:${_port}]
 
 enable-stale-production = {{ bc_haya_isproduction_enabled }}
 max-transaction-time = 1000
@@ -82,7 +76,6 @@ txn-reference-block-lag = 0
 
 plugin = eosio::chain_api_plugin
 plugin = eosio::http_plugin
-plugin = eosio::bnet_plugin
 plugin = eosio::history_plugin
 
 plugin = eosio::producer_plugin
@@ -97,6 +90,5 @@ plugin = eosio::telemetry_plugin
 
 {% if bc_haya_plugin_randpa == "present" %}
 plugin = eosio::randpa_plugin
-randpa-private-key={{ producer_pvt_key }}
 {% endif %}
 

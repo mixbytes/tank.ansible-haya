@@ -97,7 +97,7 @@
       - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
       - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
       - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
-    bc_haya_image: "mixbytes/dao_node:latest"
+    bc_haya_image: "mixbytes/haya:v0.2.1"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
@@ -124,7 +124,7 @@
   hosts: "*producer*"
   become: true
   vars:
-    bc_haya_image: "mixbytes/dao_node:latest"
+    bc_haya_image: "mixbytes/haya:v0.2.1"
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true

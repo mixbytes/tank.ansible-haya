@@ -270,8 +270,8 @@
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
     system newaccount -x 45 eosio --transfer {{ item.name }} \
-    {{ item.pub_key }} --stake-net "25000000.0000 BET" \
-    --stake-cpu "25000000.0000 BET" --buy-ram-kbytes 8192 && \
+    {{ item.pub_key }} --stake-net "10.0000 BET" \
+    --stake-cpu "10.0000 BET" --stake-vote "7000000.0000 BET" --buy-ram-kbytes 8192 && \
     touch {{ bc_path_state }}/createprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/createprodacc-{{ item.name }}"
