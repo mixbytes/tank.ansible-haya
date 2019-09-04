@@ -88,7 +88,7 @@
         grafana_password: "{{ admin_password }}"
         state: present
         commit_message: Imported
-        overwrite: yes
+        overwrite: true
         path: "/tmp/dashboard.json"
 
     - name: "Set imported to true"

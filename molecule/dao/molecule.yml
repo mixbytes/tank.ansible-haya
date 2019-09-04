@@ -46,7 +46,7 @@ provisioner:
     defaults:
       callback_whitelist: profile_tasks
       interpreter_python: auto
-      deprecation_warnings: False
+      deprecation_warnings: false
     ssh_connection:
       pipelining: true
       ssh_args: -o ControlPersist=6000s -o ControlMaster=auto -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
@@ -57,7 +57,7 @@ provisioner:
         - env
         - .idea
       x: ["301,305,306"]
-      force-color: True
+      force-color: true
 scenario:
   name: dao
 verifier:

@@ -2,7 +2,7 @@
 - name: Collect facts
   hosts: all
   become: true
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Gathering Facts
       setup:
@@ -57,22 +57,26 @@
   tasks:
     - name: "Configuring ulimit"
       block:
-        - pam_limits:
+        - name: "Set ulimits"
+          pam_limits:
             domain: root
             limit_type: soft
             limit_item: nofile
             value: 65536
-        - pam_limits:
+        - name: "Set ulimits"
+          pam_limits:
             domain: root
             limit_type: hard
             limit_item: nofile
             value: 65536
-        - pam_limits:
+        - name: "Set ulimits"
+          pam_limits:
             domain: '*'
             limit_type: soft
             limit_item: nofile
             value: 65536
-        - pam_limits:
+        - name: "Set ulimits"
+          pam_limits:
             domain: '*'
             limit_type: hard
             limit_item: nofile
