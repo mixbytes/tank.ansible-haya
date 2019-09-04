@@ -15,3 +15,7 @@
 - src: https://github.com/mixbytes/tank.ansible-promstack
   version: master
   name: mixbytes.promstack
+
+- src: https://github.com/mixbytes/ansible-fluentd
+  version: fix-limits-checker
+  name: cloudalchemy.fluentd

@@ -13,23 +13,40 @@
     - "{{ bc_path_general }}"
     - "{{ bc_path_general }}/{{ bc_name }}"
 
+- name: "Set components to bench"
+  set_fact:
+    bc_component_name: "bench"
+
+- name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  when:
+    - bc_haya_comp_state_bench == "present"
+  include_tasks: "../../bench/main.yml"
+
 - name: "Set components to wallet"
+  tags:
+    - always
   set_fact:
     bc_component_name: "wallet"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  tags:
+    - always
   when:
     - bc_haya_comp_state_wallet == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
 
 - name: "Set components to boot"
+  tags:
+    - always
   set_fact:
     bc_component_name: "boot"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
+  tags:
+    - always
   when:
     - bc_haya_comp_state_boot == "present"
-  include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"
+  include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}-contracts-{{ bc_haya_contracts }}.yml"
 
 - name: "Setup metrics to {{ bc_component_name }}"
   when:
@@ -39,15 +56,13 @@
 
 - name: "Set components to prod"
   tags:
-    - prod
-    - resume
+    - always
   set_fact:
     bc_component_name: "prod"
 
 - name: "Setup {{ bc_name }}-{{ bc_component_name }} container"
   tags:
-    - prod
-    - resume
+    - always
   when:
     - bc_haya_comp_state_prod == "present"
   include_tasks: "blockchain/{{ bc_name }}/{{ bc_component_name }}.yml"

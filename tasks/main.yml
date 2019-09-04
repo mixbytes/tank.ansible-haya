@@ -4,12 +4,16 @@
 - name: "Install required packages"
   apt:
     name: "{{ packages }}"
+    cache_valid_time: 3600
   vars:
     packages:
       - ntp
+      - python3-pip
 
 - name: Login to docker registry
   include_tasks: "init.yml"
+  tags:
+    - always
 
 - name: Show debug variables
   include_tasks: "debug/show-state.yml"
@@ -29,5 +33,4 @@
 - name: "Install blockchain components"
   include_tasks: "blockchain/{{ bc_name }}/main.yml"
   tags:
-    - prod
-    - resume
+    - always

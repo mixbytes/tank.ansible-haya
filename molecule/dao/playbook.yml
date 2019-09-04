@@ -1,0 +1,149 @@
+---
+- name: Collect facts
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Gathering Facts
+      setup:
+
+- name: Create groups
+  hosts: localhost
+  gather_facts: false
+  vars:
+    bc_private_interface: enp0s8
+  tasks:
+    - name: "Add boot node to group bcboot"
+      tags:
+        - always
+      add_host:
+        name: "{{ item }}"
+        groups: bcboot
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"boot" in hostvars[item]["ansible_hostname"]'
+    - name: "Add block producer nodes to group bcpeers"
+      tags:
+        - always
+      add_host:
+        name: "{{ item }}"
+        groups: bcpeers
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"]'
+    - name: "Add monitnoring nodes to group monitoring_peer"
+      tags:
+        - always
+      register: _create_group_monitoring
+      add_host:
+        name: "{{ item }}"
+        groups: monitoring_peer
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"monitoring" in hostvars[item]["ansible_hostname"]'
+    - name: "Add all nodes to group allnodes"
+      tags:
+        - always
+      add_host:
+        name: "{{ item }}"
+        groups: allnodes
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"] or "full" in hostvars[item]["ansible_hostname"]'
+
+- name: "OS settings"
+  hosts: all
+  become: true
+  tasks:
+    - name: "Configuring ulimit"
+      block:
+        - pam_limits:
+            domain: root
+            limit_type: soft
+            limit_item: nofile
+            value: 65536
+        - pam_limits:
+            domain: root
+            limit_type: hard
+            limit_item: nofile
+            value: 65536
+        - pam_limits:
+            domain: '*'
+            limit_type: soft
+            limit_item: nofile
+            value: 65536
+        - pam_limits:
+            domain: '*'
+            limit_type: hard
+            limit_item: nofile
+            value: 65536
+
+- name: Converge boot node
+  hosts: "*boot*"
+  become: true
+  vars:
+    bc_haya_image: "daocasino/blockchain:v0.2.1"
+    bc_haya_comp_state_wallet: present
+    bc_haya_comp_state_boot: present
+    bc_haya_comp_state_bench: present
+    bc_haya_contracts: dao
+    install_promstack: true
+    bc_haya_node_id: 0
+    bc_haya_plugin_randpa: present
+    bc_private_interface: enp0s8
+    fluentd_sources_conf:
+      - "type": forward
+        "params":
+          "port": 24224
+          "bind": 0.0.0.0
+    fluentd_outputs_conf:
+      - "type": forward
+        "tag": "docker.*"
+        "params":
+          "server":
+            "host": "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list |join(',') }}"
+            "port": "24224"
+  roles:
+    - role: tank.ansible-haya
+
+- name: Converge producer node
+  hosts: "*producer*"
+  become: true
+  vars:
+    bc_haya_image: "daocasino/blockchain:v0.2.1"
+    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_bench: present
+    bc_haya_contracts: dao
+    install_promstack: true
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
+    bc_haya_plugin_randpa: present
+    bc_private_interface: enp0s8
+  roles:
+    - role: tank.ansible-haya
+
+- name: Converge monitoring node
+  hosts: "*monitoring*"
+  become: true
+  vars:
+    bc_haya_comp_state_monitoring: present
+    install_promstack: true
+    admin_user: tank
+    admin_password: tank
+    bc_private_interface: enp0s8
+    fluentd_sources_conf:
+      - "type": forward
+        "params":
+          "port": 24224
+          "bind": 0.0.0.0
+    fluentd_outputs_conf:
+      - "type": file
+        "tag": "docker.*"
+        "params":
+          "path": /tmp/myapp_log
+          "compress": gzip
+          "buffer":
+            "timekey": 1d
+            "timekey_use_utc": true
+            "timekey_wait": 10m
+  roles:
+    - role: tank.ansible-haya

@@ -7,9 +7,9 @@ bc_haya_comp_state_prod: absent
 bc_haya_comp_state_monitoring: absent
 bc_haya_comp_state_bench: absent
 
-bc_haya_image: "mixbytes/haya:ci"
-bc_haya_plugin_randpa: "absent"
-
+bc_haya_image: "mixbytes/haya"
+bc_haya_plugin_randpa: "present"
+bc_path_contracts: "{{ bc_path_general }}/{{ bc_name }}/contracts"
 bc_haya_cli: "docker run --rm --network=host -v /:/host:ro {{ bc_haya_image }} /opt/haya/bin/haya-cli "
 
 bc_haya_boot:
@@ -22,16 +22,11 @@ bc_haya_boot:
 bc_haya_wallet:
   port: 6666
 
-bc_haya_logger_level: "warn"
+bc_haya_logger_level: "info"
 bc_haya_logger_enabled: "true"
 bc_haya_logger_additivity: "false"
 
-bc_haya_system_accounts:
-  - eosio.token
-
-bc_haya_system_contracts:
-  - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
-  - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+bc_haya_contracts: "absent"
 
 bc_haya_node_id: "1"
 bc_haya_node_http_port: 8888
@@ -40,7 +35,7 @@ bc_haya_node_bnet_port: 4321
 bc_haya_node_metrics_port: 8889
 
 bc_haya_isproduction_enabled: "true"
-bc_haya_tokens_amount: 10000000000
+bc_haya_tokens_amount: "1000000000.0000"
 
 bc_haya_producer_name: "{{ bc_haya_boot.name }}"
 bc_haya_producer_pub_key: "{{ bc_haya_boot.pub_key }}"

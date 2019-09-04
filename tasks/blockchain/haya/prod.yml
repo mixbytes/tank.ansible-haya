@@ -3,7 +3,7 @@
   set_fact:
     producer_account: "{{ bc_haya_producer_accounts[bc_haya_node_id | int] }}"
   tags:
-    - prod
+    - update
 
 - debug:
     msg: "{{ bc_haya_node_id | int }}"
@@ -32,7 +32,7 @@
 
 - name: set config.ini
   tags:
-    - prod
+    - update
   vars:
     producer_name: "{{ producer_account.name }}"
     producer_pub_key: "{{ producer_account.pub_key }}"
@@ -45,25 +45,16 @@
 
 - name: set genesis.json
   tags:
-    - prod
+    - update
   template:
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
   notify:
     - restart prodnode
 
-- name: set accounts.json
-  tags:
-    - prod
-  template:
-    src: configs/nodeos/accounts.json.j2
-    dest: "{{ bc_path_config }}/accounts.json"
-  notify:
-    - restart prodnode
-
 - name: set logger.json
   tags:
-    - prod
+    - update
   template:
     src: configs/nodeos/logger.json.j2
     dest: "{{ bc_path_config }}/logger.json"
@@ -71,7 +62,9 @@
     - restart prodnode
 
 - name: "Start {{ bc_name }}-{{ bc_component_name }} container"
-  register: "{{ bc_name }}_{{ bc_component_name }}"
+  tags:
+    - update
+  register: start_prod_container
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
@@ -90,13 +83,11 @@
       - IPC_LOCK
     stop_timeout: 600
     pull: true
-
-- name: List data about prod container
-  debug:
-    var="{{ bc_name }}_{{ bc_component_name }}"
-  tags:
-    - never
-    - debug
+    log_driver: "{{ bc_docker_log_driver | default(omit) }}"
+    log_options:
+      max-size: "{{ '1g' if bc_docker_log_driver == 'json-file' else omit }}"
+      fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
+      fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
 
 - name: "Resume producer"
   uri:
@@ -105,8 +96,8 @@
     body_format: form-urlencoded
     status_code: 201
   register: producer_resume
-  retries: 5
+  retries: 10
   delay: 5
   until: producer_resume is success
   tags:
-    - resume
+    - update

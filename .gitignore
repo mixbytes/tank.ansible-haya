@@ -1,7 +1,9 @@
 __pycache__
+*.pyc
 .idea
 /playbook.yml
 notes
 *.out
 *.sublime-project
 *.sublime-workspace
+env

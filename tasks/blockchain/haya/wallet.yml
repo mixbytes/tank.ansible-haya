@@ -9,6 +9,8 @@
     - "{{ bc_path_state }}"
 
 - name: "Start {{ bc_name }} container"
+  tags:
+    - update
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
@@ -29,6 +31,11 @@
     stop_timeout: 600
     networks:
       - name: "{{ bc_name }}-net"
+    log_driver: "{{ bc_docker_log_driver | default(omit) }}"
+    log_options:
+      max-size: "{{ '1g' if bc_docker_log_driver == 'json-file' else omit }}"
+      fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
+      fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
 
 - name: Create default wallet
   shell:
