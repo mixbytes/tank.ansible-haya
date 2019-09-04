@@ -13,27 +13,23 @@ lint:
   name: yamllint
 platforms:
   - name: ubuntu1804-boot
-    box: pogosoftware/ubuntu-18.04-docker
+    box: ubuntu/bionic64
     interfaces:
       - auto_config: true
         network_name: private_network
         type: dhcp
     cpus: 2
     memory: 1024
-    provider_raw_config_args:
-      - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
   - name: ubuntu1804-producer
-    box: pogosoftware/ubuntu-18.04-docker
+    box: ubuntu/bionic64
     interfaces:
       - auto_config: true
         network_name: private_network
         type: dhcp
     cpus: 2
     memory: 1024
-    provider_raw_config_args:
-      - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
   - name: ubuntu1804-monitoring
-    box: pogosoftware/ubuntu-18.04-docker
+    box: ubuntu/bionic64
     instance_raw_config_args:
       - "vm.network 'forwarded_port', guest: 3000, host: 3000"
       - "vm.network 'forwarded_port', guest: 9090, host: 9090"
@@ -42,8 +38,6 @@ platforms:
         network_name: private_network
         type: dhcp
     cpus: 1
-    provider_raw_config_args:
-      - "customize ['modifyvm', :id, '--cpuexecutioncap', '50']"
 provisioner:
   name: ansible
   playbooks:
@@ -65,7 +59,7 @@ provisioner:
       x: ["301,305,306"]
       force-color: True
 scenario:
-  name: monitoring
+  name: haya
 verifier:
   name: testinfra
   lint:
