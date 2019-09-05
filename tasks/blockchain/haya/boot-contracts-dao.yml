@@ -261,6 +261,15 @@
     - never
     - debug
 
+- name: Stake for vote
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    --url=http://localhost:{{ bc_haya_node_http_port }} \
+    system delegatebw eosio eosio --buy-ram-bytes "10000000" "100.0000 BET" "100.0000 BET" "30000000.0000 BET" -p eosio && \
+    touch {{ bc_path_state }}/stakevoting
+  args:
+    creates: "{{ bc_path_state }}/stakevoting"
 
 - name: create producers account
   loop: "{{ bc_haya_producer_accounts }}"
@@ -271,7 +280,7 @@
     --url=http://localhost:{{ bc_haya_node_http_port }} \
     system newaccount -x 45 eosio --transfer {{ item.name }} \
     {{ item.pub_key }} --stake-net "10.0000 BET" \
-    --stake-cpu "10.0000 BET" --stake-vote "7000000.0000 BET" --buy-ram-kbytes 8192 && \
+    --stake-cpu "10.0000 BET" --stake-vote "1000000.0000 BET" --buy-ram-kbytes 8192 && \
     touch {{ bc_path_state }}/createprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/createprodacc-{{ item.name }}"
@@ -305,6 +314,14 @@
   loop_control:
     index_var: index
 
+- name: Form producers list
+  loop: "{{ bc_haya_producer_accounts | list }}"
+  set_fact:
+    prods_for_vote: "{{ prods_for_vote|default('') + ' ' + item.name }}"
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index
+
 - name: Vote producers account
   loop: "{{ bc_haya_producer_accounts }}"
   register: vote_producers_account
@@ -312,10 +329,10 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    system voteproducer prods {{ item.name }} {{ item.name }} && \
-    touch {{ bc_path_state }}/voteprodacc-{{ item.name }}
+    system voteproducer prods eosio {{ prods_for_vote }} && \
+    touch {{ bc_path_state }}/voteprodaccs
   args:
-    creates: "{{ bc_path_state }}/voteprodacc-{{ item.name }}"
+    creates: "{{ bc_path_state }}/voteprodaccs"
   when: bc_peers_ip|length > index + 1
   loop_control:
     index_var: index
