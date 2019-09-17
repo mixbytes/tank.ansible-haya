@@ -20,7 +20,23 @@ platforms:
         type: dhcp
     cpus: 2
     memory: 1024
-  - name: ubuntu1804-producer
+  - name: ubuntu1804-producer-1
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
+  - name: ubuntu1804-producer-2
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
+  - name: ubuntu1804-fullnode-1
     box: ubuntu/bionic64
     interfaces:
       - auto_config: true

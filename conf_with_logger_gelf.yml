@@ -1,0 +1,2 @@
+bc_haya_logger_gelf_enabled: true
+bc_haya_logger_gelf_endpoint: 127.0.0.1:13014

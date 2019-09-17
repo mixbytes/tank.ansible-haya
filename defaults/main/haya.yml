@@ -1,6 +1,6 @@
 ---
 # haya.yml
-
+bc_setup_local: false
 bc_haya_comp_state_wallet: absent
 bc_haya_comp_state_boot: absent
 bc_haya_comp_state_prod: absent
@@ -23,8 +23,11 @@ bc_haya_wallet:
   port: 6666
 
 bc_haya_logger_level: "info"
+bc_haya_logger_impl_level: "off"
 bc_haya_logger_enabled: "true"
 bc_haya_logger_additivity: "false"
+bc_haya_logger_gelf_enabled: "false"
+bc_haya_logger_gelf_endpoint: "127.0.0.1:12212"
 
 bc_haya_contracts: "absent"
 

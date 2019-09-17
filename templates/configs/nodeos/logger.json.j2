@@ -1,6 +1,16 @@
 {
  "includes": [],
- "appenders": [{
+ "appenders": [
+   {
+     "name": "net",
+     "type": "gelf",
+     "args": {
+       "endpoint": "{{ bc_haya_logger_gelf_endpoint }}",
+       "host": "{{ ansible_hostname }}"
+     },
+     "enabled": {% if bc_haya_logger_gelf_enabled == true %} true {% else %} false {% endif %}
+   },
+   {
      "name": "consoleout",
      "type": "console",
      "args": {
@@ -20,12 +30,24 @@
      "enabled": true
    }
  ],
- "loggers": [{
+ "loggers": [
+   {
      "name": "default",
      "level": "{{ bc_haya_logger_level }}",
      "enabled": {{ bc_haya_logger_enabled }},
      "additivity": {{ bc_haya_logger_additivity }},
      "appenders": [
+       "net",
+       "consoleout"
+     ]
+   },
+   {
+     "name": "net_plugin_impl",
+     "level": "{{ bc_haya_logger_impl_level }}",
+     "enabled": true,
+     "additivity": false,
+     "appenders": [
+       "net",
        "consoleout"
      ]
    }

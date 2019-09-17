@@ -93,6 +93,7 @@
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
     bc_private_interface: enp0s8
+    bc_haya_contracts: present
     fluentd_sources_conf:
       - "type": forward
         "params":
@@ -115,11 +116,28 @@
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true
-    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
+    bcpeers_size: "{{ groups['bcpeers'] | length | int }}"
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int + 1 + bcpeers_size | int }}"
     bc_haya_plugin_randpa: present
     bc_private_interface: enp0s8
   roles:
     - role: tank.ansible-haya
+
+- name: Converge full node
+  hosts: "*full*"
+  become: true
+  vars:
+    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_bench: present
+    install_promstack: true
+    bcpeers_size: "{{ groups['bcpeers'] | length | int }}"
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int + 1 + bcpeers_size | int }}"
+    bc_haya_plugin_randpa: present
+    bc_private_interface: enp0s8
+    bc_haya_isproduction_enabled: "false"
+  roles:
+    - role: tank.ansible-haya
+  tasks:
 
 - name: Converge monitoring node
   hosts: "*monitoring*"
