@@ -12,18 +12,22 @@
     - always
   set_fact:
     monitoring_peer_ip: "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+  when: not bc_setup_local
 - name: "Set boot ip address"
   tags:
     - always
   set_fact:
     bc_boot_ip: "{{ groups['bcboot'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+  when: not bc_setup_local
 - name: "Set block producer peers ip addresses"
   tags:
     - always
   set_fact:
     bc_peers_ip: "{{ groups['bcpeers'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+  when: not bc_setup_local
 - name: "Set all our peers ip addresses"
   tags:
     - always
   set_fact:
     bc_all_ip: "{{ groups['allnodes'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list }}"
+  when: not bc_setup_local
