@@ -3,6 +3,12 @@
   hosts: all
   become: true
   tasks:
+    - name: Setting up apt-proxy
+      copy:
+        content: |
+          Acquire::HTTP::Proxy "http://10.0.2.2:3142";
+          Acquire::HTTPS::Proxy "false";
+        dest: /etc/apt/apt.conf.d/01proxy
     - name: Install pip3
       apt:
         name: python3-pip
@@ -36,3 +42,12 @@
   gather_facts: true
   roles:
     - role: geerlingguy.docker
+  tasks:
+    - name: Create config for docker mirror
+      copy:
+        content: { "registry-mirrors": ["http://10.0.2.2:5000"] }
+        dest: /etc/docker/daemon.json
+    - name: Restart docker daemon
+      service:
+        name: docker
+        state: restarted
