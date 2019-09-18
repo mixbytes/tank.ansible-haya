@@ -7,3 +7,5 @@ notes
 *.sublime-project
 *.sublime-workspace
 env
+.vagrant
+*.log

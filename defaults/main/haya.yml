@@ -10,7 +10,7 @@ bc_haya_comp_state_bench: absent
 bc_haya_image: "mixbytes/haya"
 bc_haya_plugin_randpa: "present"
 bc_path_contracts: "{{ bc_path_general }}/{{ bc_name }}/contracts"
-bc_haya_cli: "docker run --rm --network=host -v /:/host:ro {{ bc_haya_image }} /opt/haya/bin/haya-cli "
+bc_haya_cli: "docker run --rm --network=host -v /:/host:ro -v {{ bc_path_general }}/{{ bc_name }}/haya-cli:/opt/haya/haya-cli {{ bc_haya_image }} /opt/haya/bin/haya-cli "
 
 bc_haya_boot:
   public_ip: "{{ ansible_default_ipv4.address }}"
@@ -35,7 +35,8 @@ bc_haya_node_bnet_port: 4321
 bc_haya_node_metrics_port: 8889
 
 bc_haya_isproduction_enabled: "true"
-bc_haya_tokens_amount: "1000000000.0000"
+bc_haya_tokens_amount: "167270821.0000"
+bc_haya_max_tokens_amount: "1000000000.0000"
 
 bc_haya_producer_name: "{{ bc_haya_boot.name }}"
 bc_haya_producer_pub_key: "{{ bc_haya_boot.pub_key }}"

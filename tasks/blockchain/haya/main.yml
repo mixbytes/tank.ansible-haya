@@ -12,6 +12,12 @@
   with_items:
     - "{{ bc_path_general }}"
     - "{{ bc_path_general }}/{{ bc_name }}"
+    - "{{ bc_path_general }}/{{ bc_name }}/haya-cli"
+
+- name: "Copy haya script"
+  copy:
+    src: scripts/haya-util.sh
+    dest: "{{ bc_path_general }}/{{ bc_name }}/haya-util.sh"
 
 - name: "Set components to bench"
   set_fact:

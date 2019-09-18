@@ -1,0 +1,135 @@
+---
+- name: Collect facts
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Gathering Facts
+      setup:
+
+- name: Create groups
+  hosts: localhost
+  gather_facts: false
+  vars:
+    bc_private_interface: enp0s8
+  tasks:
+    - name: "Add boot node to group bcboot"
+      tags:
+        - always
+      add_host:
+        name: "{{ item }}"
+        groups: bcboot
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"boot" in hostvars[item]["ansible_hostname"]'
+    - name: "Add block producer nodes to group bcpeers"
+      tags:
+        - always
+      add_host:
+        name: "{{ item }}"
+        groups: bcpeers
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"]'
+    - name: "Add monitnoring nodes to group monitoring_peer"
+      tags:
+        - always
+      register: _create_group_monitoring
+      add_host:
+        name: "{{ item }}"
+        groups: monitoring_peer
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"monitoring" in hostvars[item]["ansible_hostname"]'
+    - name: "Add all nodes to group allnodes"
+      tags:
+        - always
+      add_host:
+        name: "{{ item }}"
+        groups: allnodes
+        inventory_dir: "{{ hostvars[item].inventory_dir }}"
+      loop: "{{ groups['all'] }}"
+      when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"] or "full" in hostvars[item]["ansible_hostname"]'
+
+- name: "OS settings"
+  hosts: all
+  become: true
+  tasks:
+    - name: "Configuring ulimit"
+      block:
+        - name: "Set ulimits"
+          pam_limits:
+            domain: root
+            limit_type: soft
+            limit_item: nofile
+            value: 65536
+        - name: "Set ulimits"
+          pam_limits:
+            domain: root
+            limit_type: hard
+            limit_item: nofile
+            value: 65536
+        - name: "Set ulimits"
+          pam_limits:
+            domain: '*'
+            limit_type: soft
+            limit_item: nofile
+            value: 65536
+        - name: "Set ulimits"
+          pam_limits:
+            domain: '*'
+            limit_type: hard
+            limit_item: nofile
+            value: 65536
+
+- name: Converge boot node
+  hosts: "*boot*"
+  become: true
+  vars:
+    bc_haya_comp_state_wallet: present
+    bc_haya_comp_state_boot: present
+    bc_haya_comp_state_bench: present
+    install_promstack: true
+    bc_haya_node_id: 0
+    bc_haya_plugin_randpa: present
+    bc_private_interface: enp0s8
+    bc_haya_image: "daocasino/blockchain:v0.2.1"
+    bc_haya_contracts: gos
+    bc_haya_producer_accounts_pub:
+      - name: producer.1
+        pub_key: EOS7ChvqY6PCMZD9gAQqQSsgEryeTDixX66zdbTytzD3VgFjj2vhN
+      - name: producer.2
+        pub_key: EOS8BFnevDViGesin1ZorbHMuFjdysEbdP1Yxyhv74S438WKK6auW
+      - name: producer.3
+        pub_key: EOS5aTsAvF7ysvf1gam4ymZKrQjbWLa4ob8TDeUr1F9Bwe7qWYHEu
+  roles:
+    - role: tank.ansible-haya
+
+- name: Converge full node
+  hosts: "*full*"
+  become: true
+  vars:
+    bc_haya_image: "daocasino/blockchain:v0.2.1"
+    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_bench: present
+    install_promstack: true
+    bcpeers_size: "{{ groups['bcpeers'] | length | int }}"
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int + 1 + bcpeers_size | int }}"
+    bc_haya_plugin_randpa: present
+    bc_private_interface: enp0s8
+    bc_haya_isproduction_enabled: "false"
+  roles:
+    - role: tank.ansible-haya
+  tasks:
+
+- name: Converge monitoring node
+  hosts: "*monitoring*"
+  become: true
+  vars:
+    bc_haya_comp_state_monitoring: present
+    install_promstack: true
+    admin_user: tank
+    admin_password: tank
+    bc_private_interface: enp0s8
+  roles:
+    - role: tank.ansible-haya
