@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-ACC_NAME="producer.1eb"
-ACC_KEY_PUB="EOS8i5eZ4AZULRQXxBgAfV6vqo6LQctx7DGe1YT3FkcBDYdFNdy2w"
-ACC_AMOUNT="10.0000 BET"
+ACC_NAME=$1
+ACC_KEY_PUB=$2
+ACC_AMOUNT=$3
 
 function acc_create(){
 haya-cli \
@@ -13,7 +13,7 @@ haya-cli \
 		--transfer ${ACC_NAME} ${ACC_KEY_PUB} \
 		--stake-net "10.0000 BET" \
 		--stake-cpu "10.0000 BET" \
-		--stake-vote "1000000.0000 BET" \
+		--stake-vote "0.0000 BET" \
 		--buy-ram-kbytes 8192
 }
 

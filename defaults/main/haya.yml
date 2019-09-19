@@ -6,10 +6,15 @@ bc_haya_comp_state_boot: absent
 bc_haya_comp_state_prod: absent
 bc_haya_comp_state_monitoring: absent
 bc_haya_comp_state_bench: absent
+bc_haya_plugin_randpa: "present"
+bc_haya_plugin_net_api: false
+bc_haya_plugin_producer_api: false
 
 bc_haya_image: "mixbytes/haya"
-bc_haya_plugin_randpa: "present"
 bc_path_contracts: "{{ bc_path_general }}/{{ bc_name }}/contracts"
+bc_path_config_template: "configs/nodeos/config.ini.j2"
+bc_path_genesis_template: "configs/nodeos/genesis.json.j2"
+bc_path_logger_template: "configs/nodeos/logger.json.j2"
 bc_haya_cli: "docker run --rm --network=host -v /:/host:ro -v {{ bc_path_general }}/{{ bc_name }}/haya-cli:/opt/haya/haya-cli {{ bc_haya_image }} /opt/haya/bin/haya-cli "
 
 bc_haya_boot:

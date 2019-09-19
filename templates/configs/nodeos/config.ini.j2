@@ -82,8 +82,10 @@ plugin = eosio::http_plugin
 plugin = eosio::history_plugin
 
 plugin = eosio::producer_plugin
-plugin = eosio::producer_api_plugin
-plugin = eosio::net_api_plugin
+{% if bc_haya_plugin_producer_api %}plugin = eosio::producer_api_plugin
+{% endif %}
+{% if bc_haya_plugin_net_api %}plugin = eosio::net_api_plugin
+{% endif %}
 
 telemetry-endpoint = 8889
 telemetry-uri = /metrics

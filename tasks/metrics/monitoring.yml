@@ -38,6 +38,7 @@
   delay: 20
 
 - name: Form slug from Title
+  changed_when: False
   shell: |
     echo "{{ Title }}" | sed -e "s/ /-/g" | tr '[:upper:]' '[:lower:]'
   register: slugout
@@ -56,6 +57,7 @@
     UID: "{{ lookup('password', '/dev/null length=9 chars=ascii_letters') }}"
 
 - name: Get dashboard uid
+  changed_when: False
   shell: |
     cat /tmp/dashboard.json | grep uid | sed -e s/uid//g | tr -d ', ":'
   register: uid_from_file

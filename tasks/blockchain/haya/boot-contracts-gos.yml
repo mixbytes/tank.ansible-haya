@@ -17,72 +17,7 @@
       - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
       - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
 
-- name: "Make directory structure"
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - "{{ bc_path_data }}"
-    - "{{ bc_path_config }}"
-    - "{{ bc_path_state }}"
-
-- name: set config.ini
-  vars:
-    producer_name: "{{ bc_haya_boot.name }}"
-    producer_pub_key: "{{ bc_haya_boot.pub_key }}"
-    producer_pvt_key: "{{ bc_haya_boot.pvt_key }}"
-  template:
-    src: configs/nodeos/config.ini.j2
-    dest: "{{ bc_path_config }}/config.ini"
-
-- name: set genesis.json
-  template:
-    src: configs/nodeos/genesis.json.j2
-    dest: "{{ bc_path_config }}/genesis.json"
-
-- name: set logger.json
-  tags:
-    - update
-  template:
-    src: configs/nodeos/logger.json.j2
-    dest: "{{ bc_path_config }}/logger.json"
-
-- name: Start boot-node container
-  register: _start_boot_node
-  docker_container:
-    name: "{{ bc_name }}-{{ bc_component_name }}"
-    image: "{{ bc_haya_image }}"
-    command: |
-      /opt/haya/bin/haya-node
-      --config-dir={{ bc_path_config }}
-      --genesis-json={{ bc_path_config }}/genesis.json
-      --logconf={{ bc_path_config }}/logger.json
-    hostname: "{{ bc_name }}-{{ bc_component_name }}"
-    network_mode: host
-    volumes:
-      - "{{ bc_path_state }}:/root/.local"
-      - "{{ bc_path_config }}:{{ bc_path_config }}"
-      - "{{ bc_path_contracts }}:{{ bc_path_contracts }}"
-      - "/tmp/cores:/tmp/cores"
-    capabilities:
-      - IPC_LOCK
-    stop_timeout: 600
-    pull: true
-    log_driver: "{{ bc_docker_log_driver | default(omit) }}"
-    log_options:
-      max-size: "{{ '1g' if bc_docker_log_driver == 'json-file' else omit }}"
-      fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
-      fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
-
-- name: "Resume producer"
-  uri:
-    url: "http://localhost:{{ bc_haya_node_http_port }}/v1/chain/get_info"
-    method: GET
-    status_code: 200
-  register: boot_status
-  retries: 10
-  delay: 5
-  until: boot_status is success
+- include_tasks: "boot-common.yml"
 
 - name: import bootstrap producer key into wallet
   shell: |
@@ -193,4 +128,3 @@
   until: create_producers_account is success
   loop_control:
     index_var: index
-

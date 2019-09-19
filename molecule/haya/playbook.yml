@@ -14,6 +14,7 @@
     bc_private_interface: enp0s8
   tasks:
     - name: "Add boot node to group bcboot"
+      changed_when: False
       tags:
         - always
       add_host:
@@ -23,6 +24,7 @@
       loop: "{{ groups['all'] }}"
       when: '"boot" in hostvars[item]["ansible_hostname"]'
     - name: "Add block producer nodes to group bcpeers"
+      changed_when: False
       tags:
         - always
       add_host:
@@ -32,6 +34,7 @@
       loop: "{{ groups['all'] }}"
       when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"]'
     - name: "Add monitnoring nodes to group monitoring_peer"
+      changed_when: False
       tags:
         - always
       register: _create_group_monitoring
@@ -42,6 +45,7 @@
       loop: "{{ groups['all'] }}"
       when: '"monitoring" in hostvars[item]["ansible_hostname"]'
     - name: "Add all nodes to group allnodes"
+      changed_when: False
       tags:
         - always
       add_host:
@@ -92,6 +96,8 @@
     install_promstack: true
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
+    bc_haya_plugin_net_api: true
+    bc_haya_plugin_producer_api: true
     bc_private_interface: enp0s8
     fluentd_sources_conf:
       - "type": forward
@@ -117,6 +123,8 @@
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
+    bc_haya_plugin_net_api: true
+    bc_haya_plugin_producer_api: true
     bc_private_interface: enp0s8
   roles:
     - role: tank.ansible-haya
