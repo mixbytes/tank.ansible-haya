@@ -1,0 +1,74 @@
+---
+dependency:
+  name: galaxy
+  options:
+    ignore-certs: true
+    ignore-errors: true
+    role-file: requirements.yml
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+platforms:
+  - name: ubuntu1804-boot
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
+  - name: ubuntu1804-producer
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
+  - name: ubuntu1804-fullnode
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
+  - name: ubuntu1804-monitoring
+    box: ubuntu/bionic64
+    instance_raw_config_args:
+      - "vm.network 'forwarded_port', guest: 3000, host: 3000"
+      - "vm.network 'forwarded_port', guest: 9090, host: 9090"
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 1
+provisioner:
+  name: ansible
+  playbooks:
+    converge: playbook.yml
+  config_options:
+    defaults:
+      callback_whitelist: profile_tasks
+      interpreter_python: auto
+      deprecation_warnings: false
+    ssh_connection:
+      pipelining: true
+      ssh_args: -o ControlPersist=6000s -o ControlMaster=auto -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+  lint:
+    name: ansible-lint
+    options:
+      exclude:
+        - env
+        - .idea
+      x: ["301,305,306"]
+      force-color: true
+scenario:
+  name: tank
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

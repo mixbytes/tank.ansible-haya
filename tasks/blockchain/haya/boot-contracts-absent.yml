@@ -120,7 +120,7 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    push action eosio.token create '["eosio", "{{ bc_haya_tokens_amount }} \
+    push action eosio.token create '["eosio", "{{ bc_haya_max_tokens_amount }} \
     EOS"]' -p eosio.token && \
     touch {{ bc_path_state }}/createtoken
   args:

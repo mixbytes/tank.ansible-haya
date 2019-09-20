@@ -14,7 +14,7 @@
     bc_private_interface: enp0s8
   tasks:
     - name: "Add boot node to group bcboot"
-      changed_when: False
+      changed_when: false
       tags:
         - always
       add_host:
@@ -24,7 +24,7 @@
       loop: "{{ groups['all'] }}"
       when: '"boot" in hostvars[item]["ansible_hostname"]'
     - name: "Add block producer nodes to group bcpeers"
-      changed_when: False
+      changed_when: false
       tags:
         - always
       add_host:
@@ -34,7 +34,7 @@
       loop: "{{ groups['all'] }}"
       when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"]'
     - name: "Add monitnoring nodes to group monitoring_peer"
-      changed_when: False
+      changed_when: false
       tags:
         - always
       register: _create_group_monitoring
@@ -45,7 +45,7 @@
       loop: "{{ groups['all'] }}"
       when: '"monitoring" in hostvars[item]["ansible_hostname"]'
     - name: "Add all nodes to group allnodes"
-      changed_when: False
+      changed_when: false
       tags:
         - always
       add_host:

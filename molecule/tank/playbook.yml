@@ -101,14 +101,14 @@
       - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
       - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
       - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
-    bc_haya_image: "mixbytes/haya:v0.2.1"
+    bc_haya_image: "mixbytes/haya:v0.2.2"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
-    bc_private_interface: eth1
+    bc_private_interface: enp0s8
     fluentd_sources_conf:
       - "type": forward
         "params":
@@ -122,21 +122,36 @@
             "host": "{{ groups['monitoring_peer'] | map('extract', hostvars, ['ansible_'+bc_private_interface, 'ipv4', 'address']) | list |join(',') }}"
             "port": "24224"
   roles:
-    - role: tank.blockchain
+    - role: tank.ansible-haya
 
 - name: Converge producer node
   hosts: "*producer*"
   become: true
   vars:
-    bc_haya_image: "mixbytes/haya:v0.2.1"
+    bc_haya_image: "mixbytes/haya:v0.2.2"
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
-    bc_private_interface: eth1
+    bc_private_interface: enp0s8
   roles:
-    - role: tank.blockchain
+    - role: tank.ansible-haya
+
+- name: Converge full node
+  hosts: "*full*"
+  become: true
+  vars:
+    bc_haya_image: "mixbytes/haya:v0.2.2"
+    bc_haya_isproduction_enabled: "false"
+    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_bench: present
+    install_promstack: true
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
+    bc_haya_plugin_randpa: present
+    bc_private_interface: enp0s8
+  roles:
+    - role: tank.ansible-haya
 
 - name: Converge monitoring node
   hosts: "*monitoring*"
@@ -146,7 +161,7 @@
     install_promstack: true
     admin_user: tank
     admin_password: tank
-    bc_private_interface: eth1
+    bc_private_interface: enp0s8
     fluentd_sources_conf:
       - "type": forward
         "params":
@@ -163,4 +178,4 @@
             "timekey_use_utc": true
             "timekey_wait": 10m
   roles:
-    - role: tank.blockchain
+    - role: tank.ansible-haya
