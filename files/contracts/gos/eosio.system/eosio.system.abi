@@ -476,6 +476,10 @@
                     "type": "int64"
                 },
                 {
+                    "name": "active_stake",
+                    "type": "int64"
+                },
+                {
                     "name": "thresh_activated_stake_time",
                     "type": "time_point"
                 },
@@ -490,6 +494,18 @@
                 {
                     "name": "last_name_close",
                     "type": "block_timestamp_type"
+                },
+                {
+                    "name": "last_schedule_size_update",
+                    "type": "block_timestamp_type"
+                },
+                {
+                    "name": "schedule_update_interval",
+                    "type": "uint32"
+                },
+                {
+                    "name": "schedule_size_step",
+                    "type": "uint16"
                 }
             ]
         },
