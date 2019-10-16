@@ -2,10 +2,20 @@
 - name: "Set facts"
   set_fact:
     bc_haya_system_accounts:
+      - eosio.bpay
+      - eosio.msig
+      - eosio.names
+      - eosio.ram
+      - eosio.ramfee
+      - eosio.saving
+      - eosio.stake
       - eosio.token
+      - eosio.vpay
+      - eosio.rex
     bc_haya_system_contracts:
-      - { name: eosio, wasm_path: eosio.bios/eosio.bios.wasm, abi_path: eosio.bios/eosio.bios.abi }
       - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
+      - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
+      - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
 
 - include_tasks: "boot-common.yml"
 
@@ -67,11 +77,6 @@
     - never
     - debug
 
-- name: copy contracts
-  copy:
-    src: "contracts/{{ bc_haya_contracts }}/"
-    dest: "{{ bc_path_contracts }}"
-
 - name: set abi system contracts
   loop: "{{ bc_haya_system_contracts }}"
   register: set_abi_system_contracts
@@ -114,6 +119,8 @@
     - never
     - debug
 
+- include_tasks: "boot-checks.yml"
+
 - name: create token
   register: create_token
   shell: |
@@ -121,7 +128,7 @@
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
     push action eosio.token create '["eosio", "{{ bc_haya_max_tokens_amount }} \
-    EOS"]' -p eosio.token && \
+    BET"]' -p eosio.token && \
     touch {{ bc_path_state }}/createtoken
   args:
     creates: "{{ bc_path_state }}/createtoken"
@@ -139,7 +146,8 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    push action eosio.token issue '["eosio", "{{ bc_haya_tokens_amount }} EOS", "memo"]' -p eosio && \
+    push action eosio.token issue '["eosio", "{{ bc_haya_tokens_amount }} \
+    BET", "memo"]' -p eosio && \
     touch {{ bc_path_state }}/allocatetokens
   args:
     creates: "{{ bc_path_state }}/allocatetokens"
@@ -151,6 +159,27 @@
     - never
     - debug
 
+- name: Init system contracts
+  register: init_system_contracts
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    --url=http://localhost:{{ bc_haya_node_http_port }} \
+    push action eosio init '[0,"4,BET"]' -p eosio && \
+    touch {{ bc_path_state }}/initsyscontracts-eosio
+  args:
+    creates: "{{ bc_path_state }}/initsyscontracts-eosio"
+    chdir: "{{ bc_path_contracts }}"
+
+- name: Show stderr from init system contracts task
+  debug:
+    msg: "DEBUG: \n stderr:{{ item.stderr }}\n stdout:{{ item.stdout }}"
+  loop: "{{ init_system_contracts.results }}"
+  tags:
+    - never
+    - debug
+
+
 - name: create producers account
   loop: "{{ bc_haya_producer_accounts }}"
   register: create_producers_account
@@ -158,7 +187,9 @@
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    create account -x 45 eosio {{ item.name }} {{ item.pub_key }} {{ item.pub_key }} && \
+    system newaccount -x 45 eosio --transfer {{ item.name }} \
+    {{ item.pub_key }} --stake-net "25000000.0000 BET" \
+    --stake-cpu "25000000.0000 BET" --buy-ram-kbytes 8192 && \
     touch {{ bc_path_state }}/createprodacc-{{ item.name }}
   args:
     creates: "{{ bc_path_state }}/createprodacc-{{ item.name }}"
@@ -177,31 +208,32 @@
     - never
     - debug
 
-- name: form producers list
-  loop: "{{ bc_haya_producer_accounts | list }}"
-  set_fact:
-    my_prods: "{{ my_prods|default([{'producer_name': 'eosio',
-    'block_signing_key':
-      'EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV'}])
-      + [{'producer_name': item.name, 'block_signing_key': item.pub_key}] }}"
-  when: bc_peers_ip|length > index + 1
-  loop_control:
-    index_var: index
-
-- name: set producers
-  register: set_producers
+- name: Reg producers account
+  loop: "{{ bc_haya_producer_accounts }}"
+  register: reg_producers_account
   shell: |
     {{ bc_haya_cli }} \
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
     --url=http://localhost:{{ bc_haya_node_http_port }} \
-    push action eosio setprods '[{{ my_prods | to_json }}]' -p eosio && \
-    touch {{ bc_path_state }}/setproducers
+    system regproducer {{ item.name }} {{ item.pub_key }} -p {{ item.name }} && \
+    touch {{ bc_path_state }}/regprodacc-{{ item.name }}
   args:
-    creates: "{{ bc_path_state }}/setproducers"
+    creates: "{{ bc_path_state }}/regprodacc-{{ item.name }}"
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index
 
-- name: Show stderr from create system accounts task
-  debug:
-    msg: "DEBUG: \n stderr:{{ set_producers.stderr }}\n stdout:{{ set_producers.stdout }}"
-  tags:
-    - never
-    - debug
+- name: Vote producers account
+  loop: "{{ bc_haya_producer_accounts }}"
+  register: vote_producers_account
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    --url=http://localhost:{{ bc_haya_node_http_port }} \
+    system voteproducer prods {{ item.name }} {{ item.name }} && \
+    touch {{ bc_path_state }}/voteprodacc-{{ item.name }}
+  args:
+    creates: "{{ bc_path_state }}/voteprodacc-{{ item.name }}"
+  when: bc_peers_ip|length > index + 1
+  loop_control:
+    index_var: index

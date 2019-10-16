@@ -43,11 +43,6 @@
     creates: "{{ bc_path_state }}/createsysacc-{{ item }}"
   changed_when: "'executed transaction' in create_system_accounts.stdout"
 
-- name: copy contracts
-  copy:
-    src: "contracts/{{ bc_haya_contracts }}/"
-    dest: "{{ bc_path_contracts }}"
-
 - name: set abi system contracts
   loop: "{{ bc_haya_system_contracts }}"
   register: set_abi_system_contracts
@@ -73,6 +68,8 @@
   args:
     chdir: "{{ bc_path_contracts }}"
     creates: "{{ bc_path_state }}/setcodesyscontracts-{{ item.name }}"
+
+- include_tasks: "boot-checks.yml"
 
 - name: create token
   register: create_token

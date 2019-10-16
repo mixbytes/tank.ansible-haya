@@ -14,12 +14,12 @@
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
-    command: "/opt/haya/bin/haya-wallet
+    command: "/opt/{{ bc_name }}/bin/{{ bc_name }}-wallet
     --unlock-timeout=99999999 --wallet-dir {{ bc_path_data }}
     --http-server-address=0.0.0.0:{{ bc_haya_wallet.port }}
     --http-alias=haya-wallet:{{ bc_haya_wallet.port }}
     --http-alias=localhost:{{ bc_haya_wallet.port }}"
-    hostname: haya-wallet
+    hostname: "{{ bc_name }}-wallet"
     ports:
       - "{{ bc_haya_wallet.port }}:{{ bc_haya_wallet.port }}"
     expose:
@@ -41,10 +41,10 @@
   shell:
     cmd: "{{ bc_haya_cli }}
     --wallet-url=http://localhost:{{ bc_haya_wallet.port }}
-    wallet create -f {{ bc_path_general }}/{{ bc_name }}/haya-cli/wallet.password"
+    wallet create -f {{ bc_path_general }}/{{ bc_name }}/{{ bc_name }}-cli/wallet.password"
   register: create_wallet
-  failed_when: "'Wallet already exists' not in create_wallet.stderr and create_wallet.rc != 0"
-  changed_when: "'Creating wallet' in create_wallet.stdout"
+  args:
+    creates: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_name }}-cli/wallet.password"
 
 - debug:
     msg: "{{ create_wallet.stderr_lines }}"

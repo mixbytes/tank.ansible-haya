@@ -41,7 +41,7 @@
     src: configs/nodeos/config.ini.j2
     dest: "{{ bc_path_config }}/config.ini"
   notify:
-    - restart prodnode
+    - restart fullnode
 
 - name: set genesis.json
   tags:
@@ -50,7 +50,7 @@
     src: configs/nodeos/genesis.json.j2
     dest: "{{ bc_path_config }}/genesis.json"
   notify:
-    - restart prodnode
+    - restart fullnode
 
 - name: set logger.json
   tags:
@@ -59,7 +59,7 @@
     src: configs/nodeos/logger.json.j2
     dest: "{{ bc_path_config }}/logger.json"
   notify:
-    - restart prodnode
+    - restart fullnode
 
 - name: "Start {{ bc_name }}-{{ bc_component_name }} container"
   tags:
@@ -69,7 +69,7 @@
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
     command: |
-      /opt/haya/bin/haya-node
+      /opt/{{ bc_name }}/bin/{{ bc_name }}-node
       --config-dir={{ bc_path_config }}
       --genesis-json={{ bc_path_config }}/genesis.json
       --logconf={{ bc_path_config }}/logger.json
@@ -89,15 +89,15 @@
       fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
       fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
 
-- name: "Resume producer"
+- name: "Check health fullnode"
   uri:
-    url: "http://localhost:{{ bc_haya_node_http_port }}/v1/producer/resume"
-    method: POST
+    url: "http://localhost:{{ bc_haya_node_http_port }}/v1/chain/get_info"
+    method: GET
     body_format: form-urlencoded
-    status_code: 201
-  register: producer_resume
+    status_code: 200
+  register: check_fullnode
   retries: 10
   delay: 5
-  until: producer_resume is success
+  until: check_fullnode is success
   tags:
     - update

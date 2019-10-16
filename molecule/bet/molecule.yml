@@ -28,6 +28,14 @@ platforms:
         type: dhcp
     cpus: 2
     memory: 1024
+  - name: ubuntu1804-fullnode
+    box: ubuntu/bionic64
+    interfaces:
+      - auto_config: true
+        network_name: private_network
+        type: dhcp
+    cpus: 2
+    memory: 1024
   - name: ubuntu1804-monitoring
     box: ubuntu/bionic64
     instance_raw_config_args:
@@ -59,7 +67,7 @@ provisioner:
       x: ["301,305,306"]
       force-color: true
 scenario:
-  name: haya
+  name: bet
 verifier:
   name: testinfra
   lint:

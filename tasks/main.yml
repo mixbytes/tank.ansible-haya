@@ -22,12 +22,18 @@
     - debug
 
 - name: Set host parameters for debugging services
+  tags:
+    - always
   include_tasks: "docker/debugging.yml"
 
 - name: Login to docker registry
+  tags:
+    - always
   include_tasks: "docker/registry.yml"
 
 - name: "Setup docker network"
+  tags:
+    - always
   include_tasks: "docker/network.yml"
 
 - name: "Install blockchain components"

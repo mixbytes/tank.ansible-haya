@@ -1,0 +1,37 @@
+---
+- name: Get deployed contracts version
+  tags:
+    - info
+  register: _contracts_deployed_version
+  shell: |
+    {{ bc_haya_cli }} get table eosio eosio version
+
+- name: Get meta for required contracts
+  tags:
+    - info
+  register: _contracts_required_meta
+  shell: |
+    cat {{ bc_path_contracts }}/meta.json
+
+- name: Set deployed contracts facts
+  tags:
+    - info
+  set_fact:
+    contracts_deployed_version: "{{ (_contracts_deployed_version.stdout | from_json).rows[0].version }}"
+    contracts_deployed_commit: "{{ (_contracts_required_meta.stdout | from_json).target_commitish }}"
+
+- name: Show contracts version
+  tags:
+    - info
+  debug:
+    msg:
+      - "Contracts:"
+      - "Required version: {{ bc_contracts_version }}"
+      - "Deployed version: {{ contracts_deployed_version }}"
+      - "Deployed Commit: {{ contracts_deployed_commit }}"
+
+- name: Fail if deployed contracts not equal to required
+  fail:
+    msg: "Deployed contracts not equal to required!"
+  when: contracts_deployed_version != bc_contracts_version
+

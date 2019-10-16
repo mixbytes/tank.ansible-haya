@@ -70,5 +70,8 @@ scenario:
   name: tank
 verifier:
   name: testinfra
+  directory: ../common/tests
+  options:
+    sudo: true
   lint:
     name: flake8

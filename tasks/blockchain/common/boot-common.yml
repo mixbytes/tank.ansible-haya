@@ -1,0 +1,135 @@
+---
+- name: "Make directory structure"
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ bc_path_data }}"
+    - "{{ bc_path_config }}"
+    - "{{ bc_path_state }}"
+    - "{{ bc_path_general }}/{{ bc_name }}/extra"
+    - "{{ bc_path_general }}/{{ bc_name }}/extra/contracts"
+
+- name: Check directory for required contracts
+  stat:
+    path: "{{ bc_path_general }}/{{ bc_name }}/extra/contracts/{{ bc_contracts_version }}"
+  register: _bc_contracts_version_directory
+
+- name: Download and install required contracts
+  block:
+    - name: Get link for version
+      register: gr_info
+      uri:
+        url: "https://api.github.com/repos/{{ bc_contracts_gh_user }}/{{ bc_contracts_gh_repo }}/releases/tags/{{ bc_contracts_version }}"
+
+    - name: Show info about Github Release
+      set_fact:
+        release_url: "{{ gr_info['json']['assets'][0]['browser_download_url'] }}"
+        html_url: "{{ gr_info['json']['html_url'] }}"
+        updated_at: "{{ gr_info['json']['assets'][0]['updated_at'] }}"
+        target_commitish: "{{ gr_info['json']['target_commitish'] }}"
+        uploader_login: "{{ gr_info['json']['assets'][0]['uploader']['login'] }}"
+
+    - name: Download release
+      get_url:
+        url: "{{ release_url }}"
+        dest: "/tmp/contracts-{{ bc_contracts_version }}.tar.gz"
+        mode: 0644
+
+    - name: unarchive contracts
+      unarchive:
+        remote_src: true
+        src: "/tmp/contracts-{{ bc_contracts_version }}.tar.gz"
+        dest: "{{ bc_path_general }}/{{ bc_name }}/extra/contracts/"
+        extra_opts:
+          - --transform
+          - s/^contracts-//
+
+    - name: Remove downloaded unarchive
+      file:
+        dest: "/tmp/contracts-{{ bc_contracts_version }}.tar.gz"
+        state: absent
+
+    - name: Create meta-file
+      copy:
+        force: false
+        content: |
+          {
+          "release_url": "{{ html_url }}",
+          "download_url": "{{ release_url }}",
+          "updated": "{{ updated_at }}",
+          "target_commitish": "{{ target_commitish }}",
+          "uploader": "{{ uploader_login }}"
+          }
+        dest: "{{ bc_path_general }}/{{ bc_name }}/extra/contracts/{{ bc_contracts_version }}/meta.json"
+
+    - name: Remove old directory
+      file:
+        dest: "{{ bc_path_contracts }}"
+        state: absent
+
+    - name: Link to current
+      file:
+        src: "{{ bc_path_general }}/{{ bc_name }}/extra/contracts/{{ bc_contracts_version }}"
+        dest: "{{ bc_path_contracts }}"
+        state: link
+
+  when: not _bc_contracts_version_directory.stat.exists
+
+- name: set config.ini
+  vars:
+    producer_name: "{{ bc_haya_boot.name }}"
+    producer_pub_key: "{{ bc_haya_boot.pub_key }}"
+    producer_pvt_key: "{{ bc_haya_boot.pvt_key }}"
+  template:
+    src: "{{ bc_path_config_template }}"
+    dest: "{{ bc_path_config }}/config.ini"
+
+- name: set genesis.json
+  template:
+    src: "{{ bc_path_genesis_template }}"
+    dest: "{{ bc_path_config }}/genesis.json"
+
+- name: set logger.json
+  tags:
+    - update
+  template:
+    src: "{{ bc_path_logger_template }}"
+    dest: "{{ bc_path_config }}/logger.json"
+
+- name: Start boot-node container
+  register: _start_boot_node
+  docker_container:
+    name: "{{ bc_name }}-{{ bc_component_name }}"
+    image: "{{ bc_haya_image }}"
+    command: |
+      /opt/{{ bc_name }}/bin/{{ bc_name }}-node
+      --config-dir={{ bc_path_config }}
+      --genesis-json={{ bc_path_config }}/genesis.json
+      --logconf={{ bc_path_config }}/logger.json
+    hostname: "{{ bc_name }}-{{ bc_component_name }}"
+    network_mode: host
+    volumes:
+      - "{{ bc_path_state }}:/root/.local"
+      - "{{ bc_path_config }}:{{ bc_path_config }}"
+      - "{{ bc_path_contracts }}:{{ bc_path_contracts }}"
+      - "/tmp/cores:/tmp/cores"
+    capabilities:
+      - IPC_LOCK
+    stop_timeout: 600
+    pull: true
+    log_driver: "{{ bc_docker_log_driver | default(omit) }}"
+    log_options:
+      max-size: "{{ '1g' if bc_docker_log_driver == 'json-file' else omit }}"
+      fluentd-async-connect: "{{ 'true' if bc_docker_log_driver == 'fluentd' else omit }}"
+      fluentd-address: "{{ 'localhost:24224' if bc_docker_log_driver == 'fluentd' else omit  }}"
+
+- name: "Check container health"
+  uri:
+    url: "http://localhost:{{ bc_haya_node_http_port }}/v1/chain/get_info"
+    method: GET
+    status_code: 200
+  register: boot_status
+  retries: 10
+  delay: 5
+  until: boot_status is success

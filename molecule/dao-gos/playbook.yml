@@ -90,6 +90,7 @@
   hosts: "*boot*"
   become: true
   vars:
+    bc_name: "daobet"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
@@ -97,7 +98,7 @@
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
     bc_private_interface: enp0s8
-    bc_haya_image: "daocasino/blockchain:v0.2.1"
+    bc_haya_image: "daocasino/blockchain:v0.2.3"
     bc_haya_contracts: gos
     bc_haya_producer_accounts_pub:
       - name: producer.1
@@ -109,11 +110,30 @@
   roles:
     - role: tank.ansible-haya
 
+- name: Converge producer node
+  hosts: "*producer*"
+  become: true
+  vars:
+    bc_name: "daobet"
+    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_bench: present
+    bc_haya_contracts: gos
+    install_promstack: true
+    bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
+    bc_haya_plugin_randpa: present
+    bc_haya_plugin_net_api: true
+    bc_haya_plugin_producer_api: true
+    bc_private_interface: enp0s8
+  roles:
+    - role: tank.ansible-haya
+
 - name: Converge full node
   hosts: "*full*"
   become: true
   vars:
-    bc_haya_image: "daocasino/blockchain:v0.2.1"
+    bc_name: "daobet"
+    bc_haya_image: "daocasino/blockchain:v0.2.3"
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
     install_promstack: true

@@ -6,6 +6,10 @@ bc_name: haya
 # may be: wallet, boot, prod, nonprod
 bc_component_name: "wallet"
 
+bc_contracts_gh_user: "DaoCasino"
+bc_contracts_gh_repo: "DAOBET.contracts"
+bc_contracts_version: v1.0.1
+
 bc_path_general: "/opt"
 bc_path_data: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/data/"
 bc_path_config: "{{ bc_path_general }}/{{ bc_name }}/{{ bc_component_name }}/config"

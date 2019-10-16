@@ -5,6 +5,8 @@
   gather_facts: false
   tasks:
     - name: Gathering Facts
+      tags:
+        - always
       setup:
 
 - name: Create groups
@@ -55,63 +57,24 @@
       loop: "{{ groups['all'] }}"
       when: '"prod" in hostvars[item]["ansible_hostname"] or "boot" in hostvars[item]["ansible_hostname"] or "full" in hostvars[item]["ansible_hostname"]'
 
-- name: "OS settings"
-  hosts: all
-  become: true
-  tasks:
-    - name: "Configuring ulimit"
-      block:
-        - name: "Limit max open files [1]"
-          pam_limits:
-            domain: root
-            limit_type: soft
-            limit_item: nofile
-            value: 65536
-        - name: "Limit max open files [2]"
-          pam_limits:
-            domain: root
-            limit_type: hard
-            limit_item: nofile
-            value: 65536
-        - name: "Limit max open files [3]"
-          pam_limits:
-            domain: '*'
-            limit_type: soft
-            limit_item: nofile
-            value: 65536
-        - name: "Limit max open files [4]"
-          pam_limits:
-            domain: '*'
-            limit_type: hard
-            limit_item: nofile
-            value: 65536
-
 - name: Converge boot node
   hosts: "*boot*"
   become: true
   vars:
-    bc_haya_system_accounts:
-      - eosio.bpay
-      - eosio.msig
-      - eosio.names
-      - eosio.ram
-      - eosio.ramfee
-      - eosio.saving
-      - eosio.stake
-      - eosio.token
-      - eosio.vpay
-      - eosio.rex
-    bc_haya_system_contracts:
-      - { name: eosio.token, wasm_path: eosio.token/eosio.token.wasm, abi_path: eosio.token/eosio.token.abi }
-      - { name: eosio.msig, wasm_path: eosio.msig/eosio.msig.wasm, abi_path: eosio.msig/eosio.msig.abi }
-      - { name: eosio, wasm_path: eosio.system/eosio.system.wasm, abi_path: eosio.system/eosio.system.abi }
-    bc_haya_image: "mixbytes/haya:v0.2.2"
+    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_name: daobet
+    bc_contracts_gh_user: "DaoCasino"
+    bc_contracts_gh_repo: "DAOBET.contracts"
+    bc_contracts_version: v1.0.1
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
     bc_haya_comp_state_bench: present
+    bc_haya_contracts: dao
     install_promstack: true
     bc_haya_node_id: 0
     bc_haya_plugin_randpa: present
+    bc_haya_plugin_net_api: true
+    bc_haya_plugin_producer_api: true
     bc_private_interface: enp0s8
     fluentd_sources_conf:
       - "type": forward
@@ -132,12 +95,16 @@
   hosts: "*producer*"
   become: true
   vars:
-    bc_haya_image: "mixbytes/haya:v0.2.2"
+    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_name: daobet
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
+    bc_haya_contracts: dao
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
+    bc_haya_plugin_net_api: true
+    bc_haya_plugin_producer_api: true
     bc_private_interface: enp0s8
   roles:
     - role: tank.ansible-haya
@@ -146,13 +113,16 @@
   hosts: "*full*"
   become: true
   vars:
-    bc_haya_image: "mixbytes/haya:v0.2.2"
+    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_name: daobet
     bc_haya_isproduction_enabled: "false"
-    bc_haya_comp_state_prod: present
+    bc_haya_comp_state_full: present
     bc_haya_comp_state_bench: present
     install_promstack: true
     bc_haya_node_id: "{{ play_hosts.index(inventory_hostname) | int }}"
     bc_haya_plugin_randpa: present
+    bc_haya_plugin_net_api: false
+    bc_haya_plugin_producer_api: false
     bc_private_interface: enp0s8
   roles:
     - role: tank.ansible-haya

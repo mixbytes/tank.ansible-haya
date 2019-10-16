@@ -20,15 +20,7 @@ platforms:
         type: dhcp
     cpus: 2
     memory: 1024
-  - name: ubuntu1804-producer-1
-    box: ubuntu/bionic64
-    interfaces:
-      - auto_config: true
-        network_name: private_network
-        type: dhcp
-    cpus: 2
-    memory: 1024
-  - name: ubuntu1804-fullnode-1
+  - name: ubuntu1804-producer
     box: ubuntu/bionic64
     interfaces:
       - auto_config: true
@@ -46,7 +38,6 @@ platforms:
         network_name: private_network
         type: dhcp
     cpus: 1
-    memory: 1024
 provisioner:
   name: ansible
   playbooks:
@@ -68,11 +59,8 @@ provisioner:
       x: ["301,305,306"]
       force-color: true
 scenario:
-  name: dao-gos
+  name: default
 verifier:
   name: testinfra
-  directory: ../common/tests
-  options:
-    sudo: true
   lint:
     name: flake8
