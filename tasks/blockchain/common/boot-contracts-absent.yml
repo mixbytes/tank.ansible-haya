@@ -109,8 +109,6 @@
     - never
     - debug
 
-- include_tasks: "boot-checks.yml"
-
 - name: create token
   register: create_token
   shell: |
