@@ -61,7 +61,7 @@
   hosts: "*boot*"
   become: true
   vars:
-    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_haya_image: "daocasino/daobet:v0.4.0"
     bc_name: daobet
     bc_contracts_gh_user: "DaoCasino"
     bc_contracts_gh_repo: "DAOBET.contracts"
@@ -95,7 +95,7 @@
   hosts: "*producer*"
   become: true
   vars:
-    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_haya_image: "daocasino/daobet:v0.4.0"
     bc_name: daobet
     bc_haya_comp_state_prod: present
     bc_haya_comp_state_bench: present
@@ -113,7 +113,7 @@
   hosts: "*full*"
   become: true
   vars:
-    bc_haya_image: "daocasino/blockchain:v0.2.3"
+    bc_haya_image: "daocasino/daobet:v0.4.0"
     bc_name: daobet
     bc_haya_isproduction_enabled: "false"
     bc_haya_comp_state_full: present
