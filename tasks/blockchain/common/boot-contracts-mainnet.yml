@@ -1,0 +1,23 @@
+---
+- include_tasks: "boot-common.yml"
+
+- name: import bootstrap producer key into wallet
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    wallet import --private-key {{ bc_haya_boot.pvt_key }} && \
+    touch {{ bc_path_state }}/importbootkey
+  args:
+    creates: "{{ bc_path_state }}/importbootkey"
+  register: import_producer_key
+  ignore_errors: true
+
+- debug:
+    msg: "{{ import_producer_key.stderr_lines }}"
+  tags:
+    - never
+    - debug
+- debug: var=import_producer_key.stdout_lines
+  tags:
+    - never
+    - debug

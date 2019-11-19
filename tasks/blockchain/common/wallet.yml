@@ -14,7 +14,7 @@
   docker_container:
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
-    command: "/opt/{{ bc_name }}/bin/{{ bc_name }}-wallet
+    command: "/usr/bin/{{ bc_name }}-wallet
     --unlock-timeout=99999999 --wallet-dir {{ bc_path_data }}
     --http-server-address=0.0.0.0:{{ bc_haya_wallet.port }}
     --http-alias=haya-wallet:{{ bc_haya_wallet.port }}

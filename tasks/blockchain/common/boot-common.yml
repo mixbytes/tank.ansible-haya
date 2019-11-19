@@ -103,7 +103,7 @@
     name: "{{ bc_name }}-{{ bc_component_name }}"
     image: "{{ bc_haya_image }}"
     command: |
-      /opt/{{ bc_name }}/bin/{{ bc_name }}-node
+      /usr/bin/{{ bc_name }}-node
       --config-dir={{ bc_path_config }}
       --genesis-json={{ bc_path_config }}/genesis.json
       --logconf={{ bc_path_config }}/logger.json
