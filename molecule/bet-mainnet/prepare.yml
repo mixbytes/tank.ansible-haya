@@ -1,0 +1,53 @@
+---
+- name: "OS settings"
+  hosts: all
+  become: true
+  tasks:
+    - name: Setting up apt-proxy
+      copy:
+        content: |
+          Acquire::HTTP::Proxy "http://10.0.2.2:3142";
+          Acquire::HTTPS::Proxy "false";
+        dest: /etc/apt/apt.conf.d/01proxy
+    - name: Install pip3
+      apt:
+        name: python3-pip
+        update_cache: true
+    - name: "Configuring ulimit"
+      block:
+        - pam_limits:
+            domain: root
+            limit_type: soft
+            limit_item: nofile
+            value: 65536
+        - pam_limits:
+            domain: root
+            limit_type: hard
+            limit_item: nofile
+            value: 65536
+        - pam_limits:
+            domain: '*'
+            limit_type: soft
+            limit_item: nofile
+            value: 65536
+        - pam_limits:
+            domain: '*'
+            limit_type: hard
+            limit_item: nofile
+            value: 65536
+
+- name: Prepare 2
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: geerlingguy.docker
+  tasks:
+    - name: Create config for docker mirror
+      copy:
+        content: { "registry-mirrors": ["http://10.0.2.2:5000"] }
+        dest: /etc/docker/daemon.json
+    - name: Restart docker daemon
+      service:
+        name: docker
+        state: restarted
