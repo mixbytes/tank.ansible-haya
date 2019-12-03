@@ -1,0 +1,59 @@
+---
+- name: "Import keys into wallet"
+  loop:
+    - "{{ producer_account }}"
+    - "{{ bc_haya_boot }}"
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    wallet import --private-key {{ item.pvt_key }} && \
+    touch {{ bc_path_state }}/importkey-{{ item.name }}
+  args:
+    creates: "{{ bc_path_state }}/importkey-{{ item.name }}"
+  register: import_keys
+  ignore_errors: true
+
+- name: "Calculate vote stake"
+  set_fact:
+    vote_stake: "{{ ( (bc_haya_tokens_amount|int) / (bc_peers_ip | length) * 0.3) | round(4,'floor') | string }}"
+
+- debug:
+    msg: "Vote stake amount: {{ vote_stake }}"
+
+- name: "Create producer account"
+  register: create_producer_account
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    --url=http://localhost:{{ bc_haya_node_http_port }} \
+    system newaccount -x 45 eosio --transfer {{ producer_account.name }} \
+    {{ producer_account.pub_key }} --stake-net "{{ bc_haya_net_stake }} {{ bc_haya_token_symbol }}" \
+    --stake-cpu "{{ bc_haya_cpu_stake }} {{ bc_haya_token_symbol }}" \
+    --stake-vote "{{ vote_stake }} {{ bc_haya_token_symbol }}" \
+    --buy-ram-kbytes 8192 && \
+    touch {{ bc_path_state }}/createprodacc
+  args:
+    creates: "{{ bc_path_state }}/createprodacc"
+
+- name: "Reg producer"
+  register: reg_producer
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    --url=http://localhost:{{ bc_haya_node_http_port }} \
+    system regproducer {{ producer_account.name }} {{ producer_account.pub_key }} && \
+    touch {{ bc_path_state }}/regprod
+  args:
+    creates: "{{ bc_path_state }}/regprod"
+
+- name: "Vote producer"
+  register: vote_producer
+  shell: |
+    {{ bc_haya_cli }} \
+    --wallet-url=http://localhost:{{ bc_haya_wallet.port }} \
+    --url=http://localhost:{{ bc_haya_node_http_port }} \
+    system voteproducer prods {{ producer_account.name }} {{ producer_account.name }} && \
+    touch {{ bc_path_state }}/voteprod
+  args:
+    creates: "{{ bc_path_state }}/voteprod"
+
