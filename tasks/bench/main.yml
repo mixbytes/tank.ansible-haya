@@ -23,3 +23,7 @@
 - name: "Pull docker container"
   docker_image:
     name: mixbytes/tank.bench-haya
+
+- name: "Set bench present fact"
+  set_fact:
+    bench_present: true
