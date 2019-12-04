@@ -14,6 +14,11 @@
     src: "configs/bench/bench.config.json.j2"
     dest: "{{ bc_path_general }}/bench/config/bench.config.json"
 
+- name: "Create haya config"
+  template:
+    src: "configs/bench/haya.bench.config.json.j2"
+    dest: "{{ bc_path_general }}/bench/config/haya.bench.config.json"
+
 - name: "Install bench"
   template:
     src: scripts/bin/bench.j2
