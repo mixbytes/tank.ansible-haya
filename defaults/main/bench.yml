@@ -50,3 +50,5 @@ bench_config:
     create: "true"
     name: ''
     privateKey: ''
+
+load_profile_remote_file: "{{ bc_path_general }}/bench/load_profile.js"
