@@ -105,4 +105,4 @@
 - name: "Prod voting"
   when:
     - bc_haya_prod_voting == "present"
-  include_tasks: "blockchain/common/prod-vote.yml"
+  include_tasks: "prod-vote.yml"
