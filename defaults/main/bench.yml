@@ -12,7 +12,7 @@ bench_config:
   maxActivePromises: 20
 
   prometheusTelemetry:
-    enable: false
+    enable: "false"
     url: "http://127.0.0.1:9091"
 
   telemetryStepInterval: 1000
