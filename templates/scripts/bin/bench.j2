@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # bench
 # A wrapper script for invoking bench with docker
@@ -19,16 +19,36 @@ check_cmd_in_path(){
   which $cmd > /dev/null 2>&1 || error 1 "$cmd not found!"
 }
 
+
+function clean {
+    docker stop bench
+    docker rm bench
+}
+
+function start {
+    clean
+    docker run \
+      --network=host \
+      -d --name bench \
+      --volume /opt/bench/profile.js:/opt/bench/profile.js \
+      --volume "{{ bc_path_general }}/bench/config/bench.config.json":/tool/bench.config.json \
+      --volume "{{ bc_path_general }}/bench/config/haya.bench.config.json":/tool/haya.bench.config.json \
+      --workdir /tool \
+      "mixbytes/tank.bench-haya" "--profile=/opt/bench/profile.js" "$@"
+}
+
+function stop {
+    docker stop bench
+}
+
 # Guards (checks for dependencies)
 check_cmd_in_path docker
 #check_cmd_in_path docker-machine
 #docker-machine active > /dev/null 2>&1 || error 2 "No active docker-machine VM found."
 
 # Set up mounted volumes, environment, and run our containerized command
-exec docker run \
-  --interactive --rm --network=host \
-  --volume /opt/bench/profile.js:/opt/bench/profile.js \
-  --volume "{{ bc_path_general }}/bench/config/bench.config.json":/tool/bench.config.json \
-  --volume "{{ bc_path_general }}/bench/config/haya.bench.config.json":/tool/haya.bench.config.json \
-  --workdir /tool \
-  "mixbytes/tank.bench-haya" "--profile=/opt/bench/profile.js" "$@"
+
+cmd=$1
+shift 1
+
+$cmd $@
