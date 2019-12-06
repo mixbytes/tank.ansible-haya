@@ -35,6 +35,7 @@ bench_config:
     keyPointsAmount: 1000
     threadsAmount: 1
     stopOnError: "print"
+    highloadWritesCount: 100
 
   creatorAccount:
     name: "eosio"
