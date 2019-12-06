@@ -5,7 +5,7 @@ bench_config:
   logLevel: 3
 
   stopOn:
-    error: "print"
+    error: "stop"
     processedTransactions: 1000000
 
   threadsAmount: 1
