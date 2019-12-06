@@ -104,7 +104,7 @@
     bc_haya_image: "mixbytes/haya:v0.2.1"
     bc_haya_comp_state_wallet: present
     bc_haya_comp_state_boot: present
-    bc_haya_comp_state_bench: present
+    bc_haya_comp_state_bench: absent
     bc_haya_plugin_history: absent
     install_promstack: true
     bc_haya_node_id: 0
