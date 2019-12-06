@@ -2,9 +2,7 @@
 bench_config:
   rpcUrl: "http://localhost:8888"
 
-  log:
-    logLevel: 3
-    printErrorStack: "true"
+  logLevel: 3
 
   stopOn:
     error: "print"
@@ -12,7 +10,12 @@ bench_config:
 
   threadsAmount: 1
   maxActivePromises: 20
-  configFile: "./haya.bench.config.json"
+
+  prometheusTelemetry:
+    enable: false
+    url: "http://127.0.0.1:9091"
+
+  telemetryStepInterval: 1000
 
   tokensContract:
     wasmFilePath: "./src/contracts/eosio.token/eosio.token.wasm"
@@ -51,4 +54,3 @@ bench_config:
     name: ''
     privateKey: ''
 
-load_profile_remote_file: "{{ bc_path_general }}/bench/load_profile.js"

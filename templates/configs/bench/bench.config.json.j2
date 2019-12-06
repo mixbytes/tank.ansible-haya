@@ -1,14 +1,14 @@
 {
-
-  "log": {
-    "logLevel": "{{ bench_config.log.logLevel }}",
-    "printErrorStack": "{{ bench_config.log.printErrorStack }}"
-  },
+  "logLevel": {{ bench_config.logLevel }},
   "stopOn": {
     "error": "{{ bench_config.stopOn.error }}",
     "processedTransactions": {{ bench_config.stopOn.processedTransactions }}
   },
+  "prometheusTelemetry": {
+    "enable": {{ bench_config.prometheusTelemetry.enable }},
+    "url": "{{ bench_config.prometheusTelemetry.url }}"
+  },
+  "telemetryStepInterval": {{  bench_config.telemetryStepInterval }},
   "threadsAmount": {{ bench_config.threadsAmount }},
   "maxActivePromises": {{ bench_config.maxActivePromises }},
-  "configFile": "{{ bench_config.configFile }}"
 }
