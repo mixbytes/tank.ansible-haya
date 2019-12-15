@@ -1,10 +1,4 @@
 ---
-- name: set producer account
-  set_fact:
-    producer_account: "{{ bc_haya_producer_accounts[bc_haya_node_id | int] }}"
-  tags:
-    - update
-
 - debug:
     msg: "{{ bc_haya_node_id | int }}"
   tags:
@@ -33,10 +27,6 @@
 - name: set config.ini
   tags:
     - update
-  vars:
-    producer_name: "{{ producer_account.name }}"
-    producer_pub_key: "{{ producer_account.pub_key }}"
-    producer_pvt_key: "{{ producer_account.pvt_key }}"
   template:
     src: configs/nodeos/config.ini.j2
     dest: "{{ bc_path_config }}/config.ini"
