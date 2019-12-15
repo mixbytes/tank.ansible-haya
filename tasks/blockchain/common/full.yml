@@ -28,7 +28,7 @@
   tags:
     - update
   template:
-    src: configs/nodeos/config.ini.j2
+    src: "{{ bc_path_config_template }}"
     dest: "{{ bc_path_config }}/config.ini"
   notify:
     - restart fullnode
