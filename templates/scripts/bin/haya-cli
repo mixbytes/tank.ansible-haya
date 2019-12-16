@@ -1,2 +1,2 @@
-#usr/bin/env bash
-docker run --rm --network=host -v /:/host:ro -v {{ bc_path_general }}/{{ bc_name }}/{{ bc_name }}-cli:/opt/{{ bc_name }}/{{ bc_name }}-cli {{ bc_haya_image }} /usr/bin/{{ bc_name }}-cli "$@"
+#!/usr/bin/env bash
+docker run --rm --network=host -v /{{ bc_path_general }}/{{ bc_name }}/contracts/:/host/{{ bc_path_general }}/{{ bc_name }}/contracts/:ro -v {{ bc_path_general }}/{{ bc_name }}/{{ bc_name }}-cli:/opt/{{ bc_name }}/{{ bc_name }}-cli {{ bc_haya_image }} /usr/bin/{{ bc_name }}-cli "$@"

@@ -33,6 +33,7 @@ bc_haya_logger_enabled: "true"
 bc_haya_logger_additivity: "false"
 
 bc_haya_contracts: "absent"
+bc_haya_prod_voting: "absent"
 
 bc_haya_node_id: "1"
 bc_haya_node_http_port: 8888
@@ -41,8 +42,11 @@ bc_haya_node_bnet_port: 4321
 bc_haya_node_metrics_port: 8889
 
 bc_haya_isproduction_enabled: "true"
+bc_haya_token_symbol: "SYS"
 bc_haya_tokens_amount: "167270821.0000"
 bc_haya_max_tokens_amount: "1000000000.0000"
+bc_haya_net_stake: "100.0000"
+bc_haya_cpu_stake: "100.0000"
 
 bc_haya_producer_name: "{{ bc_haya_boot.name }}"
 bc_haya_producer_pub_key: "{{ bc_haya_boot.pub_key }}"

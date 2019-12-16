@@ -101,3 +101,8 @@
   until: producer_resume is success
   tags:
     - update
+
+- name: "Prod voting"
+  when:
+    - bc_haya_prod_voting == "present"
+  include_tasks: "prod-vote.yml"
