@@ -2,17 +2,20 @@
 bench_config:
   rpcUrl: "http://localhost:8888"
 
-  log:
-    logLevel: 3
-    printErrorStack: "true"
+  logLevel: 3
 
   stopOn:
-    error: "print"
+    error: "stop"
     processedTransactions: 1000000
 
   threadsAmount: 1
   maxActivePromises: 20
-  configFile: "./haya.bench.config.json"
+
+  prometheusTelemetry:
+    enable: "false"
+    url: "http://127.0.0.1:9091"
+
+  telemetryStepInterval: 1000
 
   tokensContract:
     wasmFilePath: "./src/contracts/eosio.token/eosio.token.wasm"
@@ -32,6 +35,7 @@ bench_config:
     keyPointsAmount: 1000
     threadsAmount: 1
     stopOnError: "print"
+    highloadWritesCount: 100
 
   creatorAccount:
     name: "eosio"
@@ -50,3 +54,4 @@ bench_config:
     create: "true"
     name: ''
     privateKey: ''
+

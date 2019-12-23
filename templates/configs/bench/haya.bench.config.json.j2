@@ -1,5 +1,7 @@
 {
-  "rpcUrl": "{{ bench_config.rpc_Url }}",
+  "rpcUrls": [
+    "http://localhost:{{ bc_haya_node_http_port }}",
+  ],
   "tokensContract": {
     "wasmFilePath": "{{ bench_config.tokensContract.wasmFilePath }}",
     "abiFilePath": "{{ bench_config.tokensContract.abiFilePath }}"
@@ -17,11 +19,12 @@
     "keyPoints": {{ bench_config.transactions.keyPoints }},
     "keyPointsAmount": {{ bench_config.transactions.keyPointsAmount }},
     "threadsAmount": {{ bench_config.transactions.threadsAmount }},
-    "stopOnError": "{{ bench_config.transactions.stopOnError }}"
+    "stopOnError": "{{ bench_config.transactions.stopOnError }}",
+    "highloadWritesCount": {{ bench_config.transactions.highloadWritesCount }}
   },
   "creatorAccount": {
-    "name": "{{ bench_config.creatorAccount.name }}",
-    "privateKey": "{{ bench_config.creatorAccount.privateKey }}"
+    "name": "{{ bc_haya_boot.name }}",
+    "privateKey": "{{ bc_haya_boot.pvt_key }}"
   },
   "toAccount": {
     "create": {{ bench_config.toAccount.create }},
