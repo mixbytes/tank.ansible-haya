@@ -37,7 +37,7 @@
   tags:
     - update
   template:
-    src: configs/nodeos/genesis.json.j2
+    src: "{{ bc_path_genesis_template }}"
     dest: "{{ bc_path_config }}/genesis.json"
   notify:
     - restart fullnode
@@ -46,7 +46,7 @@
   tags:
     - update
   template:
-    src: configs/nodeos/logger.json.j2
+    src: "{{ bc_path_logger_template }}"
     dest: "{{ bc_path_config }}/logger.json"
   notify:
     - restart fullnode
