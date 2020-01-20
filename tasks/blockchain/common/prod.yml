@@ -30,6 +30,14 @@
     - "{{ bc_path_config }}"
     - "{{ bc_path_state }}"
 
+- name: make producer maps
+  no_log: True
+  tags:
+    - update
+  set_fact:
+    producer_accounts_dict: "{{ producer_accounts_dict|default({}) |  combine( {item.1.name: {'pub_key': item.1.pub_key, 'pvt_key': item.1.pvt_key}}) }}"
+  with_indexed_items: "{{bc_haya_producer_accounts}}"
+
 - name: set config.ini
   tags:
     - update
