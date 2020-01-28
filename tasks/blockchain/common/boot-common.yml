@@ -130,6 +130,6 @@
     method: GET
     status_code: 200
   register: boot_status
-  retries: 10
+  retries: 3
   delay: 5
   until: boot_status is success

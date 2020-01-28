@@ -56,4 +56,3 @@
     touch {{ bc_path_state }}/voteprod
   args:
     creates: "{{ bc_path_state }}/voteprod"
-

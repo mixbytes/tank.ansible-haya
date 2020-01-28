@@ -1,4 +1,3 @@
 ---
 - name: "Include present tasks"
   include_tasks: "boot-contracts-present.yml"
-
