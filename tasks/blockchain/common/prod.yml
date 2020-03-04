@@ -35,8 +35,8 @@
   tags:
     - update
   set_fact:
-    producer_accounts_dict: "{{ producer_accounts_dict|default({}) |  combine( {item.1.name: {'pub_key': item.1.pub_key, 'pvt_key': item.1.pvt_key}}) }}"
-  with_indexed_items: "{{bc_haya_producer_accounts}}"
+    producer_accounts_dict: "{{ producer_accounts_dict|default({}) |  combine( {item.1.name: {'pub_key': item.1.pub_key, 'pvt_key': item.1.pvt_key }}) }}"
+  with_indexed_items: "{{ bc_haya_producer_accounts }}"
 
 - name: set config.ini
   tags:
@@ -104,7 +104,7 @@
     body_format: form-urlencoded
     status_code: 201
   register: producer_resume
-  retries: 10
+  retries: 3
   delay: 5
   until: producer_resume is success
   tags:

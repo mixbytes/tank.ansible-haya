@@ -30,4 +30,3 @@
 
 - name: "Install blockchain components"
   include_tasks: "blockchain/{{ bc_name }}/main.yml"
-

@@ -34,4 +34,3 @@
   fail:
     msg: "Deployed contracts not equal to required!"
   when: contracts_deployed_version != bc_contracts_version
-
