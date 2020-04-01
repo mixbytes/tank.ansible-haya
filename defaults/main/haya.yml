@@ -33,6 +33,10 @@ bc_haya_logger_level: "info"
 bc_haya_logger_enabled: "true"
 bc_haya_logger_additivity: "false"
 
+bc_haya_randpa_logger_level: "debug"
+bc_haya_randpa_logger_enabled: "true"
+bc_haya_randpa_logger_additivity: "false"
+
 bc_haya_contracts: "absent"
 bc_haya_prod_voting: "absent"
 

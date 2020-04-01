@@ -1,33 +1,56 @@
 {
- "includes": [],
- "appenders": [{
-     "name": "consoleout",
-     "type": "console",
-     "args": {
-       "stream": "std_out",
-       "level_colors": [{
-           "level": "debug",
-           "color": "green"
-         },{
-           "level": "warn",
-           "color": "brown"
-         },{
-           "level": "error",
-           "color": "red"
-         }
-       ]
-     },
-     "enabled": true
-   }
- ],
- "loggers": [{
-     "name": "default",
-     "level": "{{ bc_haya_logger_level }}",
-     "enabled": {{ bc_haya_logger_enabled }},
-     "additivity": {{ bc_haya_logger_additivity }},
-     "appenders": [
-       "consoleout"
-     ]
-   }
- ]
+  "includes": [],
+  "appenders": [
+    {
+      "name": "consoleout",
+      "type": "console",
+      "args": {
+        "stream": "std_out",
+        "level_colors": [
+          {
+            "level": "debug",
+            "color": "green"
+          },
+          {
+            "level": "warn",
+            "color": "brown"
+          },
+          {
+            "level": "error",
+            "color": "red"
+          }
+        ]
+      },
+      "enabled": true
+    }
+  ],
+  "loggers": [
+    {
+      "name": "default",
+      "level": "{{ bc_haya_logger_level }}",
+      "enabled": {{ bc_haya_logger_enabled }},
+      "additivity": {{ bc_haya_logger_additivity }},
+      "appenders": [
+        "consoleout"
+      ]
+    },
+    {
+      "name": "net_plugin_impl",
+      "level": "off",
+      "enabled": false,
+      "additivity": false,
+      "appenders": [
+        "consoleout"
+      ]
+    },
+    {
+      "name": "randpa_plugin",
+      "level": "{{ bc_haya_randpa_logger_level }}",
+      "enabled": {{ bc_haya_randpa_logger_enabled }},
+      "additivity": {{ bc_haya_randpa_logger_additivity }},
+      "appenders": [
+        "consoleout"
+      ]
+    }
+  ]
 }
