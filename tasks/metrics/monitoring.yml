@@ -36,12 +36,14 @@
   until: httpresponse.status == 200
   retries: 10
   delay: 20
+  ignore_errors: '{{ ansible_check_mode }}'
 
 - name: Form slug from Title
   changed_when: false
   shell: |
     echo "{{ Title }}" | sed -e "s/ /-/g" | tr '[:upper:]' '[:lower:]'
   register: slugout
+  check_mode: false
 
 - name: Set slug
   set_fact:
@@ -71,6 +73,7 @@
     force_basic_auth: true
     status_code: [200, 404, 400]
   register: slughttpresponse
+  check_mode: no
 
 - name: Copy dashboard
   become: false
