@@ -5,6 +5,7 @@
   register: _contracts_deployed_version
   shell: |
     {{ bc_haya_cli }} get table eosio eosio version
+  check_mode: false
 
 - name: Get meta for required contracts
   tags:
@@ -12,6 +13,7 @@
   register: _contracts_required_meta
   shell: |
     cat {{ bc_path_contracts }}/meta.json
+  check_mode: false
 
 - name: Set deployed contracts facts
   tags:
